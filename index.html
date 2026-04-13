@@ -1011,273 +1011,91 @@
     });
   }
 
-
-  // Background piano
-  (function () {
+  // Background piano — dreamy romantic melody, fades in gently
+  (function() {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let ctx, masterGain, started = false, schedulerId = null, reverbBuffer = null;
+    let ctx, masterGain, started = false;
 
-    const BPM = 88;
-    const BEAT = 60 / BPM;
-    const BAR = BEAT * 3; // wedding waltz feel
-
-    // 24 bars, loops seamlessly
-    const progression = [
-      { root: "C4",  chord: ["C4", "E4", "G4"], bass: "C3" },
-      { root: "G4",  chord: ["G3", "B3", "D4"], bass: "G2" },
-      { root: "A4",  chord: ["A3", "C4", "E4"], bass: "A2" },
-      { root: "F4",  chord: ["F3", "A3", "C4"], bass: "F2" },
-
-      { root: "C4",  chord: ["C4", "E4", "G4"], bass: "C3" },
-      { root: "G4",  chord: ["G3", "B3", "D4"], bass: "G2" },
-      { root: "F4",  chord: ["F3", "A3", "C4"], bass: "F2" },
-      { root: "G4",  chord: ["G3", "B3", "D4"], bass: "G2" },
-
-      { root: "A4",  chord: ["A3", "C4", "E4"], bass: "A2" },
-      { root: "E4",  chord: ["E3", "G3", "B3"], bass: "E2" },
-      { root: "F4",  chord: ["F3", "A3", "C4"], bass: "F2" },
-      { root: "C4",  chord: ["C4", "E4", "G4"], bass: "C3" },
-
-      { root: "D4",  chord: ["D3", "F3", "A3"], bass: "D2" },
-      { root: "G4",  chord: ["G3", "B3", "D4"], bass: "G2" },
-      { root: "C4",  chord: ["C4", "E4", "G4"], bass: "C3" },
-      { root: "G4",  chord: ["G3", "B3", "D4"], bass: "G2" },
-
-      { root: "F4",  chord: ["F3", "A3", "C4"], bass: "F2" },
-      { root: "C4",  chord: ["C4", "E4", "G4"], bass: "C3" },
-      { root: "D4",  chord: ["D3", "F3", "A3"], bass: "D2" },
-      { root: "G4",  chord: ["G3", "B3", "D4"], bass: "G2" },
-
-      { root: "C5",  chord: ["C4", "E4", "G4"], bass: "C3" },
-      { root: "A4",  chord: ["A3", "C4", "E4"], bass: "A2" },
-      { root: "F4",  chord: ["F3", "A3", "C4"], bass: "F2" },
-      { root: "G4",  chord: ["G3", "B3", "D4"], bass: "G2" }
-    ];
-
-    const melodyBars = [
-      ["E4", "G4", "A4", "G4", "E4", "D4"],
-      ["D4", "G4", "B4", "A4", "G4", "D4"],
-      ["E4", "A4", "C5", "B4", "A4", "E4"],
-      ["C4", "F4", "A4", "G4", "F4", "C4"],
-
-      ["E4", "G4", "C5", "B4", "G4", "E4"],
-      ["D4", "G4", "B4", "D5", "B4", "G4"],
-      ["C4", "F4", "A4", "C5", "A4", "F4"],
-      ["D4", "G4", "B4", "A4", "G4", "D4"],
-
-      ["E4", "A4", "C5", "E5", "C5", "A4"],
-      ["D4", "G4", "B4", "D5", "B4", "G4"],
-      ["C4", "F4", "A4", "C5", "A4", "F4"],
-      ["G3", "C4", "E4", "G4", "E4", "C4"],
-
-      ["A3", "D4", "F4", "A4", "F4", "D4"],
-      ["B3", "D4", "G4", "B4", "G4", "D4"],
-      ["E4", "G4", "C5", "E5", "C5", "G4"],
-      ["D4", "G4", "B4", "A4", "G4", "D4"],
-
-      ["C4", "F4", "A4", "C5", "A4", "F4"],
-      ["G3", "C4", "E4", "G4", "E4", "C4"],
-      ["A3", "D4", "F4", "A4", "F4", "D4"],
-      ["B3", "D4", "G4", "B4", "G4", "D4"],
-
-      ["E4", "G4", "C5", "E5", "D5", "C5"],
-      ["E4", "A4", "C5", "E5", "C5", "A4"],
-      ["C4", "F4", "A4", "C5", "A4", "F4"],
-      ["D4", "G4", "B4", "D5", "B4", "G4"]
+    const melody = [
+      // Phrase 1 — ethereal opening
+      ['E4',0,6,0.06],['B4',1.2,5,0.045],['C5',2.8,4.5,0.035],
+      ['E4',7,6,0.06],['A4',8.2,5,0.045],['B4',9.8,4.5,0.035],
+      ['D4',14,6,0.055],['G4',15.2,5,0.045],['A4',16.8,4.5,0.035],
+      ['C4',21,6,0.05],['E4',22.2,5,0.04],['G4',23.8,5.5,0.035],
+      // Phrase 2 — gentle movement
+      ['E4',28,4.5,0.06],['G4',29.8,3.5,0.045],['B4',31.5,4.5,0.04],['A4',34,3.5,0.035],
+      ['D4',36,4.5,0.055],['F4',37.8,3.5,0.045],['A4',39.5,4.5,0.04],['G4',42,3.5,0.035],
+      ['C4',44,4.5,0.055],['E4',45.8,3.5,0.045],['G4',47.5,5.5,0.04],
+      ['B3',50,4.5,0.05],['D4',51.8,3.5,0.04],['G4',53.5,5.5,0.035],
+      // Phrase 3 — hopeful ascending
+      ['C4',56,5.5,0.055],['E4',57.2,4.5,0.045],['G4',59,4,0.04],['C5',61,5.5,0.035],
+      ['A3',63,5.5,0.055],['C4',64.2,4.5,0.045],['E4',66,4,0.04],['A4',68,5.5,0.035],
+      // Phrase 4 — resolution, fading
+      ['G3',71,6.5,0.05],['B3',72.2,5.5,0.04],['D4',74,5.5,0.035],['G4',76,7,0.03],
+      ['C4',79,7,0.05],['E4',80.2,6,0.04],['G4',82,6.5,0.035],
+      ['C5',84,9,0.03],['E4',86,8,0.025],['G4',87,9,0.02],
     ];
 
     const noteFreqs = {
-      "G2": 98.00,
-      "A2": 110.00,
-      "B2": 123.47,
-      "C3": 130.81,
-      "D2": 73.42,
-      "D3": 146.83,
-      "E2": 82.41,
-      "E3": 164.81,
-      "F2": 87.31,
-      "F3": 174.61,
-      "G3": 196.00,
-      "A3": 220.00,
-      "B3": 246.94,
-      "C4": 261.63,
-      "D4": 293.66,
-      "E4": 329.63,
-      "F4": 349.23,
-      "G4": 392.00,
-      "A4": 440.00,
-      "B4": 493.88,
-      "C5": 523.25,
-      "D5": 587.33,
-      "E5": 659.25
+      'B3':246.94,'C3':130.81,'D3':146.83,'E3':164.81,'F3':174.61,'G3':196.00,'A3':220.00,
+      'C4':261.63,'D4':293.66,'E4':329.63,'F4':349.23,'G4':392.00,'A4':440.00,'B4':493.88,
+      'C5':523.25,'D5':587.33,'E5':659.25
     };
 
-    function createReverbBuffer(seconds = 2.8, decay = 2.2) {
-      const length = Math.floor(ctx.sampleRate * seconds);
-      const impulse = ctx.createBuffer(2, length, ctx.sampleRate);
-
-      for (let ch = 0; ch < 2; ch++) {
-        const data = impulse.getChannelData(ch);
-        for (let i = 0; i < length; i++) {
-          const n = (Math.random() * 2 - 1);
-          data[i] = n * Math.pow(1 - i / length, decay);
-        }
-      }
-      return impulse;
-    }
-
-    function pianoNote(freq, time, dur, vel = 0.25, stereo = 0) {
-      const output = ctx.createGain();
-      const dry = ctx.createGain();
-      const wet = ctx.createGain();
-      const pan = ctx.createStereoPanner();
-
-      output.connect(pan);
-      pan.connect(masterGain);
-
-      dry.gain.value = 1;
-      wet.gain.value = 0.22;
-
-      const convolver = ctx.createConvolver();
-      convolver.buffer = reverbBuffer;
-
-      output.connect(dry);
-      output.connect(wet);
-      wet.connect(convolver);
-      convolver.connect(pan);
-
-      const partials = [
-        { type: "triangle", detune: 0, level: 0.55 },
-        { type: "sine", detune: 3, level: 0.22 },
-        { type: "sine", detune: -4, level: 0.16 },
-        { type: "triangle", detune: 1200, level: 0.07 }
-      ];
-
+    function playNote(freq, time, dur, vel) {
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const osc3 = ctx.createOscillator();
       const noteGain = ctx.createGain();
-      noteGain.gain.setValueAtTime(0.0001, time);
-      noteGain.gain.exponentialRampToValueAtTime(vel, time + 0.012);
-      noteGain.gain.exponentialRampToValueAtTime(vel * 0.42, time + 0.22);
-      noteGain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
-
-      noteGain.connect(output);
-
-      partials.forEach(p => {
-        const osc = ctx.createOscillator();
-        const g = ctx.createGain();
-        osc.type = p.type;
-        osc.frequency.setValueAtTime(freq, time);
-        osc.detune.setValueAtTime(p.detune, time);
-        g.gain.setValueAtTime(p.level, time);
-        osc.connect(g);
-        g.connect(noteGain);
-        osc.start(time);
-        osc.stop(time + dur + 0.05);
-      });
-
-      pan.pan.setValueAtTime(stereo, time);
+      osc1.type = 'sine'; osc2.type = 'sine'; osc3.type = 'triangle';
+      osc1.frequency.value = freq;
+      osc2.frequency.value = freq * 2.001;
+      osc3.frequency.value = freq * 0.999;
+      const m1 = ctx.createGain(), m2 = ctx.createGain(), m3 = ctx.createGain();
+      m1.gain.value = 0.55; m2.gain.value = 0.1; m3.gain.value = 0.35;
+      osc1.connect(m1); m1.connect(noteGain);
+      osc2.connect(m2); m2.connect(noteGain);
+      osc3.connect(m3); m3.connect(noteGain);
+      noteGain.connect(masterGain);
+      noteGain.gain.setValueAtTime(0, time);
+      noteGain.gain.linearRampToValueAtTime(vel, time + 0.1);
+      noteGain.gain.exponentialRampToValueAtTime(vel * 0.45, time + dur * 0.35);
+      noteGain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+      osc1.start(time); osc2.start(time); osc3.start(time);
+      osc1.stop(time+dur+0.1); osc2.stop(time+dur+0.1); osc3.stop(time+dur+0.1);
     }
 
-    function playChord(notes, time, dur, vel = 0.14) {
-      notes.forEach((note, i) => {
-        const freq = noteFreqs[note];
-        if (!freq) return;
-        pianoNote(freq, time + i * 0.018, dur, vel, -0.08 + i * 0.08);
-      });
-    }
-
-    function playBrokenChord(notes, time, step = 0.22, dur = 1.15, vel = 0.13) {
-      notes.forEach((note, i) => {
-        const freq = noteFreqs[note];
-        if (!freq) return;
-        pianoNote(freq, time + i * step, dur, vel, -0.05 + i * 0.05);
-      });
-    }
-
-    function scheduleBar(barIndex, startTime) {
-      const bar = progression[barIndex % progression.length];
-      const melody = melodyBars[barIndex % melodyBars.length];
-
-      // Beat 1: bass
-      pianoNote(noteFreqs[bar.bass], startTime, 1.8, 0.26, -0.22);
-
-      // Beat 2 and 3: soft waltz chord pulses
-      playChord(bar.chord, startTime + BEAT * 0.95, 1.2, 0.12);
-      playChord(bar.chord, startTime + BEAT * 1.95, 1.25, 0.11);
-
-      // Light broken chord movement
-      playBrokenChord(
-        [bar.chord[0], bar.chord[1], bar.chord[2], bar.root],
-        startTime + 0.18,
-        0.23,
-        1.0,
-        0.09
-      );
-
-      // Melody, 6 eighth-note placements per bar
-      for (let i = 0; i < 6; i++) {
-        const note = melody[i];
-        const freq = noteFreqs[note];
-        if (!freq) continue;
-        const t = startTime + i * (BAR / 6);
-        const accent = i === 0 || i === 3 ? 1.15 : 1;
-        pianoNote(freq, t, 0.9, 0.17 * accent, 0.18);
+    function playMelody() {
+      const beatLen = 0.9;
+      const totalBeats = 96;
+      const loopDur = totalBeats * beatLen;
+      function scheduleLoop(offset) {
+        melody.forEach(([note, beat, dur, vel]) => {
+          if (noteFreqs[note]) playNote(noteFreqs[note], offset + beat*beatLen, dur*beatLen, vel);
+        });
+        setTimeout(() => scheduleLoop(offset + loopDur), (loopDur - 4) * 1000);
       }
-
-      // Small grace note before cadence on every 4th bar
-      if ((barIndex + 1) % 4 === 0) {
-        const target = melody[5];
-        const freq = noteFreqs[target];
-        if (freq) {
-          pianoNote(freq * 0.9439, startTime + BAR - 0.22, 0.18, 0.08, 0.15);
-          pianoNote(freq, startTime + BAR - 0.14, 0.9, 0.16, 0.18);
-        }
-      }
-    }
-
-    function startScheduler() {
-      const totalBars = progression.length;
-      const loopDuration = totalBars * BAR;
-      let loopStart = ctx.currentTime + 0.6;
-
-      function scheduleLoop() {
-        for (let i = 0; i < totalBars; i++) {
-          scheduleBar(i, loopStart + i * BAR);
-        }
-        loopStart += loopDuration;
-      }
-
-      scheduleLoop();
-      schedulerId = setInterval(() => {
-        if (!ctx) return;
-        if (loopStart - ctx.currentTime < 8) {
-          scheduleLoop();
-        }
-      }, 1000);
+      scheduleLoop(ctx.currentTime + 2.5);
     }
 
     function startMusic() {
       if (started) return;
       started = true;
-
       ctx = new AudioCtx();
       masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0.0001, ctx.currentTime);
-      masterGain.gain.exponentialRampToValueAtTime(0.65, ctx.currentTime + 4);
       masterGain.connect(ctx.destination);
-
-      reverbBuffer = createReverbBuffer();
-
-      startScheduler();
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.7, ctx.currentTime + 5);
+      playMelody();
     }
 
-    function triggerStart() {
-      if (!started) startMusic();
-      if (ctx && ctx.state === "suspended") ctx.resume();
-    }
-
-    window.addEventListener("scroll", triggerStart, { passive: true, once: true });
-    window.addEventListener("touchstart", triggerStart, { passive: true, once: true });
-    window.addEventListener("click", triggerStart, { passive: true, once: true });
+    let triggered = false;
+    window.addEventListener('scroll', function() {
+      if (!triggered) { triggered = true; startMusic(); }
+    }, { passive: true });
+    window.addEventListener('touchstart', function() {
+      if (!triggered) { triggered = true; startMusic(); }
+    }, { once: true, passive: true });
   })();
 </script>
 
