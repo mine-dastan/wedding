@@ -2,1102 +2,220 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Mine & Carmine — 05.09.2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Josefin+Sans:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ivory: #FAF7F2;
-    --cream: #F5EDE3;
-    --sage: #8A9A7B;
-    --sage-light: #B5C4A8;
-    --sage-dark: #6B7D5E;
-    --olive: #7C8C5D;
-    --gold: #C5A55A;
-    --gold-light: #D4BC7C;
-    --blush: #E8C4B8;
-    --blush-deep: #D4A090;
-    --terracotta: #C2856E;
-    --text-dark: #3A3530;
-    --text-soft: #6B645C;
-    --text-light: #8A847C;
-  }
+:root{--ivory:#FAF7F2;--sage:#8A9A7B;--sage-dk:#6B7D5E;--gold:#C5A55A;--gold-lt:#D4BC7C;--blush:#E8C4B8;--terra:#C2856E;--txt:#3A3530;--txt-s:#6B645C;--txt-l:#8A847C;--green:#1B5E3B}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden;height:100%}
+body{font-family:'Cormorant Garamond',serif;background:var(--ivory);color:var(--txt)}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ═══ ENVELOPE — FULL VIEWPORT ═══ */
+.env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer}
+.env.gone{pointer-events:none;z-index:-1}
 
-  html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-  }
+/* Bottom layer: green texture covering full screen */
+.env-bg{position:absolute;inset:0;background:url('assets/flap-bot.jpg') center/cover;z-index:1}
 
-  body {
-    font-family: 'Cormorant Garamond', serif;
-    background: var(--ivory);
-    color: var(--text-dark);
-    overflow-x: hidden;
-  }
+/* Top flap: the triangle image, positioned so triangle covers top portion */
+.env-top{position:absolute;top:0;left:50%;width:100vw;max-width:100%;transform:translateX(-50%);z-index:3;transform-origin:top center;transition:transform 1.6s cubic-bezier(.4,0,.2,1)}
+.env-top img{width:100%;display:block}
+.env.open .env-top{transform:translateX(-50%) rotateX(-178deg)}
 
-  /* ─── Preloader ─── */
-  .preloader {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: var(--ivory);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-  }
-  .preloader.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    display: none;
-  }
-  .preloader-text {
-    font-family: 'Pinyon Script', cursive;
-    font-size: 2.5rem;
-    color: var(--sage-dark);
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-  }
+/* Bottom flap: mirrored triangle from bottom */
+.env-bot{position:absolute;bottom:0;left:0;width:100%;height:50vh;z-index:2;transform-origin:bottom center;transition:transform 1.6s cubic-bezier(.4,0,.2,1) .1s;overflow:hidden}
+.env-bot-inner{position:absolute;bottom:0;left:0;width:100%;height:100%;background:url('assets/flap-bot.jpg') center/cover;clip-path:polygon(0 100%,50% 0%,100% 100%)}
+/* Shadow on fold */
+.env-bot::after{content:'';position:absolute;top:0;left:0;width:100%;height:50px;background:linear-gradient(to bottom,rgba(0,0,0,.06),transparent);pointer-events:none;z-index:1}
+.env.open .env-bot{transform:rotateX(178deg)}
 
-  /* ─── Floating Leaves Background ─── */
-  .floating-leaves {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .leaf {
-    position: absolute;
-    opacity: 0.08;
-    animation: floatLeaf linear infinite;
-  }
-  @keyframes floatLeaf {
-    0% { transform: translateY(-10vh) rotate(0deg); }
-    100% { transform: translateY(110vh) rotate(360deg); }
-  }
+/* Wax seal — centered at the meeting point */
+.env-seal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:clamp(80px,20vw,120px);transition:all .8s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 6px 20px rgba(0,0,0,.3))}
+.env-seal img{width:100%;display:block}
+.env.open .env-seal{transform:translate(-50%,-50%) scale(.1) rotate(30deg);opacity:0;filter:blur(8px) drop-shadow(0 0 0 transparent)}
 
-  /* ─── Sections ─── */
-  section {
-    position: relative;
-    z-index: 1;
-  }
+/* Text overlays */
+.env-title{position:absolute;bottom:clamp(80px,18vh,160px);left:50%;transform:translateX(-50%);z-index:5;font-family:'Pinyon Script',cursive;font-size:clamp(1.4rem,5vw,2.2rem);color:rgba(255,248,235,.8);text-shadow:0 2px 12px rgba(0,0,0,.2);white-space:nowrap;transition:opacity .5s}
+.env.open .env-title{opacity:0}
+.env-hint{position:absolute;bottom:clamp(35px,8vh,65px);left:50%;transform:translateX(-50%);z-index:5;font-family:'Josefin Sans',sans-serif;font-size:.55rem;letter-spacing:.5em;text-transform:uppercase;color:rgba(255,248,235,.35);animation:pulse 2.5s ease-in-out infinite;white-space:nowrap;transition:opacity .3s}
+.env.open .env-hint{opacity:0}
+@keyframes pulse{0%,100%{opacity:.2}50%{opacity:.55}}
 
-  /* ─── Hero ─── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 20%, rgba(181, 196, 168, 0.15) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(232, 196, 184, 0.12) 0%, transparent 60%),
-      radial-gradient(ellipse at 50% 50%, rgba(197, 165, 90, 0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
+/* ═══ CONTROLS ═══ */
+.ctrl{position:fixed;z-index:9500;display:flex;align-items:center;cursor:pointer;transition:all .4s;backdrop-filter:blur(8px)}
+.lang{top:12px;right:12px;gap:5px;background:rgba(255,248,235,.2);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 10px}
+.lang:hover{background:rgba(255,248,235,.35)}
+.lang.inv{background:rgba(250,247,242,.85);border-color:rgba(197,165,90,.12)}
+.lang-text{font-family:'Josefin Sans',sans-serif;font-size:.55rem;letter-spacing:.15em;color:rgba(255,248,235,.75);text-transform:uppercase;transition:color .4s}
+.lang.inv .lang-text{color:var(--txt-s)}
+.mbtn{bottom:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,248,235,.18);border:1px solid rgba(255,255,255,.08);justify-content:center}
+.mbtn:hover{background:rgba(255,248,235,.3);transform:scale(1.06)}
+.mbtn.inv{background:rgba(250,247,242,.85);border-color:rgba(197,165,90,.12)}
+.mbtn svg{width:16px;height:16px;color:rgba(255,248,235,.65);transition:all .4s}
+.mbtn.inv svg{color:var(--sage-dk)}
+.mbtn.muted svg{opacity:.3}
 
-  .ornament-top {
-    width: 200px;
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: fadeDown 1.2s ease forwards 0.5s;
-  }
+/* ═══ INVITATION ═══ */
+.inv{position:relative;z-index:1;opacity:0;transition:opacity .8s ease .4s}.inv.show{opacity:1}
 
-  .hero-subtitle {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
-    font-size: 0.85rem;
-    letter-spacing: 0.45em;
-    text-transform: uppercase;
-    color: var(--sage);
-    margin-bottom: 1rem;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 0.8s;
-  }
+/* Video hero */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero-video{position:absolute;inset:0;z-index:0}
+.hero-video video{width:100%;height:100%;object-fit:cover}
+.hero-video::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,.3) 0%,rgba(250,247,242,.15) 40%,rgba(250,247,242,.4) 70%,rgba(250,247,242,.85) 100%)}
+.hero-content{position:relative;z-index:2;padding:2rem}
+.hero-sub{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.72rem;letter-spacing:.45em;text-transform:uppercase;color:var(--sage-dk);margin-bottom:.8rem;opacity:0;animation:fu 1s ease forwards .3s}
+.hero-names{font-family:'Pinyon Script',cursive;font-size:clamp(3rem,10vw,6.5rem);color:var(--txt);line-height:1.15;opacity:0;animation:fu 1.2s ease forwards .5s;text-shadow:0 2px 20px rgba(250,247,242,.5)}
+.hero-names .amp{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:.35em;color:var(--gold);margin:-.15em 0}
+.hero-date{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.95rem;letter-spacing:.5em;color:var(--terra);margin-top:.8rem;opacity:0;animation:fu 1s ease forwards .8s}
+.countdown{display:flex;gap:clamp(.6rem,3vw,1.8rem);justify-content:center;margin:1.2rem 0;opacity:0;animation:fu 1s ease forwards 1s}
+.cd-num{font-family:'Pinyon Script',cursive;font-size:clamp(1.5rem,4.5vw,2.3rem);color:var(--txt);line-height:1}
+.cd-label{font-family:'Josefin Sans',sans-serif;font-size:.45rem;letter-spacing:.3em;text-transform:uppercase;color:var(--txt-l);margin-top:2px;text-align:center}
+.scroll-hint{position:absolute;bottom:1.2rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.3rem;opacity:0;animation:fu 1s ease forwards 1.3s}
+.scroll-hint span{font-family:'Josefin Sans',sans-serif;font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--txt-l)}
+.scroll-arrow{width:1px;height:25px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sb 2s ease-in-out infinite}
+@keyframes sb{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(6px);opacity:.3}}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-  .hero-names {
-    font-family: 'Pinyon Script', cursive;
-    font-size: clamp(3.5rem, 10vw, 7.5rem);
-    color: var(--text-dark);
-    line-height: 1.15;
-    opacity: 0;
-    animation: fadeUp 1.2s ease forwards 1s;
-  }
-  .hero-names .amp {
-    display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: 0.35em;
-    color: var(--gold);
-    margin: -0.2em 0;
-  }
+/* Sections */
+.divdr{display:flex;align-items:center;justify-content:center;gap:.8rem;padding:.5rem 2rem}
+.divdr-line{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--gold-lt),transparent)}
+.sec{max-width:560px;margin:0 auto;padding:1.8rem 1.3rem;text-align:center}
+.sec-lbl{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.55rem;letter-spacing:.5em;text-transform:uppercase;color:var(--sage);margin-bottom:.5rem}
+.sec-ttl{font-family:'Pinyon Script',cursive;font-size:clamp(1.7rem,4vw,2.4rem);color:var(--txt);margin-bottom:.7rem}
+.sec-txt{font-size:1rem;line-height:1.75;color:var(--txt-s)}
+.tl{display:flex;flex-direction:column;gap:1.5rem;margin:1rem auto;max-width:390px}
+.tl-i{display:flex;align-items:flex-start;gap:.8rem;opacity:0;transform:translateY(10px);transition:all .7s}
+.tl-i.visible{opacity:1;transform:none}
+.tl-t{flex-shrink:0;width:42px;text-align:right;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.7rem;color:var(--terra);padding-top:.2rem}
+.tl-dl{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.tl-d{width:8px;height:8px;border-radius:50%;border:2px solid var(--gold);background:var(--ivory);margin-top:.2rem}
+.tl-l{width:1px;flex:1;min-height:16px;background:linear-gradient(to bottom,var(--gold-lt),transparent)}
+.tl-c h3{font-size:1rem;font-weight:500;color:var(--txt);text-align:left}
+.tl-c p{font-size:.82rem;color:var(--txt-l);line-height:1.4;text-align:left}
 
-  .hero-date {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
-    font-size: 1.1rem;
-    letter-spacing: 0.5em;
-    color: var(--terracotta);
-    margin-top: 1.5rem;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 1.3s;
-  }
-
-  .ornament-bottom {
-    width: 120px;
-    margin-top: 2rem;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 1.5s;
-  }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 2s;
-  }
-  .scroll-hint span {
-    font-family: 'Josefin Sans', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-light);
-  }
-  .scroll-arrow {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: scrollBounce 2s ease-in-out infinite;
-  }
-  @keyframes scrollBounce {
-    0%, 100% { transform: translateY(0); opacity: 1; }
-    50% { transform: translateY(10px); opacity: 0.4; }
-  }
-
-  /* ─── Divider ─── */
-  .section-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 1rem 2rem;
-  }
-  .divider-line {
-    width: 80px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold-light), transparent);
-  }
-  .divider-icon {
-    color: var(--sage);
-    font-size: 1.2rem;
-  }
-
-  /* ─── Card Sections ─── */
-  .card-section {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
-    text-align: center;
-  }
-
-  .section-label {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
-    font-size: 0.7rem;
-    letter-spacing: 0.5em;
-    text-transform: uppercase;
-    color: var(--sage);
-    margin-bottom: 0.8rem;
-  }
-
-  .section-title {
-    font-family: 'Pinyon Script', cursive;
-    font-size: clamp(2.2rem, 5vw, 3.2rem);
-    color: var(--text-dark);
-    margin-bottom: 1.5rem;
-  }
-
-  .section-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem;
-    font-weight: 400;
-    line-height: 1.9;
-    color: var(--text-soft);
-  }
-
-  /* ─── Venue Image ─── */
-  .venue-image-wrapper {
-    position: relative;
-    max-width: 600px;
-    margin: 2.5rem auto;
-    padding: 12px;
-    background: linear-gradient(135deg, var(--gold-light), var(--blush), var(--sage-light));
-    border-radius: 8px;
-  }
-  .venue-image-wrapper::before {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    border: 1px solid rgba(255,255,255,0.6);
-    border-radius: 6px;
-    pointer-events: none;
-  }
-  .venue-image {
-    width: 100%;
-    border-radius: 4px;
-    display: block;
-  }
-  .venue-caption {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-light);
-    margin-top: 1.2rem;
-    text-align: center;
-  }
-
-  /* ─── Timeline ─── */
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-    margin: 2rem auto;
-    max-width: 500px;
-  }
-  .timeline-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s ease;
-  }
-  .timeline-item.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .timeline-time {
-    flex-shrink: 0;
-    width: 70px;
-    text-align: right;
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    color: var(--terracotta);
-    padding-top: 0.3rem;
-  }
-  .timeline-dot-line {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  .timeline-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid var(--gold);
-    background: var(--ivory);
-    flex-shrink: 0;
-    margin-top: 0.35rem;
-  }
-  .timeline-line {
-    width: 1px;
-    flex: 1;
-    min-height: 30px;
-    background: linear-gradient(to bottom, var(--gold-light), transparent);
-  }
-  .timeline-content h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: var(--text-dark);
-    margin-bottom: 0.3rem;
-    text-align: left;
-  }
-  .timeline-content p {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--text-light);
-    line-height: 1.6;
-    text-align: left;
-  }
-  .timeline-content .location-icon {
-    display: inline;
-    font-size: 0.85rem;
-    margin-right: 0.2rem;
-  }
-
-  /* ─── IBAN Box ─── */
-  .iban-box {
-    margin: 2rem auto;
-    max-width: 480px;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(181, 196, 168, 0.08), rgba(232, 196, 184, 0.08));
-    border: 1px solid rgba(197, 165, 90, 0.2);
-    border-radius: 8px;
-    text-align: center;
-  }
-  .iban-box .iban-label {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
-    font-size: 0.65rem;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--sage);
-    margin-bottom: 0.8rem;
-  }
-  .iban-code {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 400;
-    font-size: 1rem;
-    letter-spacing: 0.15em;
-    color: var(--text-dark);
-    word-break: break-all;
-    margin-bottom: 0.8rem;
-  }
-  .iban-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 1rem;
-    color: var(--text-soft);
-  }
-  .copy-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 1rem;
-    padding: 0.5rem 1.2rem;
-    border: 1px solid var(--gold-light);
-    background: transparent;
-    color: var(--gold);
-    font-family: 'Josefin Sans', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-  .copy-btn:hover {
-    background: var(--gold);
-    color: var(--ivory);
-  }
-
-  /* ─── Olive Branch SVG ─── */
-  .olive-branch {
-    display: block;
-    margin: 0 auto;
-    width: 160px;
-    opacity: 0.2;
-  }
-
-  /* ─── Footer ─── */
-  .footer {
-    text-align: center;
-    padding: 3rem 2rem 4rem;
-  }
-  .footer-names {
-    font-family: 'Pinyon Script', cursive;
-    font-size: 2.5rem;
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-  }
-  .footer-tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: 1.1rem;
-    color: var(--text-light);
-  }
-
-  /* ─── Animations ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(25px);
-    transition: opacity 0.9s ease, transform 0.9s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ─── Responsive ─── */
-  @media (max-width: 600px) {
-    .card-section { padding: 2rem 1.5rem; }
-    .timeline-item { gap: 1rem; }
-    .timeline-time { width: 55px; font-size: 0.78rem; }
-    .venue-image-wrapper { margin: 2rem 1rem; }
-  }
+.rsvp-form{max-width:320px;margin:.8rem auto;text-align:left}
+.fr{margin-bottom:.6rem}
+.fr label{display:block;font-family:'Josefin Sans',sans-serif;font-size:.48rem;letter-spacing:.3em;text-transform:uppercase;color:var(--sage);margin-bottom:3px}
+.fr input,.fr select,.fr textarea{width:100%;padding:8px 10px;border:1px solid rgba(197,165,90,.15);border-radius:5px;background:rgba(255,255,255,.35);font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--txt);outline:none;transition:border-color .3s}
+.fr input:focus,.fr select:focus,.fr textarea:focus{border-color:var(--gold)}
+.fr textarea{resize:vertical;min-height:40px}.fr select{appearance:none;cursor:pointer}
+.rb{display:flex;gap:.5rem;margin-top:.8rem}
+.rbtn{flex:1;padding:9px;border:1.5px solid var(--gold);border-radius:5px;font-family:'Josefin Sans',sans-serif;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-align:center}
+.ry{background:var(--sage);color:#fff;border-color:var(--sage)}.ry:hover{background:var(--sage-dk)}
+.rn{background:transparent;color:var(--txt-s);border-color:rgba(197,165,90,.2)}.rn:hover{border-color:var(--terra);color:var(--terra)}
+.rok{text-align:center;padding:1rem;display:none}.rok.show{display:block}
+.rok h3{font-family:'Pinyon Script',cursive;font-size:1.4rem;color:var(--sage)}
+.rok p{color:var(--txt-s);font-size:.85rem}
+.ib{margin:.8rem auto;max-width:340px;padding:1rem;border:1px solid rgba(197,165,90,.12);border-radius:7px;text-align:center;background:rgba(255,255,255,.2)}
+.ib-l{font-family:'Josefin Sans',sans-serif;font-size:.5rem;letter-spacing:.4em;text-transform:uppercase;color:var(--sage);margin-bottom:.3rem}
+.ib-c{font-family:'Josefin Sans',sans-serif;font-size:.8rem;letter-spacing:.1em;color:var(--txt);margin-bottom:.2rem}
+.ib-n{font-style:italic;font-size:.82rem;color:var(--txt-s)}
+.cpb{display:inline-block;margin-top:.3rem;padding:.25rem .6rem;border:1px solid var(--gold-lt);background:transparent;color:var(--gold);font-family:'Josefin Sans',sans-serif;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .3s}
+.cpb:hover{background:var(--gold);color:var(--ivory)}
+.opp{font-style:italic;font-size:.85rem;color:var(--txt-l);margin:.4rem 0;text-align:center}
+.ftr{text-align:center;padding:1.5rem 2rem 2.5rem}
+.ftr-n{font-family:'Pinyon Script',cursive;font-size:1.7rem;color:var(--txt)}
+.ftr-t{font-style:italic;font-weight:300;font-size:.85rem;color:var(--txt-l)}
+.leaves{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.leaf{position:absolute;opacity:.04;animation:fl linear infinite}
+@keyframes fl{0%{transform:translateY(-10vh) rotate(0)}100%{transform:translateY(110vh) rotate(360deg)}}
+.rv{opacity:0;transform:translateY(12px);transition:opacity .7s,transform .7s}.rv.visible{opacity:1;transform:none}
+@media(max-width:600px){.sec{padding:1.3rem 1rem}.tl-i{gap:.5rem}.tl-t{width:36px;font-size:.62rem}.rb{flex-direction:column}}
 </style>
 </head>
 <body>
 
-<!-- Preloader -->
-<div class="preloader" id="preloader">
-  <div class="preloader-text">M & C</div>
+<!-- ═══ FULL-SCREEN ENVELOPE ═══ -->
+<div class="env" id="env" onclick="openEnv()">
+  <div class="env-bg"></div>
+  <div class="env-top"><img src="assets/flap-top.png" alt=""></div>
+  <div class="env-bot"><div class="env-bot-inner"></div></div>
+  <div class="env-seal"><img src="assets/seal.png" alt="MC"></div>
+  <div class="env-title" data-it="Siete invitati" data-en="You are invited">Siete invitati</div>
+  <div class="env-hint" data-it="Tocca il sigillo" data-en="Tap the seal">Tocca il sigillo</div>
 </div>
 
-<!-- Floating Olive Leaves -->
-<div class="floating-leaves" id="leaves"></div>
+<!-- Controls -->
+<div class="ctrl lang" id="lt" onclick="event.stopPropagation();tl()"><span style="font-size:.72rem">🌐</span><span class="lang-text" id="ll">EN</span></div>
+<div class="ctrl mbtn muted" id="mb" onclick="event.stopPropagation();tm()"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M8 7v10M16 5v14M4 10v4M20 9v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+<div class="leaves" id="lv"></div>
 
-<!-- ═══════ HERO ═══════ -->
-<section class="hero">
-  <svg class="ornament-top" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M100 38 C85 28, 60 18, 10 20" stroke="#B5C4A8" stroke-width="1" fill="none"/>
-    <path d="M100 38 C115 28, 140 18, 190 20" stroke="#B5C4A8" stroke-width="1" fill="none"/>
-    <ellipse cx="100" cy="38" rx="4" ry="4" fill="#C5A55A" opacity="0.5"/>
-    <!-- leaves left -->
-    <ellipse cx="50" cy="22" rx="12" ry="5" transform="rotate(-20 50 22)" fill="#8A9A7B" opacity="0.2"/>
-    <ellipse cx="70" cy="26" rx="10" ry="4" transform="rotate(-10 70 26)" fill="#8A9A7B" opacity="0.15"/>
-    <ellipse cx="35" cy="20" rx="8" ry="3.5" transform="rotate(-30 35 20)" fill="#8A9A7B" opacity="0.18"/>
-    <!-- leaves right -->
-    <ellipse cx="150" cy="22" rx="12" ry="5" transform="rotate(20 150 22)" fill="#8A9A7B" opacity="0.2"/>
-    <ellipse cx="130" cy="26" rx="10" ry="4" transform="rotate(10 130 26)" fill="#8A9A7B" opacity="0.15"/>
-    <ellipse cx="165" cy="20" rx="8" ry="3.5" transform="rotate(30 165 20)" fill="#8A9A7B" opacity="0.18"/>
-    <!-- small olives -->
-    <circle cx="30" cy="19" r="2.5" fill="#7C8C5D" opacity="0.25"/>
-    <circle cx="170" cy="19" r="2.5" fill="#7C8C5D" opacity="0.25"/>
-  </svg>
-
-  <p class="hero-subtitle">Insieme per sempre</p>
-
-  <h1 class="hero-names">
-    Mine
-    <span class="amp">&amp;</span>
-    Carmine
-  </h1>
-
-  <p class="hero-date">05 · 09 · 2026</p>
-
-  <svg class="ornament-bottom" viewBox="0 0 120 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 10 H50" stroke="#C5A55A" stroke-width="0.5" opacity="0.5"/>
-    <path d="M70 10 H110" stroke="#C5A55A" stroke-width="0.5" opacity="0.5"/>
-    <circle cx="60" cy="10" r="3" fill="none" stroke="#C5A55A" stroke-width="0.7" opacity="0.5"/>
-    <circle cx="60" cy="10" r="1" fill="#C5A55A" opacity="0.4"/>
-  </svg>
-
-  <div class="scroll-hint">
-    <span>Scorri</span>
-    <div class="scroll-arrow"></div>
-  </div>
-</section>
-
-<!-- ═══════ INTRO ═══════ -->
-<div class="section-divider reveal">
-  <div class="divider-line"></div>
-  <svg class="divider-icon" width="20" height="20" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="6" ry="3" transform="rotate(-30 10 10)" fill="#8A9A7B" opacity="0.35"/><ellipse cx="10" cy="10" rx="6" ry="3" transform="rotate(30 10 10)" fill="#8A9A7B" opacity="0.35"/></svg>
-  <div class="divider-line"></div>
-</div>
-
-<section class="card-section reveal">
-  <p class="section-label">Con gioia vi annunciamo</p>
-  <h2 class="section-title">Il Nostro Matrimonio</h2>
-  <p class="section-text">
-    Con immensa gioia, vi invitiamo a condividere<br>
-    il giorno più bello della nostra vita.<br><br>
-    Saremo felici di avervi al nostro fianco<br>
-    mentre celebriamo il nostro amore.
-  </p>
-</section>
-
-<!-- ═══════ PROGRAMMA ═══════ -->
-<div class="section-divider reveal">
-  <div class="divider-line"></div>
-  <svg class="divider-icon" width="20" height="20" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="6" ry="3" transform="rotate(-30 10 10)" fill="#8A9A7B" opacity="0.35"/><ellipse cx="10" cy="10" rx="6" ry="3" transform="rotate(30 10 10)" fill="#8A9A7B" opacity="0.35"/></svg>
-  <div class="divider-line"></div>
-</div>
-
-<section class="card-section reveal">
-  <p class="section-label">Programma della giornata</p>
-  <h2 class="section-title">Cerimonia &amp; Ricevimento</h2>
-
-  <div class="timeline">
-    <div class="timeline-item">
-      <div class="timeline-time">16:00</div>
-      <div class="timeline-dot-line">
-        <div class="timeline-dot"></div>
-        <div class="timeline-line"></div>
-      </div>
-      <div class="timeline-content">
-        <h3>Rito Religioso</h3>
-        <p><span class="location-icon">⛪</span> Chiesa di Santa Maria di San Luca<br>Valenzano (BA)</p>
-      </div>
+<!-- ═══ INVITATION ═══ -->
+<div class="inv" id="inv">
+  <section class="hero">
+    <div class="hero-video"><video autoplay muted loop playsinline><source src="assets/venue.mp4" type="video/mp4"></video></div>
+    <div class="hero-content">
+      <p class="hero-sub" data-it="Insieme per sempre" data-en="Together forever">Insieme per sempre</p>
+      <h1 class="hero-names">Mine<span class="amp">&</span>Carmine</h1>
+      <p class="hero-date">05 · 09 · 2026</p>
+      <div class="countdown"><div><div class="cd-num" id="cD">--</div><div class="cd-label" data-it="Giorni" data-en="Days">Giorni</div></div><div><div class="cd-num" id="cH">--</div><div class="cd-label" data-it="Ore" data-en="Hours">Ore</div></div><div><div class="cd-num" id="cM">--</div><div class="cd-label" data-it="Min" data-en="Min">Min</div></div><div><div class="cd-num" id="cS">--</div><div class="cd-label" data-it="Sec" data-en="Sec">Sec</div></div></div>
     </div>
+    <div class="scroll-hint"><span data-it="Scorri" data-en="Scroll">Scorri</span><div class="scroll-arrow"></div></div>
+  </section>
 
-    <div class="timeline-item">
-      <div class="timeline-time">18:00</div>
-      <div class="timeline-dot-line">
-        <div class="timeline-dot"></div>
-        <div class="timeline-line"></div>
-      </div>
-      <div class="timeline-content">
-        <h3>Ricevimento</h3>
-        <p><span class="location-icon">🫒</span> Corte di Torrelonga<br>Bari</p>
-      </div>
+  <div class="divdr rv"><div class="divdr-line"></div><svg width="14" height="14" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(-30 10 10)" fill="var(--sage)" opacity=".2"/><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(30 10 10)" fill="var(--sage)" opacity=".2"/></svg><div class="divdr-line"></div></div>
+  <section class="sec rv"><p class="sec-lbl" data-it="Con gioia vi annunciamo" data-en="We joyfully announce">Con gioia vi annunciamo</p><h2 class="sec-ttl" data-it="Il Nostro Matrimonio" data-en="Our Wedding">Il Nostro Matrimonio</h2><p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love.">Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p></section>
+
+  <div class="divdr rv"><div class="divdr-line"></div><svg width="14" height="14" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(-30 10 10)" fill="var(--sage)" opacity=".2"/><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(30 10 10)" fill="var(--sage)" opacity=".2"/></svg><div class="divdr-line"></div></div>
+  <section class="sec rv"><p class="sec-lbl" data-it="Programma della giornata" data-en="Schedule">Programma della giornata</p><h2 class="sec-ttl" data-it="Cerimonia &amp; Ricevimento" data-en="Ceremony &amp; Reception">Cerimonia &amp; Ricevimento</h2>
+    <div class="tl">
+      <div class="tl-i"><div class="tl-t">16:00</div><div class="tl-dl"><div class="tl-d"></div><div class="tl-l"></div></div><div class="tl-c"><h3 data-it="Rito Religioso" data-en="Ceremony">Rito Religioso</h3><p>⛪ Chiesa di Santa Maria di San Luca<br>Valenzano (BA)</p></div></div>
+      <div class="tl-i"><div class="tl-t">18:00</div><div class="tl-dl"><div class="tl-d"></div><div class="tl-l"></div></div><div class="tl-c"><h3 data-it="Ricevimento" data-en="Reception">Ricevimento</h3><p>🫒 Corte di Torrelonga, Bari</p></div></div>
+      <div class="tl-i"><div class="tl-t">∞</div><div class="tl-dl"><div class="tl-d"></div></div><div class="tl-c"><h3 data-it="Festa &amp; Brindisi" data-en="Party &amp; Toast">Festa &amp; Brindisi</h3><p data-it="Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!" data-en="Among the olive trees,<br>celebrate until late!">Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!</p></div></div>
     </div>
+  </section>
 
-    <div class="timeline-item">
-      <div class="timeline-time">∞</div>
-      <div class="timeline-dot-line">
-        <div class="timeline-dot"></div>
-      </div>
-      <div class="timeline-content">
-        <h3>Festa &amp; Brindisi</h3>
-        <p>Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <div class="divdr rv"><div class="divdr-line"></div><svg width="14" height="14" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(-30 10 10)" fill="var(--sage)" opacity=".2"/><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(30 10 10)" fill="var(--sage)" opacity=".2"/></svg><div class="divdr-line"></div></div>
+  <section class="sec rv"><p class="sec-lbl" data-it="Conferma la tua presenza" data-en="Confirm attendance">Conferma la tua presenza</p><h2 class="sec-ttl">RSVP</h2><div class="rsvp-form" id="rf"><div class="fr"><label data-it="Nome" data-en="First Name">Nome</label><input id="rN"></div><div class="fr"><label data-it="Cognome" data-en="Last Name">Cognome</label><input id="rC"></div><div class="fr"><label data-it="Numero ospiti" data-en="Guests">Numero ospiti</label><select id="rG"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div><div class="fr"><label data-it="Allergie alimentari" data-en="Dietary needs">Allergie alimentari</label><textarea id="rD" rows="2"></textarea></div><div class="rb"><button class="rbtn ry" onclick="rs('y')" data-it="Accetto con gioia" data-en="Joyfully accept">Accetto con gioia</button><button class="rbtn rn" onclick="rs('n')" data-it="Non posso" data-en="Can't attend">Non posso</button></div></div><div class="rok" id="rO"><h3 data-it="Grazie!" data-en="Thank you!">Grazie!</h3><p id="rP"></p></div></section>
 
-<!-- ═══════ VENUE SKETCH ═══════ -->
-<section class="card-section reveal">
-  <svg class="venue-sketch" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="max-width:650px;margin:1.5rem auto;display:block;">
-    <defs>
-      <!-- Hand-drawn wobble -->
-      <filter id="sk" x="-3%" y="-3%" width="106%" height="106%">
-        <feTurbulence type="turbulence" baseFrequency="0.025" numOctaves="4" result="n" seed="3"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <filter id="skSoft" x="-2%" y="-2%" width="104%" height="104%">
-        <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="3" result="n" seed="7"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="1" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <!-- Watercolor wash -->
-      <filter id="wash" x="-5%" y="-5%" width="110%" height="110%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="5" result="n" seed="12"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
-        <feGaussianBlur stdDeviation="1.5"/>
-      </filter>
-      <!-- Soft glow -->
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <!-- Pencil texture -->
-      <filter id="pencil" x="-1%" y="-1%" width="102%" height="102%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="5" result="n"/>
-        <feComposite in="SourceGraphic" in2="n" operator="in"/>
-      </filter>
-    </defs>
-
-    <!-- ════ SKY WASH ════ -->
-    <ellipse cx="450" cy="80" rx="400" ry="100" fill="#D6E4EE" opacity="0.12" filter="url(#wash)"/>
-    <ellipse cx="300" cy="60" rx="180" ry="50" fill="#E8D8C8" opacity="0.06" filter="url(#wash)"/>
-    <ellipse cx="600" cy="50" rx="150" ry="40" fill="#D6E4EE" opacity="0.08" filter="url(#wash)"/>
-
-    <!-- ════ GROUND WASHES ════ -->
-    <ellipse cx="450" cy="460" rx="420" ry="60" fill="#C8D9B8" opacity="0.12" filter="url(#wash)"/>
-    <ellipse cx="300" cy="440" rx="200" ry="40" fill="#D4DEC8" opacity="0.1" filter="url(#wash)"/>
-    <ellipse cx="600" cy="450" rx="220" ry="45" fill="#C8D4B8" opacity="0.08" filter="url(#wash)"/>
-    <!-- Ground line -->
-    <path d="M20 445 Q150 435, 300 440 Q450 445, 600 438 Q750 432, 880 440" stroke="#8A9A7B" stroke-width="0.8" fill="none" opacity="0.35" filter="url(#sk)"/>
-    <path d="M40 448 Q200 442, 400 446 Q600 450, 860 443" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.2" filter="url(#sk)"/>
-
-    <!-- ════ STONE PATHWAY - perspective to round courtyard ════ -->
-    <path d="M438 500 L462 500 L456 360 L444 360 Z" fill="#D4C8B0" opacity="0.1" filter="url(#sk)"/>
-    <path d="M438 500 Q440 460, 442 420 Q443 390, 444 360" stroke="#A09580" stroke-width="0.8" fill="none" opacity="0.28" filter="url(#sk)"/>
-    <path d="M462 500 Q460 460, 458 420 Q457 390, 456 360" stroke="#A09580" stroke-width="0.8" fill="none" opacity="0.28" filter="url(#sk)"/>
-    <!-- cobblestone arcs -->
-    <path d="M439 490 Q450 485, 461 490" stroke="#A09580" stroke-width="0.4" fill="none" opacity="0.18"/>
-    <path d="M440 472 Q450 467, 460 472" stroke="#A09580" stroke-width="0.4" fill="none" opacity="0.17"/>
-    <path d="M441 455 Q450 450, 459 455" stroke="#A09580" stroke-width="0.4" fill="none" opacity="0.15"/>
-    <path d="M441 438 Q450 434, 459 438" stroke="#A09580" stroke-width="0.35" fill="none" opacity="0.14"/>
-    <path d="M442 422 Q450 418, 458 422" stroke="#A09580" stroke-width="0.35" fill="none" opacity="0.12"/>
-    <path d="M443 406 Q450 403, 457 406" stroke="#A09580" stroke-width="0.3" fill="none" opacity="0.1"/>
-    <path d="M443 392 Q450 389, 457 392" stroke="#A09580" stroke-width="0.3" fill="none" opacity="0.09"/>
-    <path d="M444 378 Q450 375, 456 378" stroke="#A09580" stroke-width="0.3" fill="none" opacity="0.08"/>
-
-    <!-- Circular courtyard / corte rotonda -->
-    <ellipse cx="450" cy="360" rx="55" ry="14" fill="#D4C8B0" opacity="0.08" filter="url(#wash)"/>
-    <ellipse cx="450" cy="360" rx="55" ry="14" fill="none" stroke="#A09580" stroke-width="0.7" opacity="0.2" filter="url(#sk)"/>
-    <ellipse cx="450" cy="360" rx="40" ry="10" fill="none" stroke="#A09580" stroke-width="0.4" opacity="0.12" filter="url(#skSoft)"/>
-
-    <!-- ════ STONE PERIMETER WALL ════ -->
-    <!-- Left wall -->
-    <rect x="160" y="320" width="155" height="32" fill="#EDE4D4" opacity="0.2" filter="url(#sk)"/>
-    <rect x="160" y="320" width="155" height="32" fill="none" stroke="#9A8E76" stroke-width="1" opacity="0.45" filter="url(#sk)"/>
-    <path d="M165 336 H310" stroke="#9A8E76" stroke-width="0.4" opacity="0.2"/>
-    <!-- stone blocks -->
-    <path d="M195 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
-    <path d="M230 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
-    <path d="M265 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
-
-    <!-- Right wall -->
-    <rect x="585" y="320" width="155" height="32" fill="#EDE4D4" opacity="0.2" filter="url(#sk)"/>
-    <rect x="585" y="320" width="155" height="32" fill="none" stroke="#9A8E76" stroke-width="1" opacity="0.45" filter="url(#sk)"/>
-    <path d="M590 336 H735" stroke="#9A8E76" stroke-width="0.4" opacity="0.2"/>
-    <path d="M620 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
-    <path d="M655 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
-    <path d="M690 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
-
-    <!-- Front stone wall with entrance -->
-    <rect x="315" y="310" width="90" height="42" fill="#EDE4D4" opacity="0.18" filter="url(#sk)"/>
-    <rect x="315" y="310" width="90" height="42" fill="none" stroke="#9A8E76" stroke-width="1.1" opacity="0.45" filter="url(#sk)"/>
-    <rect x="495" y="310" width="90" height="42" fill="#EDE4D4" opacity="0.18" filter="url(#sk)"/>
-    <rect x="495" y="310" width="90" height="42" fill="none" stroke="#9A8E76" stroke-width="1.1" opacity="0.45" filter="url(#sk)"/>
-    <!-- stone texture -->
-    <path d="M335 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
-    <path d="M365 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
-    <path d="M515 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
-    <path d="M545 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
-    <path d="M320 330 H400" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
-    <path d="M500 330 H580" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
-
-    <!-- ════ MAIN ENTRANCE ARCH ════ -->
-    <path d="M405 352 V310 Q405 285, 450 285 Q495 285, 495 310 V352" stroke="#9A8E76" stroke-width="1.6" fill="#F5EDE3" opacity="0.5" filter="url(#sk)"/>
-    <!-- Arch double-line detail -->
-    <path d="M410 350 V314 Q410 290, 450 290 Q490 290, 490 314 V350" stroke="#9A8E76" stroke-width="0.6" fill="none" opacity="0.25" filter="url(#skSoft)"/>
-    <!-- Keystone -->
-    <path d="M442 286 L450 278 L458 286" stroke="#9A8E76" stroke-width="0.9" fill="none" opacity="0.4"/>
-    <path d="M445 286 L450 281 L455 286" stroke="#9A8E76" stroke-width="0.5" fill="none" opacity="0.25"/>
-    <!-- Wooden door -->
-    <rect x="418" y="305" width="64" height="47" fill="#A09580" opacity="0.08" rx="2"/>
-    <line x1="450" y1="305" x2="450" y2="352" stroke="#9A8E76" stroke-width="0.6" opacity="0.25"/>
-    <!-- door panels -->
-    <rect x="422" y="310" width="25" height="18" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
-    <rect x="453" y="310" width="25" height="18" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
-    <rect x="422" y="332" width="25" height="16" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
-    <rect x="453" y="332" width="25" height="16" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
-    <!-- Door knocker -->
-    <circle cx="445" cy="330" r="2" fill="none" stroke="#C5A55A" stroke-width="0.5" opacity="0.3"/>
-    <circle cx="455" cy="330" r="2" fill="none" stroke="#C5A55A" stroke-width="0.5" opacity="0.3"/>
-
-    <!-- ════ MAIN BUILDING ════ -->
-    <!-- Building shadow/wash -->
-    <rect x="310" y="170" width="280" height="145" fill="#E8DCC8" opacity="0.2" filter="url(#wash)"/>
-    <!-- Building walls -->
-    <rect x="310" y="170" width="280" height="145" fill="#F2EADC" opacity="0.35" filter="url(#sk)"/>
-    <rect x="310" y="170" width="280" height="145" fill="none" stroke="#8A7E6A" stroke-width="1.5" opacity="0.55" filter="url(#sk)"/>
-
-    <!-- Roofline with cornice -->
-    <path d="M305 170 H595" stroke="#8A7E6A" stroke-width="1.8" opacity="0.55" filter="url(#sk)"/>
-    <path d="M308 167 H592" stroke="#8A7E6A" stroke-width="0.8" opacity="0.3"/>
-    <path d="M310 164 H590" stroke="#8A7E6A" stroke-width="0.4" opacity="0.2"/>
-
-    <!-- ─── 4 Windows evenly distributed with arched pediments ─── -->
-    <!-- Window 1 (building x=310-590, width=280, spacing: 330, 390, 460, 520) -->
-    <rect x="327" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
-    <rect x="327" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
-    <path d="M325 185 Q342 172, 359 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
-    <line x1="342" y1="185" x2="342" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <line x1="327" y1="205" x2="357" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-
-    <!-- Window 2 -->
-    <rect x="393" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
-    <rect x="393" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
-    <path d="M391 185 Q408 172, 425 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
-    <line x1="408" y1="185" x2="408" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <line x1="393" y1="205" x2="423" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-
-    <!-- Window 3 -->
-    <rect x="460" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
-    <rect x="460" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
-    <path d="M458 185 Q475 172, 492 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
-    <line x1="475" y1="185" x2="475" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <line x1="460" y1="205" x2="490" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-
-    <!-- Window 4 -->
-    <rect x="527" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
-    <rect x="527" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
-    <path d="M525 185 Q542 172, 559 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
-    <line x1="542" y1="185" x2="542" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <line x1="527" y1="205" x2="557" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-
-    <!-- ════ BELL TOWER / CAMPANILE (right side) ════ -->
-    <rect x="555" y="120" width="28" height="50" fill="#F2EADC" opacity="0.3" filter="url(#sk)"/>
-    <rect x="555" y="120" width="28" height="50" fill="none" stroke="#8A7E6A" stroke-width="1.1" opacity="0.5" filter="url(#sk)"/>
-    <!-- Dome top -->
-    <path d="M553 120 Q569 105, 585 120" stroke="#8A7E6A" stroke-width="1.1" fill="#F2EADC" opacity="0.4" filter="url(#sk)"/>
-    <!-- Lantern on dome -->
-    <rect x="564" y="105" width="10" height="12" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.35"/>
-    <path d="M563 105 Q569 98, 575 105" stroke="#8A7E6A" stroke-width="0.7" fill="none" opacity="0.35"/>
-    <!-- Small finial on top (no cross) -->
-    <circle cx="569" cy="95" r="2.5" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.3"/>
-    <!-- Bell opening -->
-    <path d="M561 130 Q569 124, 577 130 V142 H561 Z" fill="#8A7E6A" opacity="0.08"/>
-    <path d="M561 130 Q569 124, 577 130" stroke="#8A7E6A" stroke-width="0.7" fill="none" opacity="0.35"/>
-    <line x1="561" y1="130" x2="561" y2="142" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
-    <line x1="577" y1="130" x2="577" y2="142" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
-    <!-- Bell -->
-    <path d="M567 132 Q569 130, 571 132 V137 H567 Z" fill="#C5A55A" opacity="0.15"/>
-
-    <!-- ════ RIGHT STAIRCASE ════ -->
-    <path d="M590 315 L625 280 H660 V315 Z" fill="#EDE4D4" opacity="0.15" filter="url(#sk)"/>
-    <path d="M590 315 L625 280 H660 V315" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#sk)"/>
-    <path d="M597 308 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <path d="M604 301 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <path d="M611 294 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <path d="M618 287 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <!-- Railing -->
-    <path d="M625 280 L625 270" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
-    <path d="M660 280 L660 270" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
-    <path d="M625 272 H660" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
-
-    <!-- ════ BOUGAINVILLEA CASCADE ════ -->
-    <g filter="url(#wash)">
-      <circle cx="595" cy="195" r="6" fill="#D4A090" opacity="0.2"/>
-      <circle cx="605" cy="188" r="7" fill="#C2856E" opacity="0.18"/>
-      <circle cx="598" cy="205" r="5" fill="#E8C4B8" opacity="0.2"/>
-      <circle cx="610" cy="198" r="6" fill="#D4A090" opacity="0.22"/>
-      <circle cx="590" cy="185" r="4" fill="#E8C4B8" opacity="0.15"/>
-      <circle cx="615" cy="192" r="5" fill="#C2856E" opacity="0.16"/>
-      <circle cx="602" cy="212" r="4.5" fill="#D4A090" opacity="0.18"/>
-      <circle cx="608" cy="220" r="3.5" fill="#E8C4B8" opacity="0.15"/>
-      <circle cx="594" cy="215" r="3" fill="#D4A090" opacity="0.13"/>
-      <circle cx="612" cy="208" r="4" fill="#C2856E" opacity="0.15"/>
-      <circle cx="600" cy="178" r="4" fill="#D4A090" opacity="0.12"/>
-      <circle cx="618" cy="202" r="3" fill="#E8C4B8" opacity="0.12"/>
-    </g>
-    <!-- Vine lines -->
-    <path d="M592 180 Q600 195, 596 215" stroke="#6B7D5E" stroke-width="0.4" fill="none" opacity="0.2"/>
-    <path d="M608 185 Q612 200, 605 220" stroke="#6B7D5E" stroke-width="0.4" fill="none" opacity="0.18"/>
-
-    <!-- ════ PINE TREES ════ -->
-
-    <!-- PINE 1 — far left, tall umbrella pine -->
-    <path d="M120 440 Q118 380, 120 320 Q122 260, 118 180" stroke="#6B5D4A" stroke-width="2.2" fill="none" opacity="0.3" filter="url(#sk)"/>
-    <!-- branch strokes -->
-    <path d="M118 220 Q90 200, 70 190" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <path d="M119 210 Q145 195, 168 185" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <path d="M118 195 Q95 175, 80 160" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12" filter="url(#sk)"/>
-    <!-- canopy - layered -->
-    <ellipse cx="118" cy="155" rx="50" ry="35" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
-    <ellipse cx="100" cy="170" rx="42" ry="28" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
-    <ellipse cx="140" cy="148" rx="38" ry="30" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
-    <ellipse cx="115" cy="140" rx="30" ry="22" fill="#7C8C5D" opacity="0.06" filter="url(#wash)"/>
-    <!-- canopy outlines - multiple sketchy strokes -->
-    <path d="M65 170 Q80 135, 100 130 Q120 120, 140 128 Q160 122, 175 155" stroke="#5A6D4E" stroke-width="0.9" fill="none" opacity="0.22" filter="url(#sk)"/>
-    <path d="M70 178 Q88 148, 108 140 Q125 130, 148 138 Q165 132, 172 160" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <path d="M80 160 Q100 140, 118 135 Q135 128, 155 145" stroke="#5A6D4E" stroke-width="0.5" fill="none" opacity="0.12"/>
-
-    <!-- PINE 2 — left of building, tallest -->
-    <path d="M270 440 Q268 370, 270 300 Q272 230, 268 135" stroke="#6B5D4A" stroke-width="2.5" fill="none" opacity="0.32" filter="url(#sk)"/>
-    <path d="M269 200 Q240 180, 215 170" stroke="#6B5D4A" stroke-width="0.9" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <path d="M270 190 Q300 170, 325 162" stroke="#6B5D4A" stroke-width="0.9" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <path d="M269 175 Q242 155, 225 140" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
-    <path d="M270 168 Q295 148, 315 135" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
-    <!-- canopy -->
-    <ellipse cx="268" cy="110" rx="58" ry="40" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
-    <ellipse cx="248" cy="128" rx="50" ry="32" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
-    <ellipse cx="292" cy="102" rx="42" ry="32" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
-    <ellipse cx="265" cy="95" rx="35" ry="25" fill="#7C8C5D" opacity="0.06" filter="url(#wash)"/>
-    <path d="M205 130 Q230 85, 260 80 Q280 72, 310 85 Q335 78, 340 120" stroke="#5A6D4E" stroke-width="1" fill="none" opacity="0.22" filter="url(#sk)"/>
-    <path d="M212 142 Q238 100, 265 95 Q285 85, 318 98 Q338 92, 335 130" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
-
-    <!-- PINE 3 — right of building -->
-    <path d="M640 440 Q638 375, 640 310 Q642 245, 638 155" stroke="#6B5D4A" stroke-width="2.3" fill="none" opacity="0.3" filter="url(#sk)"/>
-    <path d="M639 220 Q610 200, 595 190" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.13" filter="url(#sk)"/>
-    <path d="M640 210 Q668 192, 685 182" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.13" filter="url(#sk)"/>
-    <path d="M639 192 Q615 170, 600 158" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.1" filter="url(#sk)"/>
-    <ellipse cx="638" cy="128" rx="52" ry="38" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
-    <ellipse cx="618" cy="145" rx="45" ry="30" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
-    <ellipse cx="658" cy="118" rx="38" ry="28" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
-    <path d="M582 148 Q608 105, 635 98 Q658 90, 685 102 Q705 96, 700 138" stroke="#5A6D4E" stroke-width="0.9" fill="none" opacity="0.22" filter="url(#sk)"/>
-    <path d="M590 158 Q615 118, 638 112 Q660 102, 690 115 Q702 108, 698 145" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
-
-    <!-- PINE 4 — far right -->
-    <path d="M770 440 Q768 385, 770 335 Q772 280, 768 200" stroke="#6B5D4A" stroke-width="2" fill="none" opacity="0.28" filter="url(#sk)"/>
-    <path d="M769 240 Q745 225, 732 218" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
-    <path d="M770 232 Q792 218, 805 210" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
-    <ellipse cx="768" cy="172" rx="45" ry="35" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
-    <ellipse cx="752" cy="188" rx="38" ry="26" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
-    <ellipse cx="785" cy="165" rx="32" ry="26" fill="#6B7D5E" opacity="0.06" filter="url(#wash)"/>
-    <path d="M720 190 Q742 152, 765 145 Q785 138, 810 150 Q825 145, 822 182" stroke="#5A6D4E" stroke-width="0.8" fill="none" opacity="0.2" filter="url(#sk)"/>
-
-    <!-- ════ OLIVE TREES ════ -->
-
-    <!-- Olive grove left -->
-    <path d="M60 445 Q55 420, 60 400 Q52 388, 56 370 Q50 365, 58 348 Q54 340, 62 325" stroke="#6B5D4A" stroke-width="1.8" fill="none" opacity="0.22" filter="url(#sk)"/>
-    <path d="M58 355 Q45 345, 38 335" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
-    <path d="M60 350 Q72 340, 82 332" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
-    <ellipse cx="60" cy="315" rx="28" ry="18" fill="#8A9A7B" opacity="0.1" filter="url(#wash)"/>
-    <ellipse cx="48" cy="325" rx="22" ry="14" fill="#B5C4A8" opacity="0.08" filter="url(#wash)"/>
-    <ellipse cx="75" cy="320" rx="20" ry="12" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
-    <path d="M30 325 Q45 305, 62 308 Q78 302, 92 318" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <!-- olives -->
-    <circle cx="42" cy="322" r="2.5" fill="#7C8C5D" opacity="0.18"/>
-    <circle cx="78" cy="315" r="2" fill="#7C8C5D" opacity="0.15"/>
-    <circle cx="55" cy="310" r="1.8" fill="#7C8C5D" opacity="0.13"/>
-
-    <!-- Olive grove right -->
-    <path d="M840 445 Q845 422, 840 402 Q848 390, 844 372 Q850 362, 842 345" stroke="#6B5D4A" stroke-width="1.8" fill="none" opacity="0.22" filter="url(#sk)"/>
-    <path d="M843 365 Q830 355, 822 348" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
-    <path d="M842 358 Q855 348, 865 340" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
-    <ellipse cx="842" cy="335" rx="28" ry="18" fill="#8A9A7B" opacity="0.1" filter="url(#wash)"/>
-    <ellipse cx="828" cy="342" rx="20" ry="13" fill="#B5C4A8" opacity="0.08" filter="url(#wash)"/>
-    <ellipse cx="858" cy="338" rx="18" ry="12" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
-    <path d="M812 342 Q830 322, 845 326 Q860 320, 875 335" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <circle cx="825" cy="340" r="2.5" fill="#7C8C5D" opacity="0.18"/>
-    <circle cx="860" cy="332" r="2" fill="#7C8C5D" opacity="0.15"/>
-
-    <!-- Small olive trees in foreground -->
-    <path d="M340 450 Q338 432, 342 418" stroke="#6B5D4A" stroke-width="1.2" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <ellipse cx="342" cy="410" rx="16" ry="10" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
-    <path d="M326 414 Q335 404, 345 406 Q354 400, 360 410" stroke="#5A6D4E" stroke-width="0.5" fill="none" opacity="0.12"/>
-
-    <path d="M560" stroke-width="0" fill="none"/>
-    <path d="M555 450 Q558 435, 554 420" stroke="#6B5D4A" stroke-width="1.2" fill="none" opacity="0.15" filter="url(#sk)"/>
-    <ellipse cx="555" cy="412" rx="16" ry="10" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
-    <path d="M540 416 Q548 406, 558 408 Q566 402, 572 412" stroke="#5A6D4E" stroke-width="0.5" fill="none" opacity="0.12"/>
-
-    <!-- ════ GRASS DETAILS ════ -->
-    <path d="M80 442 Q83 434, 86 442" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.18"/>
-    <path d="M82 443 Q84 436, 88 443" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
-    <path d="M180 438 Q183 430, 186 438" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.18"/>
-    <path d="M380 448 Q383 441, 386 448" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.15"/>
-    <path d="M480 446 Q483 439, 486 446" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.15"/>
-    <path d="M700 440 Q703 433, 706 440" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.18"/>
-    <path d="M750 444 Q753 437, 756 444" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.15"/>
-    <path d="M150 444 Q152 438, 155 444" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
-    <path d="M500 448 Q502 442, 505 448" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
-    <path d="M620 442 Q622 436, 625 442" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
-
-    <!-- Distant olive grove suggestion - far background -->
-    <ellipse cx="100" cy="435" rx="10" ry="6" fill="#8A9A7B" opacity="0.04"/>
-    <ellipse cx="800" cy="432" rx="10" ry="6" fill="#8A9A7B" opacity="0.04"/>
-    <path d="M40 435 Q50 430, 60 435" stroke="#8A9A7B" stroke-width="0.3" fill="none" opacity="0.08"/>
-    <path d="M850 433 Q860 428, 870 433" stroke="#8A9A7B" stroke-width="0.3" fill="none" opacity="0.08"/>
-
-    <!-- Shadow under building -->
-    <ellipse cx="450" cy="355" rx="160" ry="6" fill="#8A7E6A" opacity="0.04" filter="url(#wash)"/>
-  </svg>
-  <!-- no caption -->
-</section>
-
-<!-- ═══════ LISTA NOZZE / IBAN ═══════ -->
-<div class="section-divider reveal">
-  <div class="divider-line"></div>
-  <svg class="divider-icon" width="20" height="20" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="6" ry="3" transform="rotate(-30 10 10)" fill="#8A9A7B" opacity="0.35"/><ellipse cx="10" cy="10" rx="6" ry="3" transform="rotate(30 10 10)" fill="#8A9A7B" opacity="0.35"/></svg>
-  <div class="divider-line"></div>
+  <div class="divdr rv"><div class="divdr-line"></div><svg width="14" height="14" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(-30 10 10)" fill="var(--sage)" opacity=".2"/><ellipse cx="10" cy="10" rx="5" ry="2.5" transform="rotate(30 10 10)" fill="var(--sage)" opacity=".2"/></svg><div class="divdr-line"></div></div>
+  <section class="sec rv"><p class="sec-lbl" data-it="La vostra presenza è il regalo più grande" data-en="Your presence is the greatest gift">La vostra presenza è il regalo più grande</p><h2 class="sec-ttl" data-it="Lista Nozze" data-en="Gift Registry">Lista Nozze</h2><p class="sec-txt" data-it="Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze." data-en="If you wish,<br>contribute to our honeymoon.">Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze.</p>
+    <div class="ib"><p class="ib-l">IBAN</p><p class="ib-c" id="i1">IT22 T010 0504 1990 0000 0004 295</p><p class="ib-n">Intestato a: Carmine Caponio</p><button class="cpb" onclick="cp('i1',this)"><span data-it="Copia" data-en="Copy">Copia</span></button></div>
+    <p class="opp" data-it="oppure" data-en="or">oppure</p>
+    <div class="ib"><p class="ib-l">IBAN</p><p class="ib-c" id="i2">IT51 Z020 0804 0310 0042 0568 334</p><p class="ib-n">Intestato a: Mine Dastan</p><button class="cpb" onclick="cp('i2',this)"><span data-it="Copia" data-en="Copy">Copia</span></button></div>
+  </section>
+  <footer class="ftr rv"><p class="ftr-n">M & C</p><p class="ftr-t">«Due anime, un solo cammino»</p></footer>
 </div>
 
-<section class="card-section reveal">
-  <p class="section-label">La vostra presenza è il regalo più grande</p>
-  <h2 class="section-title">Lista Nozze</h2>
-  <p class="section-text">
-    Se desiderate farci un pensiero,<br>
-    potete contribuire al nostro viaggio di nozze.
-  </p>
-
-  <div class="iban-box">
-    <p class="iban-label">Coordinate Bancarie</p>
-    <p class="iban-code" id="ibanCode1">IT22 T010 0504 1990 0000 0004 295</p>
-    <p class="iban-name">Intestato a: Carmine Caponio</p>
-    <button class="copy-btn" onclick="copyIban('ibanCode1', this)">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-      Copia IBAN
-    </button>
-  </div>
-
-  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--text-light);margin:1.2rem 0 0.2rem;text-align:center;">oppure</p>
-
-  <div class="iban-box">
-    <p class="iban-label">Coordinate Bancarie</p>
-    <p class="iban-code" id="ibanCode2">IT51 Z020 0804 0310 0042 0568 334</p>
-    <p class="iban-name">Intestato a: Mine Dastan</p>
-    <button class="copy-btn" onclick="copyIban('ibanCode2', this)">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-      Copia IBAN
-    </button>
-  </div>
-</section>
-
-<!-- ═══════ FOOTER ═══════ -->
-<section class="card-section">
-  <svg class="olive-branch" viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 40 Q40 15, 80 25 Q120 35, 150 10" stroke="#8A9A7B" stroke-width="1" fill="none"/>
-    <ellipse cx="35" cy="24" rx="10" ry="4.5" transform="rotate(-35 35 24)" fill="#8A9A7B" opacity="0.2"/>
-    <ellipse cx="55" cy="22" rx="10" ry="4.5" transform="rotate(-15 55 22)" fill="#8A9A7B" opacity="0.18"/>
-    <ellipse cx="80" cy="25" rx="10" ry="4.5" transform="rotate(5 80 25)" fill="#8A9A7B" opacity="0.2"/>
-    <ellipse cx="105" cy="22" rx="10" ry="4.5" transform="rotate(20 105 22)" fill="#8A9A7B" opacity="0.18"/>
-    <ellipse cx="128" cy="16" rx="10" ry="4.5" transform="rotate(30 128 16)" fill="#8A9A7B" opacity="0.2"/>
-    <circle cx="30" cy="28" r="2.5" fill="#7C8C5D" opacity="0.2"/>
-    <circle cx="110" cy="20" r="2.5" fill="#7C8C5D" opacity="0.2"/>
-    <circle cx="140" cy="12" r="2" fill="#7C8C5D" opacity="0.2"/>
-  </svg>
-</section>
-
-<footer class="footer reveal">
-  <p class="footer-names">M & C</p>
-  <p class="footer-tagline">«Due anime, un solo cammino»</p>
-</footer>
+<!-- Audio -->
+<audio id="aud" loop preload="auto"><source src="assets/music.mp3" type="audio/mpeg"></audio>
 
 <script>
-  // Preloader
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('preloader').classList.add('hidden');
-    }, 1200);
-  });
+let lang='it',eo=false;
 
-  // Floating olive leaves
-  function createLeaves() {
-    const container = document.getElementById('leaves');
-    for (let i = 0; i < 12; i++) {
-      const leaf = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      leaf.setAttribute('viewBox', '0 0 30 14');
-      leaf.setAttribute('width', 18 + Math.random() * 20);
-      leaf.classList.add('leaf');
-      leaf.style.left = Math.random() * 100 + '%';
-      leaf.style.animationDuration = 12 + Math.random() * 18 + 's';
-      leaf.style.animationDelay = Math.random() * 15 + 's';
-      const el = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-      el.setAttribute('cx', '15');
-      el.setAttribute('cy', '7');
-      el.setAttribute('rx', '14');
-      el.setAttribute('ry', '5');
-      el.setAttribute('fill', '#8A9A7B');
-      leaf.appendChild(el);
-      container.appendChild(leaf);
-    }
-  }
-  createLeaves();
+function tl(){lang=lang==='it'?'en':'it';document.getElementById('ll').textContent=lang==='it'?'EN':'IT';document.querySelectorAll('[data-it]').forEach(el=>{const t=el.getAttribute('data-'+lang);if(t)el.innerHTML=t})}
 
-  // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal, .timeline-item');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el => observer.observe(el));
+function openEnv(){
+  if(eo)return;eo=true;
+  const e=document.getElementById('env');
+  e.classList.add('open');
+  setTimeout(()=>{
+    document.getElementById('lt').classList.add('inv');
+    document.getElementById('mb').classList.add('inv');
+    document.getElementById('inv').classList.add('show');
+    scd();
+  },900);
+  setTimeout(()=>e.classList.add('gone'),1800);
+}
 
-  // Copy IBAN
-  function copyIban(id, btn) {
-    const iban = document.getElementById(id).textContent.replace(/\s/g, '');
-    navigator.clipboard.writeText(iban).then(() => {
-      btn.textContent = '✓ Copiato!';
-      setTimeout(() => {
-        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copia IBAN';
-      }, 2000);
-    });
-  }
+function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d=Math.max(0,w-new Date());document.getElementById('cD').textContent=Math.floor(d/864e5);document.getElementById('cH').textContent=Math.floor(d%864e5/36e5);document.getElementById('cM').textContent=Math.floor(d%36e5/6e4);document.getElementById('cS').textContent=Math.floor(d%6e4/1e3);setTimeout(u,1000)})()}
 
-  // Background piano — dreamy romantic melody, fades in gently
-  (function() {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let ctx, masterGain, started = false;
+function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':'Enter name');return}console.log('RSVP:',{n,c,g:document.getElementById('rG').value,d:document.getElementById('rD').value,t});document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":"Sorry! Thanks.")}
 
-    const melody = [
-      // Phrase 1 — ethereal opening
-      ['E4',0,6,0.06],['B4',1.2,5,0.045],['C5',2.8,4.5,0.035],
-      ['E4',7,6,0.06],['A4',8.2,5,0.045],['B4',9.8,4.5,0.035],
-      ['D4',14,6,0.055],['G4',15.2,5,0.045],['A4',16.8,4.5,0.035],
-      ['C4',21,6,0.05],['E4',22.2,5,0.04],['G4',23.8,5.5,0.035],
-      // Phrase 2 — gentle movement
-      ['E4',28,4.5,0.06],['G4',29.8,3.5,0.045],['B4',31.5,4.5,0.04],['A4',34,3.5,0.035],
-      ['D4',36,4.5,0.055],['F4',37.8,3.5,0.045],['A4',39.5,4.5,0.04],['G4',42,3.5,0.035],
-      ['C4',44,4.5,0.055],['E4',45.8,3.5,0.045],['G4',47.5,5.5,0.04],
-      ['B3',50,4.5,0.05],['D4',51.8,3.5,0.04],['G4',53.5,5.5,0.035],
-      // Phrase 3 — hopeful ascending
-      ['C4',56,5.5,0.055],['E4',57.2,4.5,0.045],['G4',59,4,0.04],['C5',61,5.5,0.035],
-      ['A3',63,5.5,0.055],['C4',64.2,4.5,0.045],['E4',66,4,0.04],['A4',68,5.5,0.035],
-      // Phrase 4 — resolution, fading
-      ['G3',71,6.5,0.05],['B3',72.2,5.5,0.04],['D4',74,5.5,0.035],['G4',76,7,0.03],
-      ['C4',79,7,0.05],['E4',80.2,6,0.04],['G4',82,6.5,0.035],
-      ['C5',84,9,0.03],['E4',86,8,0.025],['G4',87,9,0.02],
-    ];
+function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
 
-    const noteFreqs = {
-      'B3':246.94,'C3':130.81,'D3':146.83,'E3':164.81,'F3':174.61,'G3':196.00,'A3':220.00,
-      'C4':261.63,'D4':293.66,'E4':329.63,'F4':349.23,'G4':392.00,'A4':440.00,'B4':493.88,
-      'C5':523.25,'D5':587.33,'E5':659.25
-    };
+// Music — real MP3
+const aud=document.getElementById('aud');let mp=false;
+function tm(){const b=document.getElementById('mb');if(!mp){aud.play();mp=true;b.classList.remove('muted')}else{aud.pause();mp=false;b.classList.add('muted')}}
 
-    function playNote(freq, time, dur, vel) {
-      const osc1 = ctx.createOscillator();
-      const osc2 = ctx.createOscillator();
-      const osc3 = ctx.createOscillator();
-      const noteGain = ctx.createGain();
-      osc1.type = 'sine'; osc2.type = 'sine'; osc3.type = 'triangle';
-      osc1.frequency.value = freq;
-      osc2.frequency.value = freq * 2.001;
-      osc3.frequency.value = freq * 0.999;
-      const m1 = ctx.createGain(), m2 = ctx.createGain(), m3 = ctx.createGain();
-      m1.gain.value = 0.55; m2.gain.value = 0.1; m3.gain.value = 0.35;
-      osc1.connect(m1); m1.connect(noteGain);
-      osc2.connect(m2); m2.connect(noteGain);
-      osc3.connect(m3); m3.connect(noteGain);
-      noteGain.connect(masterGain);
-      noteGain.gain.setValueAtTime(0, time);
-      noteGain.gain.linearRampToValueAtTime(vel, time + 0.1);
-      noteGain.gain.exponentialRampToValueAtTime(vel * 0.45, time + dur * 0.35);
-      noteGain.gain.exponentialRampToValueAtTime(0.001, time + dur);
-      osc1.start(time); osc2.start(time); osc3.start(time);
-      osc1.stop(time+dur+0.1); osc2.stop(time+dur+0.1); osc3.stop(time+dur+0.1);
-    }
+// Leaves
+(function(){const c=document.getElementById('lv');for(let i=0;i<6;i++){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 30 14');s.setAttribute('width',12+Math.random()*12);s.classList.add('leaf');s.style.left=Math.random()*100+'%';s.style.animationDuration=18+Math.random()*25+'s';s.style.animationDelay=Math.random()*20+'s';const e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');e.setAttribute('cx','15');e.setAttribute('cy','7');e.setAttribute('rx','14');e.setAttribute('ry','5');e.setAttribute('fill','#8A9A7B');s.appendChild(e);c.appendChild(s)}})();
 
-    function playMelody() {
-      const beatLen = 0.9;
-      const totalBeats = 96;
-      const loopDur = totalBeats * beatLen;
-      function scheduleLoop(offset) {
-        melody.forEach(([note, beat, dur, vel]) => {
-          if (noteFreqs[note]) playNote(noteFreqs[note], offset + beat*beatLen, dur*beatLen, vel);
-        });
-        setTimeout(() => scheduleLoop(offset + loopDur), (loopDur - 4) * 1000);
-      }
-      scheduleLoop(ctx.currentTime + 2.5);
-    }
-
-    function startMusic() {
-      if (started) return;
-      started = true;
-      ctx = new AudioCtx();
-      masterGain = ctx.createGain();
-      masterGain.connect(ctx.destination);
-      masterGain.gain.setValueAtTime(0, ctx.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0.7, ctx.currentTime + 5);
-      playMelody();
-    }
-
-    let triggered = false;
-    window.addEventListener('scroll', function() {
-      if (!triggered) { triggered = true; startMusic(); }
-    }, { passive: true });
-    window.addEventListener('touchstart', function() {
-      if (!triggered) { triggered = true; startMusic(); }
-    }, { once: true, passive: true });
-  })();
+// Reveal
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.rv,.tl-i').forEach(el=>obs.observe(el));
 </script>
-
 </body>
 </html>
