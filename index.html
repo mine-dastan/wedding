@@ -20,24 +20,13 @@ body{font-family:'Cormorant Garamond',serif;background:var(--ivory);color:var(--
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");opacity:.6}
 
 /* ═══ ENVELOPE ═══ */
-.env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;perspective:1400px}
+.env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--ivory);transition:opacity 2.5s cubic-bezier(.23,1,.32,1)}
 .env.gone{pointer-events:none;z-index:-1;display:none}
-.env-bg{position:absolute;inset:0;background:url('assets/background.png') center/cover;z-index:1;transition:opacity 3s ease 1.5s}
-.env.open .env-bg{opacity:0}
-.env-top{position:absolute;top:0;left:50%;width:100vw;max-width:100%;transform:translateX(-50%);z-index:3;transform-origin:top center;transition:transform 3s cubic-bezier(.23,1,.32,1),opacity 2.5s ease 2s}
-.env-top img{width:100%;display:block;filter:drop-shadow(0 4px 15px rgba(0,0,0,.2))}
-.env.open .env-top{transform:translateX(-50%) rotateX(-15deg);opacity:0}
-.env-bot{position:absolute;bottom:0;left:0;width:100%;height:50vh;z-index:2;transform-origin:bottom center;transition:transform 3s cubic-bezier(.23,1,.32,1) .3s,opacity 2.5s ease 2s;overflow:hidden}
-.env-bot-inner{position:absolute;bottom:0;left:0;width:100%;height:100%;background:url('assets/background.png') center/cover;clip-path:polygon(0 100%,50% 0%,100% 100%)}
-.env-bot::after{content:'';position:absolute;top:-20px;left:0;width:100%;height:80px;background:linear-gradient(to bottom,rgba(0,0,0,.12),rgba(0,0,0,.04),transparent);pointer-events:none;z-index:1}
-.env.open .env-bot{transform:rotateX(8deg);opacity:0}
-.env-seal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:clamp(110px,30vw,170px);transition:all 2.5s cubic-bezier(.23,1,.32,1);filter:drop-shadow(0 6px 20px rgba(0,0,0,.35));animation:sealBreathe 4s ease-in-out infinite}
+.env.open{opacity:0}
+.env-seal{width:clamp(110px,30vw,170px);margin-bottom:1.2rem;filter:drop-shadow(0 6px 25px rgba(92,84,74,.2));animation:sealBreathe 4s ease-in-out infinite}
 .env-seal img{width:100%;display:block}
-.env.open .env-seal{animation:sealOpen 3s cubic-bezier(.23,1,.32,1) forwards}
-@keyframes sealBreathe{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.03)}}
-@keyframes sealOpen{0%{transform:translate(-50%,-50%) scale(1);opacity:1;filter:drop-shadow(0 6px 20px rgba(0,0,0,.35))}30%{transform:translate(-50%,-50%) scale(1.15);opacity:1;filter:drop-shadow(0 8px 30px rgba(0,0,0,.4))}100%{transform:translate(-50%,-50%) scale(1.3);opacity:0;filter:blur(8px) drop-shadow(0 0 0 transparent)}}
-.env-title{position:absolute;top:clamp(22%,28vh,32%);left:50%;transform:translateX(-50%);z-index:5;font-family:'Pinyon Script',cursive;font-size:clamp(1.8rem,6.5vw,2.8rem);color:#FAF7F2;text-shadow:0 1px 8px rgba(0,0,0,.15);white-space:nowrap;transition:opacity 1.2s ease .1s}
-.env.open .env-title{opacity:0;transition:opacity 1.5s ease}
+@keyframes sealBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.env-title{font-family:'Pinyon Script',cursive;font-size:clamp(1.6rem,6vw,2.6rem);color:var(--gold);white-space:nowrap;margin-bottom:2rem;order:-1}
 .env-hint{position:absolute;top:calc(50% + clamp(55px,14vw,80px));left:50%;transform:translateX(-50%);z-index:12;font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.55em;text-transform:uppercase;color:rgba(250,247,242,.8);animation:hintGlow 3s ease-in-out infinite;white-space:nowrap;transition:opacity 1s ease .1s}
 .env.open .env-hint{opacity:0;transition:opacity 1.2s ease}
 @keyframes hintGlow{0%,100%{opacity:.5;letter-spacing:.6em}50%{opacity:.9;letter-spacing:.65em}}
@@ -54,10 +43,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .mbtn.playing svg{animation:musicPulse 1.5s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
 
-.music-hint{position:fixed;bottom:30px;right:62px;z-index:9500;display:flex;flex-direction:column;align-items:flex-end;gap:0;opacity:0;animation:mhShow 1.2s ease forwards 2.5s;transition:opacity .8s ease}
+.music-hint{position:fixed;bottom:30px;right:62px;z-index:9500;display:flex;flex-direction:column;align-items:flex-end;gap:0;opacity:0;animation:mhShow 1.5s ease forwards 1s;transition:opacity .8s ease}
 .music-hint.hidden{opacity:0!important;pointer-events:none}
-.music-hint-text{font-family:'Pinyon Script',cursive;font-size:.85rem;color:var(--gold-lt);white-space:nowrap;text-shadow:0 1px 6px rgba(0,0,0,.12);margin-right:8px}
-.music-hint-arrow{width:35px;height:28px;color:var(--gold-lt);margin-right:-2px}
+.music-hint-text{font-family:'Pinyon Script',cursive;font-size:1rem;color:var(--gold);white-space:nowrap}
+.music-hint-arrow{width:38px;height:30px;color:var(--gold);margin-right:-2px}
 @keyframes mhShow{0%{opacity:0;transform:translateY(-8px)}100%{opacity:1;transform:translateY(0)}}
 
 /* ═══ INVITATION ═══ */
@@ -143,9 +132,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .cpb:hover{background:var(--gold);color:var(--ivory)}
 .opp{font-style:italic;font-size:.82rem;color:var(--txt-l);margin:.5rem 0;text-align:center}
 
-.video-section{position:relative;width:100%;max-width:540px;margin:0 auto;border-radius:12px;overflow:hidden}
-.video-section video{width:100%;height:auto;display:block;max-height:70vh;object-fit:cover}
-.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,.1) 0%,transparent 20%,transparent 80%,rgba(250,247,242,.3) 100%);pointer-events:none}
+.video-section{position:relative;width:100%;overflow:hidden}
+.video-section video{width:100%;height:70vh;display:block;object-fit:cover}
+.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,.95) 0%,rgba(250,247,242,.3) 15%,rgba(250,247,242,.05) 35%,rgba(250,247,242,.05) 65%,rgba(250,247,242,.3) 85%,rgba(250,247,242,.95) 100%);pointer-events:none}
+.video-text{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(2rem,7vw,3.5rem);color:var(--txt);text-shadow:0 2px 15px rgba(250,247,242,.5)}
+.video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.85rem,2.5vw,1.1rem);color:var(--txt-s);margin-top:.5rem;text-shadow:0 1px 8px rgba(250,247,242,.6)}
 
 .ftr{text-align:center;padding:2.5rem 2rem 3.5rem}
 .ftr-n{font-family:'Pinyon Script',cursive;font-size:1.7rem;color:var(--txt)}
@@ -166,18 +158,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <body>
 
 <div class="env" id="env" onclick="openEnv()">
-  <div class="env-bg"></div>
-  <div class="env-top"><img src="assets/flap-top.png" alt=""></div>
-  <div class="env-bot"><div class="env-bot-inner"></div></div>
+  <div class="env-title" data-it="Siete invitati" data-en="You are invited" data-tr="Davetlisiniz">Siete invitati</div>
   <div class="env-seal"><img src="assets/seal.png" alt="MC"></div>
-  <div class="env-title" data-it="Siete invitati" data-en="You are invited">Siete invitati</div>
-  <div class="env-hint" data-it="Tocca il sigillo" data-en="Tap the seal">Tocca il sigillo</div>
+  <div class="env-hint" data-it="Tocca il sigillo" data-en="Tap the seal" data-tr="Mühre dokunun">Tocca il sigillo</div>
 </div>
 
 <div class="ctrl lang" id="lt" onclick="event.stopPropagation();tl()"><span style="font-size:.68rem">🌐</span><span class="lang-text" id="ll">EN</span></div>
 <div class="ctrl mbtn muted" id="mb" onclick="event.stopPropagation();tm()"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M8 7v10M16 5v14M4 10v4M20 9v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
 <div class="music-hint" id="mh">
-  <span class="music-hint-text" data-it="Attiva la musica" data-en="Turn on music">Attiva la musica</span>
+  <span class="music-hint-text" data-it="Attiva la musica" data-en="Turn on music" data-tr="Müziği aç">Attiva la musica</span>
   <svg class="music-hint-arrow" viewBox="0 0 40 30" fill="none"><path d="M8 4 C12 4, 18 8, 22 14 C26 20, 30 22, 34 20" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M31 16 L35 21 L29 22" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
 </div>
 <div class="sparkles" id="sp"></div>
@@ -188,100 +177,106 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <section class="hero">
 
     <div class="hero-content">
-      <p class="hero-sub" data-it="Insieme per sempre" data-en="Together forever">Insieme per sempre</p>
+      <p class="hero-sub" data-it="Insieme per sempre" data-en="Together forever" data-tr="Sonsuza dek birlikte">Insieme per sempre</p>
       <h1 class="hero-names">Mine<span class="amp">&amp;</span>Carmine</h1>
       <p class="hero-date">05 · 09 · 2026</p>
       <div class="countdown">
-        <div class="cd-box"><div class="cd-num" id="cD">--</div><div class="cd-label" data-it="Giorni" data-en="Days">Giorni</div></div>
+        <div class="cd-box"><div class="cd-num" id="cD">--</div><div class="cd-label" data-it="Giorni" data-en="Days" data-tr="Gün">Giorni</div></div>
         <div class="cd-sep">·</div>
-        <div class="cd-box"><div class="cd-num" id="cH">--</div><div class="cd-label" data-it="Ore" data-en="Hours">Ore</div></div>
+        <div class="cd-box"><div class="cd-num" id="cH">--</div><div class="cd-label" data-it="Ore" data-en="Hours" data-tr="Saat">Ore</div></div>
         <div class="cd-sep">·</div>
         <div class="cd-box"><div class="cd-num" id="cM">--</div><div class="cd-label" data-it="Min" data-en="Min">Min</div></div>
         <div class="cd-sep">·</div>
         <div class="cd-box"><div class="cd-num" id="cS">--</div><div class="cd-label" data-it="Sec" data-en="Sec">Sec</div></div>
       </div>
     </div>
-    <div class="scroll-hint"><span data-it="Scorri" data-en="Scroll">Scorri</span><div class="scroll-arrow"></div></div>
+    <div class="scroll-hint"><span data-it="Scorri" data-en="Scroll" data-tr="Kaydır">Scorri</span><div class="scroll-arrow"></div></div>
   </section>
 
   <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--sage)" opacity=".3"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--sage)" stroke-width=".4" opacity=".2"/></svg><div class="divdr-line"></div></div>
   <section class="sec rv">
-    <p class="sec-lbl" data-it="Con gioia vi annunciamo" data-en="We joyfully announce">Con gioia vi annunciamo</p>
-    <h2 class="sec-ttl" data-it="Il Nostro Matrimonio" data-en="Our Wedding">Il Nostro Matrimonio</h2>
-    <p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love.">Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p>
+    <p class="sec-lbl" data-it="Con gioia vi annunciamo" data-en="We joyfully announce" data-tr="Büyük bir mutlulukla">Con gioia vi annunciamo</p>
+    <h2 class="sec-ttl" data-it="Il Nostro Matrimonio" data-en="Our Wedding" data-tr="Düğünümüz">Il Nostro Matrimonio</h2>
+    <p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love." data-tr="Büyük bir mutlulukla, hayatımızın en güzel gününü<br>sizinle paylaşmaya davet ediyoruz.<br><br>Aşkımızı kutlarken yanımızda olmanız<br>bizi çok mutlu edecek.">Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p>
   </section>
 
   <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 20 20"><path d="M10 3C10 3,3 8,10 15C17 8,10 3,10 3Z" fill="var(--rose)" opacity=".3"/></svg><div class="divdr-line"></div></div>
   <section class="sec rv">
-    <p class="sec-lbl" data-it="Il nostro percorso" data-en="Our journey">Il nostro percorso</p>
-    <h2 class="sec-ttl" data-it="La Nostra Storia" data-en="Our Story">La Nostra Storia</h2>
+    <p class="sec-lbl" data-it="Il nostro percorso" data-en="Our journey" data-tr="Hikayemiz">Il nostro percorso</p>
+    <h2 class="sec-ttl" data-it="La Nostra Storia" data-en="Our Story" data-tr="Bizim Hikayemiz">La Nostra Storia</h2>
     <div class="sec-ornament"><svg width="20" height="12" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--rose-lt)"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--rose)" stroke-width=".4"/></svg></div>
     <div class="story">
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Ottobre 2021" data-en="October 2021">Ottobre 2021</div><div class="story-title" data-it="Il Primo Incontro" data-en="The First Meeting">Il Primo Incontro</div><p class="story-desc" data-it="Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani." data-en="Competitors on the same Teams call for a PhD interview. We didn't even introduce ourselves, but fate already had its plans.">Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani.</p></div>
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Gennaio 2022" data-en="January 2022">Gennaio 2022</div><div class="story-title" data-it="Ci Siamo Presentati" data-en="We Finally Met">Ci Siamo Presentati</div><p class="story-desc" data-it="Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore." data-en="This time we actually introduced ourselves. A meeting that changed everything and started our love story.">Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore.</p></div>
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Giugno 2022" data-en="June 2022">Giugno 2022</div><div class="story-title" data-it="Una Coppia" data-en="A Couple">Una Coppia</div><p class="story-desc" data-it="Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa." data-en="From that first of June we became a couple. Since then, every day has been a shared adventure.">Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa.</p></div>
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Febbraio 2025" data-en="February 2025">Febbraio 2025</div><div class="story-title" data-it="La Proposta a Parigi" data-en="The Proposal in Paris">La Proposta a Parigi</div><p class="story-desc" data-it="Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico." data-en="A yes whispered under the lights of the Eiffel Tower. The most beautiful question, in the most magical place.">Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico.</p></div>
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Aprile 2025" data-en="April 2025">Aprile 2025</div><div class="story-title" data-it="Il Fidanzamento" data-en="The Engagement">Il Fidanzamento</div><p class="story-desc" data-it="A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie." data-en="In Bodrum, with the sea as our witness, we celebrated our promise of love with our families.">A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie.</p></div>
-      <div class="story-item"><div class="story-dot" style="background:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.15)"></div><div class="story-year" data-it="Settembre 2026" data-en="September 2026">Settembre 2026</div><div class="story-title" data-it="Per Sempre" data-en="Forever">Per Sempre</div><p class="story-desc" data-it="I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi." data-en="The first steps to becoming a family. We can't wait to share this moment with all of you.">I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Ottobre 2021" data-en="October 2021" data-tr="Ekim 2021">Ottobre 2021</div><div class="story-title" data-it="Il Primo Incontro" data-en="The First Meeting" data-tr="İlk Karşılaşma">Il Primo Incontro</div><p class="story-desc" data-it="Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani." data-en="Competitors on the same Teams call for a PhD interview. We didn't even introduce ourselves, but fate already had its plans." data-tr="Doktora mülakatı için aynı Teams aramasında rakiptik. Tanışmadık bile, ama kader planını çoktan yapmıştı.">Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Gennaio 2022" data-en="January 2022" data-tr="Ocak 2022">Gennaio 2022</div><div class="story-title" data-it="Ci Siamo Presentati" data-en="We Finally Met" data-tr="Sonunda Tanıştık">Ci Siamo Presentati</div><p class="story-desc" data-it="Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore." data-en="This time we actually introduced ourselves. A meeting that changed everything and started our love story." data-tr="Bu sefer gerçekten tanıştık. Her şeyi değiştiren ve aşk hikayemizi başlatan bir karşılaşma.">Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Giugno 2022" data-en="June 2022" data-tr="Haziran 2022">Giugno 2022</div><div class="story-title" data-it="Una Coppia" data-en="A Couple" data-tr="Bir Çift">Una Coppia</div><p class="story-desc" data-it="Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa." data-en="From that first of June we became a couple. Since then, every day has been a shared adventure." data-tr="O ilk hazirandan itibaren bir çift olduk. O günden beri her gün paylaşılan bir macera.">Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Febbraio 2025" data-en="February 2025" data-tr="Şubat 2025">Febbraio 2025</div><div class="story-title" data-it="La Proposta a Parigi" data-en="The Proposal in Paris" data-tr="Paris'te Evlilik Teklifi">La Proposta a Parigi</div><p class="story-desc" data-it="Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico." data-en="A yes whispered under the lights of the Eiffel Tower. The most beautiful question, in the most magical place." data-tr="Eyfel Kulesi'nin ışıkları altında fısıldanan bir evet. En güzel soru, en büyülü yerde.">Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Aprile 2025" data-en="April 2025" data-tr="Nisan 2025">Aprile 2025</div><div class="story-title" data-it="Il Fidanzamento" data-en="The Engagement" data-tr="Nişan">Il Fidanzamento</div><p class="story-desc" data-it="A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie." data-en="In Bodrum, with the sea as our witness, we celebrated our promise of love with our families." data-tr="Bodrum'da, deniz şahidimizle, ailelerimizle birlikte aşk sözümüzü kutladık.">A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie.</p></div>
+      <div class="story-item"><div class="story-dot" style="background:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.15)"></div><div class="story-year" data-it="Settembre 2026" data-en="September 2026" data-tr="Eylül 2026">Settembre 2026</div><div class="story-title" data-it="Per Sempre" data-en="Forever" data-tr="Sonsuza Dek">Per Sempre</div><p class="story-desc" data-it="I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi." data-en="The first steps to becoming a family. We can't wait to share this moment with all of you." data-tr="Bir aile olma yolunda ilk adımlar. Bu anı hepinizle paylaşmak için sabırsızlanıyoruz.">I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi.</p></div>
     </div>
   </section>
 
   <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--sage)" opacity=".3"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--sage)" stroke-width=".4" opacity=".2"/></svg><div class="divdr-line"></div></div>
   <section class="sec rv">
-    <p class="sec-lbl" data-it="Programma della giornata" data-en="Schedule">Programma della giornata</p>
-    <h2 class="sec-ttl" data-it="Cerimonia &amp; Ricevimento" data-en="Ceremony &amp; Reception">Cerimonia &amp; Ricevimento</h2>
+    <p class="sec-lbl" data-it="Programma della giornata" data-en="Schedule" data-tr="Program">Programma della giornata</p>
+    <h2 class="sec-ttl" data-it="Cerimonia &amp; Ricevimento" data-en="Ceremony &amp; Reception" data-tr="Tören &amp; Davet">Cerimonia &amp; Ricevimento</h2>
     <div class="schedule">
-      <div class="sch-item"><div class="sch-time">16:00</div><div class="sch-icon">⛪</div><div class="sch-content"><h3 data-it="Cerimonia" data-en="Ceremony">Cerimonia</h3><p>Chiesa di Santa Maria di San Luca<br>Valenzano (BA)</p></div><a class="sch-map" href="https://maps.google.com/?q=Chiesa+Santa+Maria+San+Luca+Valenzano+Bari" target="_blank" title="Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div>
-      <div class="sch-item"><div class="sch-time">18:00</div><div class="sch-icon">🫒</div><div class="sch-content"><h3 data-it="Ricevimento" data-en="Reception">Ricevimento</h3><p>Corte di Torrelonga, Bari</p></div><a class="sch-map" href="https://maps.google.com/?q=Corte+di+Torrelonga+Bari" target="_blank" title="Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div>
-      <div class="sch-item"><div class="sch-time" style="background:var(--gold)">∞</div><div class="sch-icon">🥂</div><div class="sch-content"><h3 data-it="Festa &amp; Brindisi" data-en="Party &amp; Toast">Festa &amp; Brindisi</h3><p data-it="Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!" data-en="Among the olive trees,<br>celebrate until late!">Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!</p></div></div>
+      <div class="sch-item"><div class="sch-time">16:00</div><div class="sch-icon">⛪</div><div class="sch-content"><h3 data-it="Cerimonia" data-en="Ceremony" data-tr="Tören">Cerimonia</h3><p>Chiesa di Santa Maria di San Luca<br>Valenzano (BA)</p></div><a class="sch-map" href="https://maps.google.com/?q=Chiesa+Santa+Maria+San+Luca+Valenzano+Bari" target="_blank" title="Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div>
+      <div class="sch-item"><div class="sch-time">18:00</div><div class="sch-icon">🫒</div><div class="sch-content"><h3 data-it="Ricevimento" data-en="Reception" data-tr="Davet">Ricevimento</h3><p>Corte di Torrelonga, Bari</p></div><a class="sch-map" href="https://maps.google.com/?q=Corte+di+Torrelonga+Bari" target="_blank" title="Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div>
+      <div class="sch-item"><div class="sch-time" style="background:var(--gold)">∞</div><div class="sch-icon">🥂</div><div class="sch-content"><h3 data-it="Festa &amp; Brindisi" data-en="Party &amp; Toast" data-tr="Parti &amp; Kadeh">Festa &amp; Brindisi</h3><p data-it="Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!" data-en="Among the olive trees,<br>celebrate until late!" data-tr="Zeytin ağaçları arasında,<br>geç saatlere kadar kutlayalım!">Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!</p></div></div>
     </div>
   </section>
 
   <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 20 16"><rect x="3" y="5" width="14" height="9" rx="1.5" fill="none" stroke="var(--gold-lt)" stroke-width=".8" opacity=".3"/><path d="M3 5l7 5 7-5" fill="none" stroke="var(--gold-lt)" stroke-width=".8" opacity=".3"/></svg><div class="divdr-line"></div></div>
   <section class="sec rv">
-    <p class="sec-lbl" data-it="Conferma la tua presenza" data-en="Confirm attendance">Conferma la tua presenza</p>
+    <p class="sec-lbl" data-it="Conferma la tua presenza" data-en="Confirm attendance" data-tr="Katılımınızı onaylayın">Conferma la tua presenza</p>
     <h2 class="sec-ttl">RSVP</h2>
     <div class="rsvp-form" id="rf">
-      <div class="fr"><label data-it="Nome" data-en="First Name">Nome</label><input id="rN"></div>
-      <div class="fr"><label data-it="Cognome" data-en="Last Name">Cognome</label><input id="rC"></div>
-      <div class="fr"><label data-it="Numero ospiti" data-en="Guests">Numero ospiti</label><select id="rG"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div>
-      <div class="fr"><label data-it="Allergie alimentari" data-en="Dietary needs">Allergie alimentari</label><textarea id="rD" rows="2"></textarea></div>
-      <div class="rb"><button class="rbtn ry" onclick="rs('y')" data-it="Accetto con gioia" data-en="Joyfully accept">Accetto con gioia</button><button class="rbtn rn" onclick="rs('n')" data-it="Non posso" data-en="Can't attend">Non posso</button></div>
+      <div class="fr"><label data-it="Nome" data-en="First Name" data-tr="Ad">Nome</label><input id="rN"></div>
+      <div class="fr"><label data-it="Cognome" data-en="Last Name" data-tr="Soyad">Cognome</label><input id="rC"></div>
+      <div class="fr"><label data-it="Numero ospiti" data-en="Guests" data-tr="Misafir sayısı">Numero ospiti</label><select id="rG"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div>
+      <div class="fr"><label data-it="Allergie alimentari" data-en="Dietary needs" data-tr="Gıda alerjileri">Allergie alimentari</label><textarea id="rD" rows="2"></textarea></div>
+      <div class="rb"><button class="rbtn ry" onclick="rs('y')" data-it="Accetto con gioia" data-en="Joyfully accept" data-tr="Mutlulukla kabul">Accetto con gioia</button><button class="rbtn rn" onclick="rs('n')" data-it="Non posso" data-en="Can't attend" data-tr="Katılamıyorum">Non posso</button></div>
     </div>
-    <div class="rok" id="rO"><h3 data-it="Grazie!" data-en="Thank you!">Grazie!</h3><p id="rP"></p></div>
+    <div class="rok" id="rO"><h3 data-it="Grazie!" data-en="Thank you!" data-tr="Teşekkürler!">Grazie!</h3><p id="rP"></p></div>
   </section>
 
   <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--sage)" opacity=".3"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--sage)" stroke-width=".4" opacity=".2"/></svg><div class="divdr-line"></div></div>
   <section class="sec rv">
-    <p class="sec-lbl" data-it="La vostra presenza è il regalo più grande" data-en="Your presence is the greatest gift">La vostra presenza è il regalo più grande</p>
-    <h2 class="sec-ttl" data-it="Lista Nozze" data-en="Gift Registry">Lista Nozze</h2>
-    <p class="sec-txt" data-it="Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze." data-en="If you wish,<br>contribute to our honeymoon.">Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze.</p>
+    <p class="sec-lbl" data-it="La vostra presenza è il regalo più grande" data-en="Your presence is the greatest gift" data-tr="Varlığınız en güzel hediye">La vostra presenza è il regalo più grande</p>
+    <h2 class="sec-ttl" data-it="Lista Nozze" data-en="Gift Registry" data-tr="Düğün Hediyesi">Lista Nozze</h2>
+    <p class="sec-txt" data-it="Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze." data-en="If you wish,<br>contribute to our honeymoon." data-tr="Dilerseniz,<br>balayımıza katkıda bulunabilirsiniz.">Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze.</p>
     <div class="gift-accordion">
-      <button class="gift-toggle" onclick="toggleGift(this)" data-it="Contribuzione" data-en="Contribution"><span>Contribuzione</span><span class="chevron">▾</span></button>
+      <button class="gift-toggle" onclick="toggleGift(this)" data-it="Contribuzione" data-en="Contribution" data-tr="Katkı"><span>Contribuzione</span><span class="chevron">▾</span></button>
       <div class="gift-body" id="giftBody"><div class="gift-body-inner">
-        <div class="ib"><p class="ib-l">IBAN</p><p class="ib-c" id="i1">IT22 T010 0504 1990 0000 0004 295</p><p class="ib-n">Intestato a: Carmine Caponio</p><button class="cpb" onclick="cp('i1',this)"><span data-it="Copia" data-en="Copy">Copia</span></button></div>
-        <p class="opp" data-it="oppure" data-en="or">oppure</p>
-        <div class="ib"><p class="ib-l">IBAN</p><p class="ib-c" id="i2">IT51 Z020 0804 0310 0042 0568 334</p><p class="ib-n">Intestato a: Mine Dastan</p><button class="cpb" onclick="cp('i2',this)"><span data-it="Copia" data-en="Copy">Copia</span></button></div>
+        <div class="ib"><p class="ib-l">IBAN</p><p class="ib-c" id="i1">IT22 T010 0504 1990 0000 0004 295</p><p class="ib-n">Intestato a: Carmine Caponio</p><button class="cpb" onclick="cp('i1',this)"><span data-it="Copia" data-en="Copy" data-tr="Kopyala">Copia</span></button></div>
+        <p class="opp" data-it="oppure" data-en="or" data-tr="veya">oppure</p>
+        <div class="ib"><p class="ib-l">IBAN</p><p class="ib-c" id="i2">IT51 Z020 0804 0310 0042 0568 334</p><p class="ib-n">Intestato a: Mine Dastan</p><button class="cpb" onclick="cp('i2',this)"><span data-it="Copia" data-en="Copy" data-tr="Kopyala">Copia</span></button></div>
       </div></div>
     </div>
   </section>
 
-  <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--sage)" opacity=".3"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--sage)" stroke-width=".4" opacity=".2"/></svg><div class="divdr-line"></div></div>
-  <section class="sec rv" style="max-width:100%;padding:0">
-    <div class="video-section"><video autoplay muted loop playsinline><source src="assets/venue.mp4" type="video/mp4"></video><div class="video-overlay"></div></div>
+  <section class="rv" style="max-width:100%;padding:0">
+    <div class="video-section">
+      <video autoplay muted loop playsinline><source src="assets/venue.mp4" type="video/mp4"></video>
+      <div class="video-overlay"></div>
+      <div class="video-text">
+        <p class="vt-names">M & C</p>
+        <p class="vt-quote" data-it="«Due anime, un solo cammino»" data-en="«Two souls, one path»" data-tr="«İki ruh, tek yol»">«Due anime, un solo cammino»</p>
+      </div>
+    </div>
   </section>
 
-  <footer class="ftr rv"><p class="ftr-n">M & C</p><p class="ftr-t">«Due anime, un solo cammino»</p></footer>
+  <footer class="ftr rv"><p class="ftr-t" data-it="05 · 09 · 2026" data-en="09 · 05 · 2026" style="font-style:normal;letter-spacing:.4em;font-family:'Josefin Sans',sans-serif;font-size:.5rem;color:var(--gold)">05 · 09 · 2026</p></footer>
 </div>
 
 <audio id="aud" loop preload="auto"><source src="assets/music.mp3" type="audio/mpeg"></audio>
 
 <script>
 let lang='it',eo=false;
-function tl(){lang=lang==='it'?'en':'it';document.getElementById('ll').textContent=lang==='it'?'EN':'IT';document.querySelectorAll('[data-it]').forEach(el=>{const t=el.getAttribute('data-'+lang);if(t)el.innerHTML=t})}
-function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},3000);setTimeout(()=>e.classList.add('gone'),5000)}
+function tl(){const cycle={it:'en',en:'tr',tr:'it'};const labels={it:'EN',en:'TR',tr:'IT'};lang=cycle[lang];document.getElementById('ll').textContent=labels[lang];document.querySelectorAll('[data-it]').forEach(el=>{const t=el.getAttribute('data-'+lang)||el.getAttribute('data-it');if(t)el.innerHTML=t})}
+function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},2000);setTimeout(()=>e.classList.add('gone'),3000)}
 function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d=Math.max(0,w-new Date());document.getElementById('cD').textContent=Math.floor(d/864e5);document.getElementById('cH').textContent=Math.floor(d%864e5/36e5);document.getElementById('cM').textContent=Math.floor(d%36e5/6e4);document.getElementById('cS').textContent=Math.floor(d%6e4/1e3);setTimeout(u,1000)})()}
-function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':'Enter name');return}console.log('RSVP:',{n,c,g:document.getElementById('rG').value,d:document.getElementById('rD').value,t});document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":"Sorry! Thanks.")}
+function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':lang==='tr'?'Adınızı girin':'Enter name');return}console.log('RSVP:',{n,c,g:document.getElementById('rG').value,d:document.getElementById('rD').value,t});document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":lang==='tr'?"Sizinle kutlamak için sabırsızlanıyoruz!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":lang==='tr'?"Üzgünüz! Teşekkürler.":"Sorry! Thanks.")}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
 function toggleGift(btn){btn.classList.toggle('open');document.getElementById('giftBody').classList.toggle('open')}
 function addToCalendar(){const ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:20260905T140000Z\nDTEND:20260906T000000Z\nSUMMARY:Matrimonio Mine & Carmine\nLOCATION:Corte di Torrelonga, Bari\nDESCRIPTION:Cerimonia alle 16:00 - Chiesa di Santa Maria di San Luca, Valenzano\\nRicevimento alle 18:00 - Corte di Torrelonga, Bari\nEND:VEVENT\nEND:VCALENDAR`;const blob=new Blob([ics],{type:'text/calendar'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='matrimonio-mine-carmine.ics';a.click()}
