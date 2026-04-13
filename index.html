@@ -10,8 +10,8 @@
   --ivory:#FAF7F2;--ivory-d:#F0ECE4;
   --sage:#8A9A7B;--sage-dk:#6B7D5E;--olive:#5A6B4E;
   --gold:#C5A55A;--gold-lt:#D4BC7C;--gold-pale:rgba(197,165,90,.08);
-  --txt:#5C544A;--txt-s:#7A7268;--txt-l:#9E968C;
-  --blush:#D4BC7C
+  --rose:#D4A0A0;--rose-lt:#E2BFBF;--rose-pale:rgba(212,160,160,.12);
+  --txt:#5C544A;--txt-s:#7A7268;--txt-l:#9E968C
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -21,7 +21,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
 /* ═══ ENVELOPE ═══ */
 .env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;perspective:1400px}
-.env.gone{pointer-events:none;z-index:-1}
+.env.gone{pointer-events:none;z-index:-1;display:none}
 .env-bg{position:absolute;inset:0;background:url('assets/flap-bot.jpg') center/cover;z-index:1}
 .env-top{position:absolute;top:0;left:50%;width:100vw;max-width:100%;transform:translateX(-50%);z-index:3;transform-origin:top center;transition:transform 2s cubic-bezier(.23,1,.32,1)}
 .env-top img{width:100%;display:block}
@@ -43,16 +43,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
 /* ═══ CONTROLS ═══ */
 .ctrl{position:fixed;z-index:9500;display:flex;align-items:center;cursor:pointer;transition:all .5s cubic-bezier(.23,1,.32,1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.lang{top:14px;right:14px;gap:5px;background:var(--gold-pale);border:1px solid rgba(197,165,90,.12);border-radius:20px;padding:4px 11px}
-.lang:hover{background:rgba(197,165,90,.12)}
-.lang.inv{background:rgba(250,247,242,.9);border-color:rgba(197,165,90,.12);box-shadow:0 2px 15px rgba(92,84,74,.05)}
-.lang-text{font-family:'Josefin Sans',sans-serif;font-size:.5rem;letter-spacing:.18em;color:var(--txt-l);text-transform:uppercase;transition:color .4s}
-.lang.inv .lang-text{color:var(--txt-s)}
-.mbtn{bottom:18px;right:16px;width:40px;height:40px;border-radius:50%;background:var(--gold-pale);border:1px solid rgba(197,165,90,.12);justify-content:center}
-.mbtn:hover{background:rgba(197,165,90,.12);transform:scale(1.06)}
-.mbtn.inv{background:rgba(250,247,242,.9);border-color:rgba(197,165,90,.12);box-shadow:0 2px 15px rgba(92,84,74,.05)}
-.mbtn svg{width:15px;height:15px;color:var(--gold);transition:all .4s}
-.mbtn.inv svg{color:var(--sage-dk)}
+.lang{top:14px;right:14px;gap:5px;background:rgba(250,247,242,.9);border:1px solid rgba(197,165,90,.12);border-radius:20px;padding:4px 11px;box-shadow:0 2px 15px rgba(92,84,74,.05)}
+.lang:hover{background:rgba(250,247,242,.95)}
+.lang-text{font-family:'Josefin Sans',sans-serif;font-size:.5rem;letter-spacing:.18em;color:var(--txt-s);text-transform:uppercase}
+.mbtn{bottom:18px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(250,247,242,.9);border:1px solid rgba(197,165,90,.12);justify-content:center;box-shadow:0 2px 15px rgba(92,84,74,.05)}
+.mbtn:hover{background:rgba(250,247,242,.95);transform:scale(1.06)}
+.mbtn svg{width:15px;height:15px;color:var(--sage-dk);transition:all .4s}
 .mbtn.muted svg{opacity:.25}
 .mbtn.playing svg{animation:musicPulse 1.5s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
@@ -93,9 +89,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .story{max-width:460px;margin:0 auto;padding:0 1.3rem}
 .story-item{position:relative;padding-left:2.4rem;margin-bottom:2.2rem;opacity:0;transform:translateY(16px);transition:all .8s cubic-bezier(.23,1,.32,1)}
 .story-item.visible{opacity:1;transform:none}
-.story-item::before{content:'';position:absolute;left:5.5px;top:28px;bottom:-2.2rem;width:1px;background:linear-gradient(to bottom,var(--gold-lt),transparent)}
+.story-item::before{content:'';position:absolute;left:5.5px;top:28px;bottom:-2.2rem;width:1px;background:linear-gradient(to bottom,var(--rose-lt),transparent)}
 .story-item:last-child::before{display:none}
-.story-dot{position:absolute;left:0;top:6px;width:12px;height:12px;border-radius:50%;background:var(--gold-lt);box-shadow:0 0 0 3px rgba(212,188,124,.15)}
+.story-dot{position:absolute;left:0;top:6px;width:12px;height:12px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 3px rgba(212,160,160,.15)}
 .story-year{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem}
 .story-title{font-family:'Pinyon Script',cursive;font-size:1.4rem;color:var(--txt);margin-bottom:.3rem}
 .story-desc{font-size:.86rem;line-height:1.65;color:var(--txt-l);text-align:left}
@@ -108,19 +104,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .sch-content{flex:1;text-align:left}
 .sch-content h3{font-size:.95rem;font-weight:500;color:var(--txt);margin-bottom:1px}
 .sch-content p{font-size:.8rem;color:var(--txt-l);line-height:1.45}
-
-.venue-cards{max-width:400px;margin:0 auto;display:flex;flex-direction:column;gap:1.2rem}
-.venue-card{border:1px solid rgba(197,165,90,.1);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.25);backdrop-filter:blur(6px)}
-.venue-card-header{padding:.8rem 1rem;display:flex;align-items:flex-start;gap:.6rem}
-.venue-card-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
-.venue-card-info{flex:1;text-align:left}
-.venue-card-info h3{font-size:.9rem;font-weight:500;color:var(--txt)}
-.venue-card-info p{font-size:.76rem;color:var(--txt-l);line-height:1.45}
-.venue-map{width:100%;height:170px;border:none;border-top:1px solid rgba(197,165,90,.06)}
-.venue-actions{display:flex;gap:.4rem;padding:.5rem .8rem;border-top:1px solid rgba(197,165,90,.06)}
-.venue-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:.3rem;padding:7px;border:1px solid rgba(197,165,90,.1);border-radius:6px;font-family:'Josefin Sans',sans-serif;font-size:.42rem;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-s);text-decoration:none;cursor:pointer;background:transparent;transition:all .3s}
-.venue-btn:hover{background:var(--gold-pale);border-color:var(--gold-lt)}
-.venue-btn svg{width:11px;height:11px;stroke:currentColor;fill:none}
+.sch-map{flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--rose);text-decoration:none;opacity:.5;transition:all .3s;margin-top:2px}
+.sch-map:hover{opacity:1;transform:scale(1.1)}
+.sch-map svg{width:18px;height:18px}
 
 .rsvp-form{max-width:330px;margin:1rem auto;text-align:left}
 .fr{margin-bottom:.7rem}
@@ -134,7 +120,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .ry{background:var(--sage);color:var(--ivory);border-color:var(--sage)}.ry:hover{background:var(--sage-dk)}
 .rn{background:transparent;color:var(--txt-l);border-color:rgba(197,165,90,.15)}.rn:hover{border-color:var(--gold);color:var(--txt-s)}
 .rok{text-align:center;padding:1.2rem;display:none}.rok.show{display:block}
-.rok h3{font-family:'Pinyon Script',cursive;font-size:1.4rem;color:var(--sage)}
+.rok h3{font-family:'Pinyon Script',cursive;font-size:1.4rem;color:var(--rose)}
 .rok p{color:var(--txt-s);font-size:.85rem;margin-top:.3rem}
 
 .gift-accordion{max-width:360px;margin:1rem auto}
@@ -213,15 +199,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love.">Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p>
   </section>
 
-  <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 20 20"><path d="M10 3C10 3,3 8,10 15C17 8,10 3,10 3Z" fill="var(--gold-lt)" opacity=".3"/></svg><div class="divdr-line"></div></div>
+  <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 20 20"><path d="M10 3C10 3,3 8,10 15C17 8,10 3,10 3Z" fill="var(--rose)" opacity=".3"/></svg><div class="divdr-line"></div></div>
   <section class="sec rv">
     <p class="sec-lbl" data-it="Il nostro percorso" data-en="Our journey">Il nostro percorso</p>
     <h2 class="sec-ttl" data-it="La Nostra Storia" data-en="Our Story">La Nostra Storia</h2>
-    <div class="sec-ornament"><svg width="20" height="12" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--gold-lt)"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--gold)" stroke-width=".4"/></svg></div>
+    <div class="sec-ornament"><svg width="20" height="12" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--rose-lt)"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--rose)" stroke-width=".4"/></svg></div>
     <div class="story">
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Gennaio 2021" data-en="January 2021">Gennaio 2021</div><div class="story-title" data-it="Il Primo Incontro" data-en="The First Meeting">Il Primo Incontro</div><p class="story-desc" data-it="Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani." data-en="Competitors on the same Teams call for a PhD interview. We didn't even introduce ourselves, but fate already had its plans.">Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Ottobre 2021" data-en="Ottobre 2021">Ottobre 2021</div><div class="story-title" data-it="Il Primo Incontro" data-en="The First Meeting">Il Primo Incontro</div><p class="story-desc" data-it="Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani." data-en="Competitors on the same Teams call for a PhD interview. We didn't even introduce ourselves, but fate already had its plans.">Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani.</p></div>
       <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Gennaio 2022" data-en="January 2022">Gennaio 2022</div><div class="story-title" data-it="Ci Siamo Presentati" data-en="We Finally Met">Ci Siamo Presentati</div><p class="story-desc" data-it="Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore." data-en="This time we actually introduced ourselves. A meeting that changed everything and started our love story.">Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore.</p></div>
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="1 Giugno 2022" data-en="June 1, 2022">1 Giugno 2022</div><div class="story-title" data-it="Una Coppia" data-en="A Couple">Una Coppia</div><p class="story-desc" data-it="Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa." data-en="From that first of June we became a couple. Since then, every day has been a shared adventure.">Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Giugno 2022" data-en="June, 2022">Giugno 2022</div><div class="story-title" data-it="Una Coppia" data-en="A Couple">Una Coppia</div><p class="story-desc" data-it="Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa." data-en="From that first of June we became a couple. Since then, every day has been a shared adventure.">Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa.</p></div>
       <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Febbraio 2025" data-en="February 2025">Febbraio 2025</div><div class="story-title" data-it="La Proposta a Parigi" data-en="The Proposal in Paris">La Proposta a Parigi</div><p class="story-desc" data-it="Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico." data-en="A yes whispered under the lights of the Eiffel Tower. The most beautiful question, in the most magical place.">Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico.</p></div>
       <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Aprile 2025" data-en="April 2025">Aprile 2025</div><div class="story-title" data-it="Il Fidanzamento" data-en="The Engagement">Il Fidanzamento</div><p class="story-desc" data-it="A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie." data-en="In Bodrum, with the sea as our witness, we celebrated our promise of love with our families.">A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie.</p></div>
       <div class="story-item"><div class="story-dot" style="background:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.15)"></div><div class="story-year" data-it="Settembre 2026" data-en="September 2026">Settembre 2026</div><div class="story-title" data-it="Per Sempre" data-en="Forever">Per Sempre</div><p class="story-desc" data-it="I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi." data-en="The first steps to becoming a family. We can't wait to share this moment with all of you.">I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi.</p></div>
@@ -233,19 +219,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <p class="sec-lbl" data-it="Programma della giornata" data-en="Schedule">Programma della giornata</p>
     <h2 class="sec-ttl" data-it="Cerimonia &amp; Ricevimento" data-en="Ceremony &amp; Reception">Cerimonia &amp; Ricevimento</h2>
     <div class="schedule">
-      <div class="sch-item"><div class="sch-time">16:00</div><div class="sch-icon">⛪</div><div class="sch-content"><h3 data-it="Cerimonia" data-en="Ceremony">Cerimonia</h3><p>Chiesa di Santa Maria di San Luca<br>Valenzano (BA)</p></div></div>
-      <div class="sch-item"><div class="sch-time">18:00</div><div class="sch-icon">🫒</div><div class="sch-content"><h3 data-it="Ricevimento" data-en="Reception">Ricevimento</h3><p>Corte di Torrelonga, Bari</p></div></div>
+      <div class="sch-item"><div class="sch-time">16:00</div><div class="sch-icon">⛪</div><div class="sch-content"><h3 data-it="Cerimonia" data-en="Ceremony">Cerimonia</h3><p>Chiesa di Santa Maria di San Luca<br>Valenzano (BA)</p></div><a class="sch-map" href="https://maps.google.com/?q=Chiesa+Santa+Maria+San+Luca+Valenzano+Bari" target="_blank" title="Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div>
+      <div class="sch-item"><div class="sch-time">18:00</div><div class="sch-icon">🫒</div><div class="sch-content"><h3 data-it="Ricevimento" data-en="Reception">Ricevimento</h3><p>Corte di Torrelonga, Bari</p></div><a class="sch-map" href="https://maps.google.com/?q=Corte+di+Torrelonga+Bari" target="_blank" title="Maps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div>
       <div class="sch-item"><div class="sch-time" style="background:var(--gold)">∞</div><div class="sch-icon">🥂</div><div class="sch-content"><h3 data-it="Festa &amp; Brindisi" data-en="Party &amp; Toast">Festa &amp; Brindisi</h3><p data-it="Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!" data-en="Among the olive trees,<br>celebrate until late!">Tra gli ulivi pugliesi,<br>festeggiamo insieme fino a tardi!</p></div></div>
-    </div>
-  </section>
-
-  <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 20 20"><circle cx="10" cy="8" r="2.5" fill="none" stroke="var(--gold)" stroke-width="1" opacity=".3"/><path d="M10 4C10 4,5 9,10 15C15 9,10 4,10 4Z" fill="var(--gold-lt)" opacity=".15"/></svg><div class="divdr-line"></div></div>
-  <section class="sec rv">
-    <p class="sec-lbl" data-it="Dove trovarci" data-en="Where to find us">Dove trovarci</p>
-    <h2 class="sec-ttl" data-it="Luoghi" data-en="Venues">Luoghi</h2>
-    <div class="venue-cards">
-      <div class="venue-card"><div class="venue-card-header"><div class="venue-card-icon">⛪</div><div class="venue-card-info"><h3 data-it="Cerimonia — 16:00" data-en="Ceremony — 4:00 PM">Cerimonia — 16:00</h3><p>Chiesa di Santa Maria di San Luca<br>Valenzano (BA)</p></div></div><iframe class="venue-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3006.5!2d16.886!3d41.046!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1347e8a0a0a0a0a1%3A0x1234567890!2sChiesa+di+Santa+Maria+di+San+Luca%2C+Valenzano!5e0!3m2!1sit!2sit" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe><div class="venue-actions"><a class="venue-btn" href="https://maps.google.com/?q=Chiesa+Santa+Maria+San+Luca+Valenzano+Bari" target="_blank"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span data-it="Apri in Maps" data-en="Open in Maps">Apri in Maps</span></a><button class="venue-btn" onclick="addToCalendar()"><svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-it="Aggiungi al Calendario" data-en="Add to Calendar">Aggiungi al Calendario</span></button></div></div>
-      <div class="venue-card"><div class="venue-card-header"><div class="venue-card-icon">🫒</div><div class="venue-card-info"><h3 data-it="Ricevimento — 18:00" data-en="Reception — 6:00 PM">Ricevimento — 18:00</h3><p>Corte di Torrelonga<br>Bari</p></div></div><iframe class="venue-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3006.5!2d16.88!3d41.09!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1347e8a0a0a0a0a2%3A0x1234567891!2sCorte+di+Torrelonga%2C+Bari!5e0!3m2!1sit!2sit" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe><div class="venue-actions"><a class="venue-btn" href="https://maps.google.com/?q=Corte+di+Torrelonga+Bari" target="_blank"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span data-it="Apri in Maps" data-en="Open in Maps">Apri in Maps</span></a><button class="venue-btn" onclick="addToCalendar()"><svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-it="Aggiungi al Calendario" data-en="Add to Calendar">Aggiungi al Calendario</span></button></div></div>
     </div>
   </section>
 
@@ -286,7 +262,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <script>
 let lang='it',eo=false;
 function tl(){lang=lang==='it'?'en':'it';document.getElementById('ll').textContent=lang==='it'?'EN':'IT';document.querySelectorAll('[data-it]').forEach(el=>{const t=el.getAttribute('data-'+lang);if(t)el.innerHTML=t})}
-function openEnv(){if(eo)return;eo=true;const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('lt').classList.add('inv');document.getElementById('mb').classList.add('inv');document.getElementById('inv').classList.add('show');scd();initLeaves()},1100);setTimeout(()=>e.classList.add('gone'),2200)}
+function openEnv(){if(eo)return;eo=true;const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},1100);setTimeout(()=>e.classList.add('gone'),2200)}
 function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d=Math.max(0,w-new Date());document.getElementById('cD').textContent=Math.floor(d/864e5);document.getElementById('cH').textContent=Math.floor(d%864e5/36e5);document.getElementById('cM').textContent=Math.floor(d%36e5/6e4);document.getElementById('cS').textContent=Math.floor(d%6e4/1e3);setTimeout(u,1000)})()}
 function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':'Enter name');return}console.log('RSVP:',{n,c,g:document.getElementById('rG').value,d:document.getElementById('rD').value,t});document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":"Sorry! Thanks.")}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
