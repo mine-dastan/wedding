@@ -19,7 +19,6 @@ html,body{overflow-x:hidden;height:100%}
 body{font-family:'Cormorant Garamond',serif;background:var(--ivory);color:var(--txt)}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");opacity:.6}
 
-/* ═══ ENVELOPE ═══ */
 .env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--ivory)}
 .env.gone{pointer-events:none;z-index:-1;display:none}
 .env::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 120% 80% at 50% 40%,transparent 30%,rgba(92,84,74,.03) 60%,rgba(92,84,74,.08) 100%);pointer-events:none;transition:opacity 1.5s ease}
@@ -33,11 +32,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .env-seal img{width:100%;display:block}
 @keyframes sealBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 .env-title{font-family:'Pinyon Script',cursive;font-size:clamp(1.8rem,7vw,2.8rem);color:var(--gold);white-space:nowrap;margin-bottom:2.5rem}
-
 .env-hint{font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);animation:hintGlow 3s ease-in-out infinite;white-space:nowrap;margin-top:.8rem}
 @keyframes hintGlow{0%,100%{opacity:.45}50%{opacity:.9}}
 
-/* ═══ CONTROLS ═══ */
 .ctrl{position:fixed;z-index:9500;display:flex;align-items:center;cursor:pointer;transition:all .5s cubic-bezier(.23,1,.32,1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .lang{top:14px;right:14px;gap:5px;background:rgba(250,247,242,.9);border:1px solid rgba(197,165,90,.12);border-radius:20px;padding:4px 11px;box-shadow:0 2px 15px rgba(92,84,74,.05)}
 .lang:hover{background:rgba(250,247,242,.95)}
@@ -48,14 +45,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .mbtn.muted svg{opacity:.25}
 .mbtn.playing svg{animation:musicPulse 1.5s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
-
 .music-hint{position:fixed;bottom:30px;right:62px;z-index:9500;display:flex;flex-direction:column;align-items:flex-end;gap:0;opacity:0;animation:mhShow 1.5s ease forwards 1s;transition:opacity .8s ease}
 .music-hint.hidden{opacity:0!important;pointer-events:none}
 .music-hint-text{font-family:'Pinyon Script',cursive;font-size:1rem;color:var(--gold);white-space:nowrap}
 .music-hint-arrow{width:38px;height:30px;color:var(--gold);margin-right:-2px}
 @keyframes mhShow{0%{opacity:0;transform:translateY(-8px)}100%{opacity:1;transform:translateY(0)}}
 
-/* ═══ INVITATION ═══ */
 .inv{position:relative;z-index:1;opacity:0;transition:opacity 1s ease .6s}.inv.show{opacity:1}
 
 .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:var(--ivory)}
@@ -139,10 +134,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .opp{font-style:italic;font-size:.82rem;color:var(--txt-l);margin:.5rem 0;text-align:center}
 
 .video-section{position:relative;width:100%;overflow:visible}
-.video-section video{width:100%;height:45vh;display:block;object-fit:cover}
-.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,.35) 0%,rgba(250,247,242,.25) 40%,rgba(250,247,242,.5) 70%,rgba(250,247,242,.8) 90%,rgba(250,247,242,.95) 100%);pointer-events:none}
-.video-fade{position:absolute;inset:-2px;pointer-events:none;box-shadow:inset 0 0 60px 40px var(--ivory),inset 0 40px 30px -10px var(--ivory),inset 0 -40px 30px -10px var(--ivory);z-index:1}
-.video-text{position:absolute;bottom:12%;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;pointer-events:none}
+.video-section video{width:100%;height:75vh;display:block;object-fit:cover}
+.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,.35) 0%,rgba(250,247,242,.15) 30%,rgba(250,247,242,.15) 50%,rgba(250,247,242,.4) 75%,rgba(250,247,242,.85) 92%,rgba(250,247,242,.95) 100%);pointer-events:none}
+.video-fade{position:absolute;inset:-2px;pointer-events:none;box-shadow:inset 0 0 80px 50px var(--ivory),inset 0 50px 40px -10px var(--ivory),inset 0 -50px 40px -10px var(--ivory);z-index:1}
+.video-text{position:absolute;bottom:10%;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;pointer-events:none}
 .video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(2rem,7vw,3rem);color:var(--txt);text-shadow:0 2px 12px rgba(250,247,242,.8)}
 .video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.82rem,2.2vw,1rem);color:var(--txt-s);margin-top:.3rem;text-shadow:0 1px 8px rgba(250,247,242,.8)}
 .video-text .vt-date{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.45rem;letter-spacing:.5em;color:var(--gold);margin-top:.5rem;text-shadow:0 1px 6px rgba(250,247,242,.6)}
@@ -160,7 +155,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
 .rv{opacity:0;transform:translateY(16px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}.rv.visible{opacity:1;transform:none}
 
-@media(max-width:600px){.sec{padding:1.6rem 1rem}.rb{flex-direction:column}.venue-actions{flex-direction:column}}
+@media(max-width:600px){.sec{padding:1.6rem 1rem}.rb{flex-direction:column}.venue-actions{flex-direction:column}.video-section video{height:60vh}}
 </style>
 </head>
 <body>
@@ -186,7 +181,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <div class="inv" id="inv">
 
   <section class="hero">
-
     <div class="hero-content">
       <p class="hero-sub" data-it="Insieme per sempre" data-en="Together forever" data-tr="Sonsuza dek birlikte">Insieme per sempre</p>
       <h1 class="hero-names">Mine<span class="amp">&amp;</span>Carmine</h1>
@@ -208,7 +202,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <section class="sec rv">
     <p class="sec-lbl" data-it="Con gioia vi annunciamo" data-en="We joyfully announce" data-tr="Büyük bir mutlulukla">Con gioia vi annunciamo</p>
     <h2 class="sec-ttl" data-it="Il Nostro Matrimonio" data-en="Our Wedding" data-tr="Düğünümüz">Il Nostro Matrimonio</h2>
-    <p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love." data-tr="Büyük bir mutlulukla, hayatımızın en güzel gününü<br>sizinle paylaşmaya davet ediyoruz.<br><br>Aşkımızı kutlarken yanımızda olmanız<br>bizi çok mutlu edecek.">Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p>
+    <p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere con noi<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share with us<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love." data-tr="Büyük bir mutlulukla, hayatımızın en güzel gününü<br>sizinle paylaşmaya davet ediyoruz.<br><br>Aşkımızı kutlarken yanımızda olmanız<br>bizi çok mutlu edecek.">Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p>
   </section>
 
   <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 20 20"><path d="M10 3C10 3,3 8,10 15C17 8,10 3,10 3Z" fill="var(--rose)" opacity=".3"/></svg><div class="divdr-line"></div></div>
@@ -217,11 +211,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <h2 class="sec-ttl" data-it="La Nostra Storia" data-en="Our Story" data-tr="Bizim Hikayemiz">La Nostra Storia</h2>
     <div class="sec-ornament"><svg width="20" height="12" viewBox="0 0 30 12"><path d="M2 6Q8 1 15 2Q22 1 28 6Q22 11 15 10Q8 11 2 6Z" fill="var(--rose-lt)"/><line x1="5" y1="6" x2="25" y2="6" stroke="var(--rose)" stroke-width=".4"/></svg></div>
     <div class="story">
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Ottobre 2021" data-en="October 2021" data-tr="Ekim 2021">Ottobre 2021</div><div class="story-title" data-it="Il Primo Incontro" data-en="The First Meeting" data-tr="İlk Karşılaşma">Il Primo Incontro</div><p class="story-desc" data-it="Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani." data-en="Competitors on the same Teams call for a PhD interview. We didn't even introduce ourselves, but fate already had its plans." data-tr="Doktora mülakatı için aynı Teams aramasında rakiptik. Tanışmadık bile, ama kader planını çoktan yapmıştı.">Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Settembre 2021" data-en="September 2021" data-tr="Eylül 2021">Settembre 2021</div><div class="story-title" data-it="Il Primo Incontro" data-en="The First Meeting" data-tr="İlk Karşılaşma">Il Primo Incontro</div><p class="story-desc" data-it="Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani." data-en="Competitors on the same Teams call for a PhD interview. We didn't even introduce ourselves, but fate already had its plans." data-tr="Doktora mülakatı için aynı Teams aramasında rakiptik. Tanışmadık bile, ama kader planını çoktan yapmıştı.">Competitori nella stessa chiamata su Teams per il colloquio di dottorato. Non ci siamo nemmeno presentati, ma il destino aveva già i suoi piani.</p></div>
       <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Gennaio 2022" data-en="January 2022" data-tr="Ocak 2022">Gennaio 2022</div><div class="story-title" data-it="Ci Siamo Presentati" data-en="We Finally Met" data-tr="Sonunda Tanıştık">Ci Siamo Presentati</div><p class="story-desc" data-it="Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore." data-en="This time we actually introduced ourselves. A meeting that changed everything and started our love story." data-tr="Bu sefer gerçekten tanıştık. Her şeyi değiştiren ve aşk hikayemizi başlatan bir karşılaşma.">Questa volta ci siamo davvero presentati. Un incontro che ha cambiato tutto e ha dato inizio alla nostra storia d'amore.</p></div>
       <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Giugno 2022" data-en="June 2022" data-tr="Haziran 2022">Giugno 2022</div><div class="story-title" data-it="Una Coppia" data-en="A Couple" data-tr="Bir Çift">Una Coppia</div><p class="story-desc" data-it="Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa." data-en="From that first of June we became a couple. Since then, every day has been a shared adventure." data-tr="O ilk hazirandan itibaren bir çift olduk. O günden beri her gün paylaşılan bir macera.">Da quel primo giugno siamo diventati una coppia. Da allora, ogni giorno è un'avventura condivisa.</p></div>
       <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Febbraio 2025" data-en="February 2025" data-tr="Şubat 2025">Febbraio 2025</div><div class="story-title" data-it="La Proposta a Parigi" data-en="The Proposal in Paris" data-tr="Paris'te Evlilik Teklifi">La Proposta a Parigi</div><p class="story-desc" data-it="Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico." data-en="A yes whispered under the lights of the Eiffel Tower. The most beautiful question, in the most magical place." data-tr="Eyfel Kulesi'nin ışıkları altında fısıldanan bir evet. En güzel soru, en büyülü yerde.">Un sì sussurrato sotto le luci della Tour Eiffel. La domanda più bella, nel posto più magico.</p></div>
-      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Aprile 2025" data-en="April 2025" data-tr="Nisan 2025">Aprile 2025</div><div class="story-title" data-it="Il Fidanzamento" data-en="The Engagement" data-tr="Nişan">Il Fidanzamento</div><p class="story-desc" data-it="A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie." data-en="In Bodrum, with the sea as our witness, we celebrated our promise of love with our families." data-tr="Bodrum'da, deniz şahidimizle, ailelerimizle birlikte aşk sözümüzü kutladık.">A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie.</p></div>
+      <div class="story-item"><div class="story-dot"></div><div class="story-year" data-it="Aprile 2025" data-en="April 2025" data-tr="Nisan 2025">Aprile 2025</div><div class="story-title" data-it="Il Fidanzamento" data-en="The Engagement" data-tr="Nişan">Il Fidanzamento</div><p class="story-desc" data-it="A Bodrum, con il mare come testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie." data-en="In Bodrum, with the sea as our witness, we celebrated our promise of love with our families." data-tr="Bodrum'da, deniz şahidimizle, ailelerimizle birlikte aşk sözümüzü kutladık.">A Bodrum, con il mare da testimone, abbiamo celebrato la nostra promessa d'amore con le nostre famiglie.</p></div>
       <div class="story-item"><div class="story-dot" style="background:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.15)"></div><div class="story-year" data-it="Settembre 2026" data-en="September 2026" data-tr="Eylül 2026">Settembre 2026</div><div class="story-title" data-it="Per Sempre" data-en="Forever" data-tr="Sonsuza Dek">Per Sempre</div><p class="story-desc" data-it="I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi." data-en="The first steps to becoming a family. We can't wait to share this moment with all of you." data-tr="Bir aile olma yolunda ilk adımlar. Bu anı hepinizle paylaşmak için sabırsızlanıyoruz.">I primi passi per diventare una famiglia. Non vediamo l'ora di condividere questo momento con tutti voi.</p></div>
     </div>
   </section>
@@ -255,7 +249,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <section class="sec rv">
     <p class="sec-lbl" data-it="La vostra presenza è il regalo più grande" data-en="Your presence is the greatest gift" data-tr="Varlığınız en güzel hediye">La vostra presenza è il regalo più grande</p>
     <h2 class="sec-ttl" data-it="Lista Nozze" data-en="Gift Registry" data-tr="Düğün Hediyesi">Lista Nozze</h2>
-    <p class="sec-txt" data-it="Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze." data-en="If you wish,<br>contribute to our honeymoon." data-tr="Dilerseniz,<br>balayımıza katkıda bulunabilirsiniz.">Se desiderate farci un pensiero,<br>potete contribuire al nostro viaggio di nozze.</p>
+    <p class="sec-txt" data-it="Per chi desiderasse lasciare un pensiero,<br>sarà per noi un prezioso contributo<br>ai nostri progetti futuri insieme." data-en="For those who wish to leave a token of thought,<br>it will be a precious contribution<br>to our future together." data-tr="Bizim için bir düşünce bırakmak isteyenler için,<br>bu birlikte kuracağımız geleceğe<br>değerli bir katkı olacaktır.">Per chi desiderasse lasciare un pensiero,<br>sarà per noi un prezioso contributo<br>ai nostri progetti futuri insieme.</p>
     <div class="gift-accordion">
       <button class="gift-toggle" onclick="toggleGift(this)" data-it="Contribuzione" data-en="Contribution" data-tr="Katkı"><span>Contribuzione</span><span class="chevron">▾</span></button>
       <div class="gift-body" id="giftBody"><div class="gift-body-inner">
