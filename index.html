@@ -138,12 +138,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .cpb:hover{background:var(--gold);color:var(--ivory)}
 .opp{font-style:italic;font-size:.82rem;color:var(--txt-l);margin:.5rem 0;text-align:center}
 
-.video-section{position:relative;width:calc(100% - 2rem);max-width:500px;margin:0 auto;overflow:hidden;border-radius:0}
-.video-section video{width:100%;height:50vh;display:block;object-fit:cover}
-.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,1) 0%,rgba(250,247,242,.5) 12%,rgba(250,247,242,.15) 30%,rgba(250,247,242,.15) 70%,rgba(250,247,242,.5) 88%,rgba(250,247,242,1) 100%),linear-gradient(to right,rgba(250,247,242,.8) 0%,transparent 15%,transparent 85%,rgba(250,247,242,.8) 100%);pointer-events:none}
-.video-text{position:absolute;bottom:0;left:0;right:0;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:1.5rem;pointer-events:none}
-.video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(1.6rem,5vw,2.2rem);color:var(--txt);text-shadow:0 2px 12px rgba(250,247,242,.7)}
-.video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.8rem,2.2vw,1rem);color:var(--txt-s);margin-top:.3rem;text-shadow:0 1px 8px rgba(250,247,242,.7)}
+.video-section{position:relative;width:100%;max-width:500px;margin:0 auto;overflow:visible}
+.video-section video{width:100%;height:45vh;display:block;object-fit:cover}
+.video-overlay{position:absolute;inset:0;background:rgba(250,247,242,.4);pointer-events:none}
+.video-fade{position:absolute;inset:-2px;pointer-events:none;box-shadow:inset 0 0 60px 40px var(--ivory),inset 0 40px 30px -10px var(--ivory),inset 0 -40px 30px -10px var(--ivory);z-index:1}
+.video-text{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:1.2rem 0 .5rem}
+.video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(1.6rem,5vw,2.2rem);color:var(--txt)}
+.video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.82rem,2.2vw,1rem);color:var(--txt-s);margin-top:.3rem}
 
 .ftr{text-align:center;padding:2.5rem 2rem 3.5rem}
 .ftr-n{font-family:'Pinyon Script',cursive;font-size:1.7rem;color:var(--txt)}
@@ -268,10 +269,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <div class="video-section">
       <video autoplay muted loop playsinline><source src="assets/venue.mp4" type="video/mp4"></video>
       <div class="video-overlay"></div>
-      <div class="video-text">
-        <p class="vt-names">M & C</p>
-        <p class="vt-quote" data-it="«Due anime, un solo cammino»" data-en="«Two souls, one path»" data-tr="«İki ruh, tek yol»">«Due anime, un solo cammino»</p>
-      </div>
+      <div class="video-fade"></div>
+    </div>
+    <div class="video-text">
+      <p class="vt-names">M & C</p>
+      <p class="vt-quote" data-it="«Due anime, un solo cammino»" data-en="«Two souls, one path»" data-tr="«İki ruh, tek yol»">«Due anime, un solo cammino»</p>
     </div>
   </section>
 
