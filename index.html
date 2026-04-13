@@ -53,6 +53,7 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    display: none;
   }
   .preloader-text {
     font-family: 'Pinyon Script', cursive;
@@ -337,6 +338,7 @@
     font-weight: 500;
     color: var(--text-dark);
     margin-bottom: 0.3rem;
+    text-align: left;
   }
   .timeline-content p {
     font-family: 'Cormorant Garamond', serif;
@@ -344,6 +346,7 @@
     font-weight: 400;
     color: var(--text-light);
     line-height: 1.6;
+    text-align: left;
   }
   .timeline-content .location-icon {
     display: inline;
@@ -707,42 +710,34 @@
     <path d="M308 167 H592" stroke="#8A7E6A" stroke-width="0.8" opacity="0.3"/>
     <path d="M310 164 H590" stroke="#8A7E6A" stroke-width="0.4" opacity="0.2"/>
 
-    <!-- Floor division line -->
-    <path d="M315 240 H585" stroke="#8A7E6A" stroke-width="0.5" opacity="0.15"/>
-
-    <!-- ─── Upper Floor Windows (5 windows with arched pediments) ─── -->
-    <!-- Window 1 -->
-    <rect x="330" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
-    <rect x="330" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
-    <path d="M328 185 Q345 172, 362 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
-    <line x1="345" y1="185" x2="345" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <line x1="330" y1="205" x2="360" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <!-- ─── 4 Windows evenly distributed with arched pediments ─── -->
+    <!-- Window 1 (building x=310-590, width=280, spacing: 330, 390, 460, 520) -->
+    <rect x="327" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
+    <rect x="327" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
+    <path d="M325 185 Q342 172, 359 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
+    <line x1="342" y1="185" x2="342" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <line x1="327" y1="205" x2="357" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
 
     <!-- Window 2 -->
-    <rect x="385" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
-    <rect x="385" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
-    <path d="M383 185 Q400 172, 417 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
-    <line x1="400" y1="185" x2="400" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <line x1="385" y1="205" x2="415" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <rect x="393" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
+    <rect x="393" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
+    <path d="M391 185 Q408 172, 425 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
+    <line x1="408" y1="185" x2="408" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <line x1="393" y1="205" x2="423" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
 
-    <!-- Window 3 (center, larger) -->
-    <rect x="435" y="183" width="32" height="44" fill="#C8D8C2" opacity="0.1"/>
-    <rect x="435" y="183" width="32" height="44" fill="none" stroke="#8A7E6A" stroke-width="1" opacity="0.48" filter="url(#skSoft)"/>
-    <path d="M433 183 Q451 168, 469 183" stroke="#8A7E6A" stroke-width="1" fill="none" opacity="0.42" filter="url(#skSoft)"/>
-    <line x1="451" y1="183" x2="451" y2="227" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <line x1="435" y1="205" x2="467" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
-    <!-- Small balcony under center window -->
-    <path d="M432 227 H470" stroke="#8A7E6A" stroke-width="0.7" opacity="0.3"/>
-    <path d="M434 230 H468" stroke="#8A7E6A" stroke-width="0.4" opacity="0.2"/>
+    <!-- Window 3 -->
+    <rect x="460" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
+    <rect x="460" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
+    <path d="M458 185 Q475 172, 492 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
+    <line x1="475" y1="185" x2="475" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <line x1="460" y1="205" x2="490" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
 
-    <!-- ─── Lower Floor Windows ─── -->
-    <rect x="338" y="252" width="24" height="30" fill="#C8D8C2" opacity="0.08"/>
-    <rect x="338" y="252" width="24" height="30" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.35"/>
-    <line x1="350" y1="252" x2="350" y2="282" stroke="#8A7E6A" stroke-width="0.3" opacity="0.15"/>
-
-    <rect x="540" y="252" width="24" height="30" fill="#C8D8C2" opacity="0.08"/>
-    <rect x="540" y="252" width="24" height="30" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.35"/>
-    <line x1="552" y1="252" x2="552" y2="282" stroke="#8A7E6A" stroke-width="0.3" opacity="0.15"/>
+    <!-- Window 4 -->
+    <rect x="527" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
+    <rect x="527" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
+    <path d="M525 185 Q542 172, 559 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
+    <line x1="542" y1="185" x2="542" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <line x1="527" y1="205" x2="557" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
 
     <!-- ════ BELL TOWER / CAMPANILE (right side) ════ -->
     <rect x="555" y="120" width="28" height="50" fill="#F2EADC" opacity="0.3" filter="url(#sk)"/>
@@ -1016,111 +1011,90 @@
     });
   }
 
-  // Background piano music — starts on first scroll
+  // Background piano — dreamy romantic melody, fades in gently
   (function() {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let ctx, started = false;
+    let ctx, masterGain, started = false;
 
-    // Piano notes for a gentle romantic melody in C major / A minor
     const melody = [
-      // Each: [note, startBeat, duration, velocity]
-      // Intro - slow arpeggiated chords
-      ['C4',0,4,0.18],['E4',0.5,3.5,0.14],['G4',1,3,0.12],['C5',1.5,2.5,0.1],
-      ['A3',4,4,0.18],['C4',4.5,3.5,0.14],['E4',5,3,0.12],['A4',5.5,2.5,0.1],
-      ['F3',8,4,0.18],['A3',8.5,3.5,0.14],['C4',9,3,0.12],['F4',9.5,2.5,0.1],
-      ['G3',12,4,0.18],['B3',12.5,3.5,0.14],['D4',13,3,0.12],['G4',13.5,2.5,0.1],
-      // Second phrase - slightly more movement
-      ['C4',16,3,0.16],['E4',16.8,2.5,0.13],['G4',17.5,2,0.11],['E5',18,3,0.09],
-      ['D5',19,2,0.1],['C5',20,4,0.12],
-      ['A3',21,3,0.16],['C4',21.8,2.5,0.13],['E4',22.5,2,0.11],['A4',23,3,0.1],
-      ['G4',24,2,0.1],['F4',25,4,0.11],
-      ['F3',26,3,0.16],['A3',26.8,2.5,0.13],['C4',27.5,2,0.11],['F4',28,2,0.1],
-      ['E4',29,2,0.1],['D4',30,3,0.11],
-      ['G3',31,3,0.16],['B3',31.8,2.5,0.13],['D4',32.5,2,0.11],['G4',33,3,0.1],
-      ['F4',34,1.5,0.09],['E4',35,3,0.12],
-      // Gentle resolution
-      ['C4',36,4,0.17],['E4',36.5,4,0.13],['G4',37,4,0.11],['C5',37.5,5,0.1],
-      ['E5',38,4,0.08],['G4',39,5,0.09],['C5',40,6,0.12],
+      // Phrase 1 — ethereal opening
+      ['E4',0,6,0.06],['B4',1.2,5,0.045],['C5',2.8,4.5,0.035],
+      ['E4',7,6,0.06],['A4',8.2,5,0.045],['B4',9.8,4.5,0.035],
+      ['D4',14,6,0.055],['G4',15.2,5,0.045],['A4',16.8,4.5,0.035],
+      ['C4',21,6,0.05],['E4',22.2,5,0.04],['G4',23.8,5.5,0.035],
+      // Phrase 2 — gentle movement
+      ['E4',28,4.5,0.06],['G4',29.8,3.5,0.045],['B4',31.5,4.5,0.04],['A4',34,3.5,0.035],
+      ['D4',36,4.5,0.055],['F4',37.8,3.5,0.045],['A4',39.5,4.5,0.04],['G4',42,3.5,0.035],
+      ['C4',44,4.5,0.055],['E4',45.8,3.5,0.045],['G4',47.5,5.5,0.04],
+      ['B3',50,4.5,0.05],['D4',51.8,3.5,0.04],['G4',53.5,5.5,0.035],
+      // Phrase 3 — hopeful ascending
+      ['C4',56,5.5,0.055],['E4',57.2,4.5,0.045],['G4',59,4,0.04],['C5',61,5.5,0.035],
+      ['A3',63,5.5,0.055],['C4',64.2,4.5,0.045],['E4',66,4,0.04],['A4',68,5.5,0.035],
+      // Phrase 4 — resolution, fading
+      ['G3',71,6.5,0.05],['B3',72.2,5.5,0.04],['D4',74,5.5,0.035],['G4',76,7,0.03],
+      ['C4',79,7,0.05],['E4',80.2,6,0.04],['G4',82,6.5,0.035],
+      ['C5',84,9,0.03],['E4',86,8,0.025],['G4',87,9,0.02],
     ];
 
     const noteFreqs = {
-      'C3':130.81,'D3':146.83,'E3':164.81,'F3':174.61,'G3':196.00,'A3':220.00,'B3':246.94,
+      'B3':246.94,'C3':130.81,'D3':146.83,'E3':164.81,'F3':174.61,'G3':196.00,'A3':220.00,
       'C4':261.63,'D4':293.66,'E4':329.63,'F4':349.23,'G4':392.00,'A4':440.00,'B4':493.88,
-      'C5':523.25,'D5':587.33,'E5':659.25,'F5':698.46,'G5':783.99
+      'C5':523.25,'D5':587.33,'E5':659.25
     };
 
     function playNote(freq, time, dur, vel) {
-      // Two detuned oscillators for warmth
       const osc1 = ctx.createOscillator();
       const osc2 = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc1.type = 'sine';
-      osc2.type = 'triangle';
+      const osc3 = ctx.createOscillator();
+      const noteGain = ctx.createGain();
+      osc1.type = 'sine'; osc2.type = 'sine'; osc3.type = 'triangle';
       osc1.frequency.value = freq;
-      osc2.frequency.value = freq * 1.001; // slight detune
-
-      const mix1 = ctx.createGain();
-      const mix2 = ctx.createGain();
-      mix1.gain.value = 0.7;
-      mix2.gain.value = 0.3;
-
-      osc1.connect(mix1);
-      osc2.connect(mix2);
-      mix1.connect(gain);
-      mix2.connect(gain);
-      gain.connect(ctx.destination);
-
-      // Piano-like envelope: fast attack, gentle decay
-      gain.gain.setValueAtTime(0, time);
-      gain.gain.linearRampToValueAtTime(vel, time + 0.02);
-      gain.gain.exponentialRampToValueAtTime(vel * 0.6, time + 0.15);
-      gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
-
-      osc1.start(time);
-      osc2.start(time);
-      osc1.stop(time + dur + 0.1);
-      osc2.stop(time + dur + 0.1);
+      osc2.frequency.value = freq * 2.001;
+      osc3.frequency.value = freq * 0.999;
+      const m1 = ctx.createGain(), m2 = ctx.createGain(), m3 = ctx.createGain();
+      m1.gain.value = 0.55; m2.gain.value = 0.1; m3.gain.value = 0.35;
+      osc1.connect(m1); m1.connect(noteGain);
+      osc2.connect(m2); m2.connect(noteGain);
+      osc3.connect(m3); m3.connect(noteGain);
+      noteGain.connect(masterGain);
+      noteGain.gain.setValueAtTime(0, time);
+      noteGain.gain.linearRampToValueAtTime(vel, time + 0.1);
+      noteGain.gain.exponentialRampToValueAtTime(vel * 0.45, time + dur * 0.35);
+      noteGain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+      osc1.start(time); osc2.start(time); osc3.start(time);
+      osc1.stop(time+dur+0.1); osc2.stop(time+dur+0.1); osc3.stop(time+dur+0.1);
     }
 
     function playMelody() {
-      const beatLen = 0.7; // seconds per beat — slow and gentle
-      const now = ctx.currentTime + 0.3;
-      const totalBeats = 46;
+      const beatLen = 0.9;
+      const totalBeats = 96;
       const loopDur = totalBeats * beatLen;
-
       function scheduleLoop(offset) {
         melody.forEach(([note, beat, dur, vel]) => {
-          playNote(noteFreqs[note], offset + beat * beatLen, dur * beatLen, vel);
+          if (noteFreqs[note]) playNote(noteFreqs[note], offset + beat*beatLen, dur*beatLen, vel);
         });
-        // Schedule next loop
-        setTimeout(() => scheduleLoop(offset + loopDur), (loopDur - 2) * 1000);
+        setTimeout(() => scheduleLoop(offset + loopDur), (loopDur - 4) * 1000);
       }
-      scheduleLoop(now);
+      scheduleLoop(ctx.currentTime + 2.5);
     }
 
     function startMusic() {
       if (started) return;
       started = true;
       ctx = new AudioCtx();
+      masterGain = ctx.createGain();
+      masterGain.connect(ctx.destination);
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.7, ctx.currentTime + 5);
       playMelody();
     }
 
-    // Trigger on first scroll
-    let scrollTriggered = false;
+    let triggered = false;
     window.addEventListener('scroll', function() {
-      if (!scrollTriggered) {
-        scrollTriggered = true;
-        startMusic();
-      }
+      if (!triggered) { triggered = true; startMusic(); }
     }, { passive: true });
-
-    // Also trigger on first touch (mobile)
     window.addEventListener('touchstart', function() {
-      if (!scrollTriggered) {
-        scrollTriggered = true;
-        startMusic();
-      }
+      if (!triggered) { triggered = true; startMusic(); }
     }, { once: true, passive: true });
   })();
 </script>
