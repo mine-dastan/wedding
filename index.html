@@ -54,6 +54,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .mbtn.playing svg{animation:musicPulse 1.5s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
 
+.music-hint{position:fixed;bottom:28px;right:65px;z-index:9500;display:flex;align-items:flex-end;gap:4px;opacity:0;animation:mhShow 1s ease forwards 2s;transition:opacity .8s ease}
+.music-hint.hidden{opacity:0!important;pointer-events:none}
+.music-hint-text{font-family:'Josefin Sans',sans-serif;font-size:.42rem;letter-spacing:.15em;color:rgba(250,247,242,.7);white-space:nowrap;margin-bottom:8px;text-shadow:0 1px 4px rgba(0,0,0,.1)}
+.music-hint-arrow{width:30px;height:30px;color:rgba(250,247,242,.5)}
+@keyframes mhShow{0%{opacity:0;transform:translateX(-5px)}100%{opacity:1;transform:translateX(0)}}
+
 /* ═══ INVITATION ═══ */
 .inv{position:relative;z-index:1;opacity:0;transition:opacity 1s ease .6s}.inv.show{opacity:1}
 
@@ -169,6 +175,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
 <div class="ctrl lang" id="lt" onclick="event.stopPropagation();tl()"><span style="font-size:.68rem">🌐</span><span class="lang-text" id="ll">EN</span></div>
 <div class="ctrl mbtn muted" id="mb" onclick="event.stopPropagation();tm()"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M8 7v10M16 5v14M4 10v4M20 9v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="music-hint" id="mh">
+  <span class="music-hint-text" data-it="Attiva la musica" data-en="Turn on music">Attiva la musica</span>
+  <svg class="music-hint-arrow" viewBox="0 0 40 40" fill="none"><path d="M5 12 C10 28, 25 32, 34 28" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M30 24 L35 28 L28 30" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
 <div class="sparkles" id="sp"></div>
 <div class="leaves" id="lv"></div>
 
@@ -263,14 +273,14 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <script>
 let lang='it',eo=false;
 function tl(){lang=lang==='it'?'en':'it';document.getElementById('ll').textContent=lang==='it'?'EN':'IT';document.querySelectorAll('[data-it]').forEach(el=>{const t=el.getAttribute('data-'+lang);if(t)el.innerHTML=t})}
-function openEnv(){if(eo)return;eo=true;const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},2500);setTimeout(()=>e.classList.add('gone'),4000)}
+function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},2500);setTimeout(()=>e.classList.add('gone'),4000)}
 function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d=Math.max(0,w-new Date());document.getElementById('cD').textContent=Math.floor(d/864e5);document.getElementById('cH').textContent=Math.floor(d%864e5/36e5);document.getElementById('cM').textContent=Math.floor(d%36e5/6e4);document.getElementById('cS').textContent=Math.floor(d%6e4/1e3);setTimeout(u,1000)})()}
 function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':'Enter name');return}console.log('RSVP:',{n,c,g:document.getElementById('rG').value,d:document.getElementById('rD').value,t});document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":"Sorry! Thanks.")}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
 function toggleGift(btn){btn.classList.toggle('open');document.getElementById('giftBody').classList.toggle('open')}
 function addToCalendar(){const ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:20260905T140000Z\nDTEND:20260906T000000Z\nSUMMARY:Matrimonio Mine & Carmine\nLOCATION:Corte di Torrelonga, Bari\nDESCRIPTION:Cerimonia alle 16:00 - Chiesa di Santa Maria di San Luca, Valenzano\\nRicevimento alle 18:00 - Corte di Torrelonga, Bari\nEND:VEVENT\nEND:VCALENDAR`;const blob=new Blob([ics],{type:'text/calendar'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='matrimonio-mine-carmine.ics';a.click()}
 const aud=document.getElementById('aud');let mp=false;
-function tm(){const b=document.getElementById('mb');if(!mp){aud.play();mp=true;b.classList.remove('muted');b.classList.add('playing')}else{aud.pause();mp=false;b.classList.add('muted');b.classList.remove('playing')}}
+function tm(){document.getElementById('mh').classList.add('hidden');const b=document.getElementById('mb');if(!mp){aud.play();mp=true;b.classList.remove('muted');b.classList.add('playing')}else{aud.pause();mp=false;b.classList.add('muted');b.classList.remove('playing')}}
 function initLeaves(){const c=document.getElementById('sp');const greens=['#8A9A7B','#6B7D5E','#9DAD8F','#7A8E6C','#A3B396','#B5C4A8'];for(let i=0;i<24;i++){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');const size=6+Math.random()*14;svg.setAttribute('viewBox','0 0 24 10');svg.setAttribute('width',size);svg.setAttribute('height',size*0.42);svg.classList.add('olive-leaf');svg.style.left=Math.random()*100+'%';svg.style.animationDuration=(22+Math.random()*38)+'s';svg.style.animationDelay=(Math.random()*28)+'s';svg.style.opacity=0;const color=greens[Math.floor(Math.random()*greens.length)];const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M1 5Q6 .5 12 1.5Q18 .5 23 5Q18 9.5 12 8.5Q6 9.5 1 5Z');path.setAttribute('fill',color);path.setAttribute('opacity',String(.12+Math.random()*.16));const vein=document.createElementNS('http://www.w3.org/2000/svg','line');vein.setAttribute('x1','4');vein.setAttribute('y1','5');vein.setAttribute('x2','20');vein.setAttribute('y2','5');vein.setAttribute('stroke',color);vein.setAttribute('stroke-width','0.25');vein.setAttribute('opacity',String(.06+Math.random()*.08));svg.appendChild(path);svg.appendChild(vein);c.appendChild(svg)}}
 (function(){const c=document.getElementById('lv');for(let i=0;i<7;i++){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 30 14');s.setAttribute('width',8+Math.random()*12);s.classList.add('leaf');s.style.left=Math.random()*100+'%';s.style.animationDuration=22+Math.random()*30+'s';s.style.animationDelay=Math.random()*20+'s';const e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');e.setAttribute('cx','15');e.setAttribute('cy','7');e.setAttribute('rx','14');e.setAttribute('ry','5');e.setAttribute('fill','#8A9A7B');s.appendChild(e);c.appendChild(s)}})();
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.08});
