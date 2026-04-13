@@ -142,10 +142,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .video-section video{width:100%;height:45vh;display:block;object-fit:cover}
 .video-overlay{position:absolute;inset:0;background:rgba(250,247,242,.4);pointer-events:none}
 .video-fade{position:absolute;inset:-2px;pointer-events:none;box-shadow:inset 0 0 60px 40px var(--ivory),inset 0 40px 30px -10px var(--ivory),inset 0 -40px 30px -10px var(--ivory);z-index:1}
-.video-text{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:.5rem 0 1.5rem}
-.video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(1.8rem,6vw,2.5rem);color:var(--txt)}
-.video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.82rem,2.2vw,1rem);color:var(--txt-s);margin-top:.3rem}
-.video-text .vt-date{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.5rem;letter-spacing:.5em;color:var(--gold);margin-top:.5rem}
+.video-text{position:absolute;bottom:12%;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;pointer-events:none}
+.video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(2rem,7vw,3rem);color:var(--ivory);text-shadow:0 2px 15px rgba(0,0,0,.2)}
+.video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.82rem,2.2vw,1rem);color:rgba(250,247,242,.85);margin-top:.3rem;text-shadow:0 1px 8px rgba(0,0,0,.15)}
+.video-text .vt-date{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.45rem;letter-spacing:.5em;color:rgba(250,247,242,.7);margin-top:.5rem;text-shadow:0 1px 6px rgba(0,0,0,.1)}
 
 .ftr{text-align:center;padding:2.5rem 2rem 3.5rem}
 .ftr-n{font-family:'Pinyon Script',cursive;font-size:1.7rem;color:var(--txt)}
@@ -267,19 +267,19 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   </section>
 
   <section class="rv" style="max-width:100%;padding:0">
-    <div class="video-text">
-      <p class="vt-names">M & C</p>
-      <p class="vt-quote" data-it="«Due anime, un solo cammino»" data-en="«Two souls, one path»" data-tr="«İki ruh, tek yol»">«Due anime, un solo cammino»</p>
-      <p class="vt-date">05 · 09 · 2026</p>
-    </div>
     <div class="video-section">
       <video autoplay muted loop playsinline><source src="assets/venue.mp4" type="video/mp4"></video>
       <div class="video-overlay"></div>
       <div class="video-fade"></div>
+      <div class="video-text">
+        <p class="vt-names">M & C</p>
+        <p class="vt-quote" data-it="«Due anime, un solo cammino»" data-en="«Two souls, one path»" data-tr="«İki ruh, tek yol»">«Due anime, un solo cammino»</p>
+        <p class="vt-date">05 · 09 · 2026</p>
+      </div>
     </div>
   </section>
 
-  <footer class="ftr rv"><p class="ftr-t" data-it="05 · 09 · 2026" data-en="09 · 05 · 2026" style="font-style:normal;letter-spacing:.4em;font-family:'Josefin Sans',sans-serif;font-size:.5rem;color:var(--gold)">05 · 09 · 2026</p></footer>
+  <footer class="ftr rv"></footer>
 </div>
 
 <audio id="aud" loop preload="auto"><source src="assets/music.mp3" type="audio/mpeg"></audio>
@@ -290,9 +290,13 @@ function tl(){const cycle={it:'en',en:'tr',tr:'it'};const labels={it:'EN',en:'TR
 function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},1800);setTimeout(()=>e.classList.add('gone'),2800)}
 function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d=Math.max(0,w-new Date());document.getElementById('cD').textContent=Math.floor(d/864e5);document.getElementById('cH').textContent=Math.floor(d%864e5/36e5);document.getElementById('cM').textContent=Math.floor(d%36e5/6e4);document.getElementById('cS').textContent=Math.floor(d%6e4/1e3);setTimeout(u,1000)})()}
 function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':lang==='tr'?'Adınızı girin':'Enter name');return}
-const data={nome:n,cognome:c,ospiti:document.getElementById('rG').value,allergie:document.getElementById('rD').value,risposta:t==='y'?'Accetta':'Rifiuta'};
-const SHEET_URL='https://script.google.com/macros/s/AKfycbxAa2fOcv8HkIJj3Xw11czdC_MkwnjMZZrhawm6LCRZttuFD19JI3QFNVkInTAYzPAiqg/exec';
-fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});
+const SHEET_URL='https://script.google.com/macros/s/AKfycbxr_SpNvNJcTXPyJs8HRjNbQJ2d_TtIRH5PKeDmdu2euf6EkirRcsEWp-m0GzVndQlrig/exec';
+const params=new URLSearchParams();
+params.append('nome',n);params.append('cognome',c);
+params.append('ospiti',document.getElementById('rG').value);
+params.append('allergie',document.getElementById('rD').value);
+params.append('risposta',t==='y'?'Accetta':'Rifiuta');
+fetch(SHEET_URL+'?'+params.toString(),{method:'GET',mode:'no-cors'}).catch(()=>{});
 document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":lang==='tr'?"Sizinle kutlamak için sabırsızlanıyoruz!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":lang==='tr'?"Üzgünüz! Teşekkürler.":"Sorry! Thanks.")}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
 function toggleGift(btn){btn.classList.toggle('open');document.getElementById('giftBody').classList.toggle('open')}
