@@ -20,16 +20,22 @@ body{font-family:'Cormorant Garamond',serif;background:var(--ivory);color:var(--
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");opacity:.6}
 
 /* ═══ ENVELOPE ═══ */
-.env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--ivory);transition:opacity 2.5s cubic-bezier(.23,1,.32,1)}
+.env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--ivory)}
 .env.gone{pointer-events:none;z-index:-1;display:none}
-.env.open{opacity:0}
-.env-seal{width:clamp(110px,30vw,170px);margin-bottom:1.2rem;filter:drop-shadow(0 6px 25px rgba(92,84,74,.2));animation:sealBreathe 4s ease-in-out infinite}
+.env::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 120% 80% at 50% 40%,transparent 30%,rgba(92,84,74,.03) 60%,rgba(92,84,74,.08) 100%);pointer-events:none;transition:opacity 1.5s ease}
+.env::after{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(to bottom,rgba(92,84,74,.04),transparent);pointer-events:none;transition:opacity 1.5s ease}
+.env.open::before,.env.open::after{opacity:0}
+.env-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;transition:all 2s cubic-bezier(.23,1,.32,1)}
+.env.open .env-inner{transform:scale(1.05);opacity:0}
+.env-bg-fade{position:absolute;inset:0;background:var(--ivory);z-index:1;opacity:0;transition:opacity 1.5s ease .5s}
+.env.open .env-bg-fade{opacity:1}
+.env-seal{width:clamp(120px,32vw,180px);margin-bottom:1.2rem;filter:drop-shadow(0 8px 30px rgba(92,84,74,.2));animation:sealBreathe 4s ease-in-out infinite}
 .env-seal img{width:100%;display:block}
 @keyframes sealBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-.env-title{font-family:'Pinyon Script',cursive;font-size:clamp(1.6rem,6vw,2.6rem);color:var(--gold);white-space:nowrap;margin-bottom:2rem;order:-1}
-.env-hint{position:absolute;top:calc(50% + clamp(55px,14vw,80px));left:50%;transform:translateX(-50%);z-index:12;font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.55em;text-transform:uppercase;color:rgba(250,247,242,.8);animation:hintGlow 3s ease-in-out infinite;white-space:nowrap;transition:opacity 1s ease .1s}
-.env.open .env-hint{opacity:0;transition:opacity 1.2s ease}
-@keyframes hintGlow{0%,100%{opacity:.5;letter-spacing:.6em}50%{opacity:.9;letter-spacing:.65em}}
+.env-title{font-family:'Pinyon Script',cursive;font-size:clamp(1.8rem,7vw,2.8rem);color:var(--gold);white-space:nowrap;margin-bottom:2.5rem}
+
+.env-hint{font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);animation:hintGlow 3s ease-in-out infinite;white-space:nowrap;margin-top:.8rem}
+@keyframes hintGlow{0%,100%{opacity:.45}50%{opacity:.9}}
 
 /* ═══ CONTROLS ═══ */
 .ctrl{position:fixed;z-index:9500;display:flex;align-items:center;cursor:pointer;transition:all .5s cubic-bezier(.23,1,.32,1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
@@ -132,12 +138,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .cpb:hover{background:var(--gold);color:var(--ivory)}
 .opp{font-style:italic;font-size:.82rem;color:var(--txt-l);margin:.5rem 0;text-align:center}
 
-.video-section{position:relative;width:100%;overflow:hidden}
-.video-section video{width:100%;height:70vh;display:block;object-fit:cover}
-.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,.95) 0%,rgba(250,247,242,.3) 15%,rgba(250,247,242,.05) 35%,rgba(250,247,242,.05) 65%,rgba(250,247,242,.3) 85%,rgba(250,247,242,.95) 100%);pointer-events:none}
-.video-text{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
-.video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(2rem,7vw,3.5rem);color:var(--txt);text-shadow:0 2px 15px rgba(250,247,242,.5)}
-.video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.85rem,2.5vw,1.1rem);color:var(--txt-s);margin-top:.5rem;text-shadow:0 1px 8px rgba(250,247,242,.6)}
+.video-section{position:relative;width:calc(100% - 2rem);max-width:500px;margin:0 auto;overflow:hidden;border-radius:0}
+.video-section video{width:100%;height:50vh;display:block;object-fit:cover}
+.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,242,1) 0%,rgba(250,247,242,.5) 12%,rgba(250,247,242,.15) 30%,rgba(250,247,242,.15) 70%,rgba(250,247,242,.5) 88%,rgba(250,247,242,1) 100%),linear-gradient(to right,rgba(250,247,242,.8) 0%,transparent 15%,transparent 85%,rgba(250,247,242,.8) 100%);pointer-events:none}
+.video-text{position:absolute;bottom:0;left:0;right:0;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:1.5rem;pointer-events:none}
+.video-text .vt-names{font-family:'Pinyon Script',cursive;font-size:clamp(1.6rem,5vw,2.2rem);color:var(--txt);text-shadow:0 2px 12px rgba(250,247,242,.7)}
+.video-text .vt-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(.8rem,2.2vw,1rem);color:var(--txt-s);margin-top:.3rem;text-shadow:0 1px 8px rgba(250,247,242,.7)}
 
 .ftr{text-align:center;padding:2.5rem 2rem 3.5rem}
 .ftr-n{font-family:'Pinyon Script',cursive;font-size:1.7rem;color:var(--txt)}
@@ -158,9 +164,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <body>
 
 <div class="env" id="env" onclick="openEnv()">
-  <div class="env-title" data-it="Siete invitati" data-en="You are invited" data-tr="Davetlisiniz">Siete invitati</div>
-  <div class="env-seal"><img src="assets/seal.png" alt="MC"></div>
-  <div class="env-hint" data-it="Tocca il sigillo" data-en="Tap the seal" data-tr="Mühre dokunun">Tocca il sigillo</div>
+  <div class="env-bg-fade"></div>
+  <div class="env-inner">
+    <div class="env-title" data-it="Siete invitati" data-en="You are invited" data-tr="Davetlisiniz">Siete invitati</div>
+    <div class="env-seal"><img src="assets/seal.png" alt="MC"></div>
+    <div class="env-hint" data-it="Tocca il sigillo" data-en="Tap the seal" data-tr="Mühre dokunun">Tocca il sigillo</div>
+  </div>
 </div>
 
 <div class="ctrl lang" id="lt" onclick="event.stopPropagation();tl()"><span style="font-size:.68rem">🌐</span><span class="lang-text" id="ll">EN</span></div>
@@ -274,7 +283,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <script>
 let lang='it',eo=false;
 function tl(){const cycle={it:'en',en:'tr',tr:'it'};const labels={it:'EN',en:'TR',tr:'IT'};lang=cycle[lang];document.getElementById('ll').textContent=labels[lang];document.querySelectorAll('[data-it]').forEach(el=>{const t=el.getAttribute('data-'+lang)||el.getAttribute('data-it');if(t)el.innerHTML=t})}
-function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},2000);setTimeout(()=>e.classList.add('gone'),3000)}
+function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},1800);setTimeout(()=>e.classList.add('gone'),2800)}
 function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d=Math.max(0,w-new Date());document.getElementById('cD').textContent=Math.floor(d/864e5);document.getElementById('cH').textContent=Math.floor(d%864e5/36e5);document.getElementById('cM').textContent=Math.floor(d%36e5/6e4);document.getElementById('cS').textContent=Math.floor(d%6e4/1e3);setTimeout(u,1000)})()}
 function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':lang==='tr'?'Adınızı girin':'Enter name');return}console.log('RSVP:',{n,c,g:document.getElementById('rG').value,d:document.getElementById('rD').value,t});document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":lang==='tr'?"Sizinle kutlamak için sabırsızlanıyoruz!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":lang==='tr'?"Üzgünüz! Teşekkürler.":"Sorry! Thanks.")}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
