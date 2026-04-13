@@ -582,12 +582,327 @@
   </div>
 </section>
 
-<!-- ═══════ VENUE IMAGE ═══════ -->
+<!-- ═══════ VENUE SKETCH ═══════ -->
 <section class="card-section reveal">
-  <div class="venue-image-wrapper">
-    <img src="/mnt/user-data/uploads/1776059005459_image.png" class="venue-image" alt="Corte di Torrelonga, Bari" onerror="this.parentElement.style.display='none'"/>
-  </div>
-  <p class="venue-caption">Corte di Torrelonga — Bari, Puglia</p>
+  <svg class="venue-sketch" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="max-width:650px;margin:1.5rem auto;display:block;">
+    <defs>
+      <!-- Hand-drawn wobble -->
+      <filter id="sk" x="-3%" y="-3%" width="106%" height="106%">
+        <feTurbulence type="turbulence" baseFrequency="0.025" numOctaves="4" result="n" seed="3"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="skSoft" x="-2%" y="-2%" width="104%" height="104%">
+        <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="3" result="n" seed="7"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="1" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <!-- Watercolor wash -->
+      <filter id="wash" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="5" result="n" seed="12"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation="1.5"/>
+      </filter>
+      <!-- Soft glow -->
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <!-- Pencil texture -->
+      <filter id="pencil" x="-1%" y="-1%" width="102%" height="102%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="5" result="n"/>
+        <feComposite in="SourceGraphic" in2="n" operator="in"/>
+      </filter>
+    </defs>
+
+    <!-- ════ SKY WASH ════ -->
+    <ellipse cx="450" cy="80" rx="400" ry="100" fill="#D6E4EE" opacity="0.12" filter="url(#wash)"/>
+    <ellipse cx="300" cy="60" rx="180" ry="50" fill="#E8D8C8" opacity="0.06" filter="url(#wash)"/>
+    <ellipse cx="600" cy="50" rx="150" ry="40" fill="#D6E4EE" opacity="0.08" filter="url(#wash)"/>
+
+    <!-- ════ GROUND WASHES ════ -->
+    <ellipse cx="450" cy="460" rx="420" ry="60" fill="#C8D9B8" opacity="0.12" filter="url(#wash)"/>
+    <ellipse cx="300" cy="440" rx="200" ry="40" fill="#D4DEC8" opacity="0.1" filter="url(#wash)"/>
+    <ellipse cx="600" cy="450" rx="220" ry="45" fill="#C8D4B8" opacity="0.08" filter="url(#wash)"/>
+    <!-- Ground line -->
+    <path d="M20 445 Q150 435, 300 440 Q450 445, 600 438 Q750 432, 880 440" stroke="#8A9A7B" stroke-width="0.8" fill="none" opacity="0.35" filter="url(#sk)"/>
+    <path d="M40 448 Q200 442, 400 446 Q600 450, 860 443" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.2" filter="url(#sk)"/>
+
+    <!-- ════ STONE PATHWAY - perspective to round courtyard ════ -->
+    <path d="M415 500 L440 500 L432 360 L418 360 Z" fill="#D4C8B0" opacity="0.1" filter="url(#sk)"/>
+    <path d="M415 500 Q416 460, 418 420 Q419 390, 418 360" stroke="#A09580" stroke-width="0.8" fill="none" opacity="0.28" filter="url(#sk)"/>
+    <path d="M440 500 Q438 460, 436 420 Q434 390, 432 360" stroke="#A09580" stroke-width="0.8" fill="none" opacity="0.28" filter="url(#sk)"/>
+    <!-- cobblestone arcs -->
+    <path d="M416 490 Q427 485, 439 490" stroke="#A09580" stroke-width="0.4" fill="none" opacity="0.18"/>
+    <path d="M417 472 Q427 467, 438 472" stroke="#A09580" stroke-width="0.4" fill="none" opacity="0.17"/>
+    <path d="M417 455 Q427 450, 437 455" stroke="#A09580" stroke-width="0.4" fill="none" opacity="0.15"/>
+    <path d="M418 438 Q427 434, 436 438" stroke="#A09580" stroke-width="0.35" fill="none" opacity="0.14"/>
+    <path d="M418 422 Q427 418, 435 422" stroke="#A09580" stroke-width="0.35" fill="none" opacity="0.12"/>
+    <path d="M418 406 Q427 403, 434 406" stroke="#A09580" stroke-width="0.3" fill="none" opacity="0.1"/>
+    <path d="M418 392 Q426 389, 433 392" stroke="#A09580" stroke-width="0.3" fill="none" opacity="0.09"/>
+    <path d="M418 378 Q425 375, 432 378" stroke="#A09580" stroke-width="0.3" fill="none" opacity="0.08"/>
+
+    <!-- Circular courtyard / corte rotonda -->
+    <ellipse cx="425" cy="360" rx="55" ry="14" fill="#D4C8B0" opacity="0.08" filter="url(#wash)"/>
+    <ellipse cx="425" cy="360" rx="55" ry="14" fill="none" stroke="#A09580" stroke-width="0.7" opacity="0.2" filter="url(#sk)"/>
+    <ellipse cx="425" cy="360" rx="40" ry="10" fill="none" stroke="#A09580" stroke-width="0.4" opacity="0.12" filter="url(#skSoft)"/>
+
+    <!-- ════ STONE PERIMETER WALL ════ -->
+    <!-- Left wall -->
+    <rect x="160" y="320" width="155" height="32" fill="#EDE4D4" opacity="0.2" filter="url(#sk)"/>
+    <rect x="160" y="320" width="155" height="32" fill="none" stroke="#9A8E76" stroke-width="1" opacity="0.45" filter="url(#sk)"/>
+    <path d="M165 336 H310" stroke="#9A8E76" stroke-width="0.4" opacity="0.2"/>
+    <!-- stone blocks -->
+    <path d="M195 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
+    <path d="M230 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
+    <path d="M265 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
+
+    <!-- Right wall -->
+    <rect x="585" y="320" width="155" height="32" fill="#EDE4D4" opacity="0.2" filter="url(#sk)"/>
+    <rect x="585" y="320" width="155" height="32" fill="none" stroke="#9A8E76" stroke-width="1" opacity="0.45" filter="url(#sk)"/>
+    <path d="M590 336 H735" stroke="#9A8E76" stroke-width="0.4" opacity="0.2"/>
+    <path d="M620 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
+    <path d="M655 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
+    <path d="M690 322 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.15"/>
+
+    <!-- Front stone wall with entrance -->
+    <rect x="315" y="310" width="90" height="42" fill="#EDE4D4" opacity="0.18" filter="url(#sk)"/>
+    <rect x="315" y="310" width="90" height="42" fill="none" stroke="#9A8E76" stroke-width="1.1" opacity="0.45" filter="url(#sk)"/>
+    <rect x="495" y="310" width="90" height="42" fill="#EDE4D4" opacity="0.18" filter="url(#sk)"/>
+    <rect x="495" y="310" width="90" height="42" fill="none" stroke="#9A8E76" stroke-width="1.1" opacity="0.45" filter="url(#sk)"/>
+    <!-- stone texture -->
+    <path d="M335 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
+    <path d="M365 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
+    <path d="M515 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
+    <path d="M545 312 V350" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
+    <path d="M320 330 H400" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
+    <path d="M500 330 H580" stroke="#9A8E76" stroke-width="0.3" opacity="0.12"/>
+
+    <!-- ════ MAIN ENTRANCE ARCH ════ -->
+    <path d="M405 352 V310 Q405 285, 450 285 Q495 285, 495 310 V352" stroke="#9A8E76" stroke-width="1.6" fill="#F5EDE3" opacity="0.5" filter="url(#sk)"/>
+    <!-- Arch double-line detail -->
+    <path d="M410 350 V314 Q410 290, 450 290 Q490 290, 490 314 V350" stroke="#9A8E76" stroke-width="0.6" fill="none" opacity="0.25" filter="url(#skSoft)"/>
+    <!-- Keystone -->
+    <path d="M442 286 L450 278 L458 286" stroke="#9A8E76" stroke-width="0.9" fill="none" opacity="0.4"/>
+    <path d="M445 286 L450 281 L455 286" stroke="#9A8E76" stroke-width="0.5" fill="none" opacity="0.25"/>
+    <!-- Wooden door -->
+    <rect x="418" y="305" width="64" height="47" fill="#A09580" opacity="0.08" rx="2"/>
+    <line x1="450" y1="305" x2="450" y2="352" stroke="#9A8E76" stroke-width="0.6" opacity="0.25"/>
+    <!-- door panels -->
+    <rect x="422" y="310" width="25" height="18" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
+    <rect x="453" y="310" width="25" height="18" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
+    <rect x="422" y="332" width="25" height="16" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
+    <rect x="453" y="332" width="25" height="16" fill="none" stroke="#9A8E76" stroke-width="0.3" opacity="0.12" rx="1"/>
+    <!-- Door knocker -->
+    <circle cx="445" cy="330" r="2" fill="none" stroke="#C5A55A" stroke-width="0.5" opacity="0.3"/>
+    <circle cx="455" cy="330" r="2" fill="none" stroke="#C5A55A" stroke-width="0.5" opacity="0.3"/>
+
+    <!-- ════ MAIN BUILDING ════ -->
+    <!-- Building shadow/wash -->
+    <rect x="310" y="170" width="280" height="145" fill="#E8DCC8" opacity="0.2" filter="url(#wash)"/>
+    <!-- Building walls -->
+    <rect x="310" y="170" width="280" height="145" fill="#F2EADC" opacity="0.35" filter="url(#sk)"/>
+    <rect x="310" y="170" width="280" height="145" fill="none" stroke="#8A7E6A" stroke-width="1.5" opacity="0.55" filter="url(#sk)"/>
+
+    <!-- Roofline with cornice -->
+    <path d="M305 170 H595" stroke="#8A7E6A" stroke-width="1.8" opacity="0.55" filter="url(#sk)"/>
+    <path d="M308 167 H592" stroke="#8A7E6A" stroke-width="0.8" opacity="0.3"/>
+    <path d="M310 164 H590" stroke="#8A7E6A" stroke-width="0.4" opacity="0.2"/>
+
+    <!-- Floor division line -->
+    <path d="M315 240 H585" stroke="#8A7E6A" stroke-width="0.5" opacity="0.15"/>
+
+    <!-- ─── Upper Floor Windows (5 windows with arched pediments) ─── -->
+    <!-- Window 1 -->
+    <rect x="330" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
+    <rect x="330" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
+    <path d="M328 185 Q345 172, 362 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
+    <line x1="345" y1="185" x2="345" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <line x1="330" y1="205" x2="360" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+
+    <!-- Window 2 -->
+    <rect x="385" y="185" width="30" height="40" fill="#C8D8C2" opacity="0.1"/>
+    <rect x="385" y="185" width="30" height="40" fill="none" stroke="#8A7E6A" stroke-width="0.9" opacity="0.45" filter="url(#skSoft)"/>
+    <path d="M383 185 Q400 172, 417 185" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#skSoft)"/>
+    <line x1="400" y1="185" x2="400" y2="225" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <line x1="385" y1="205" x2="415" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+
+    <!-- Window 3 (center, larger) -->
+    <rect x="435" y="183" width="32" height="44" fill="#C8D8C2" opacity="0.1"/>
+    <rect x="435" y="183" width="32" height="44" fill="none" stroke="#8A7E6A" stroke-width="1" opacity="0.48" filter="url(#skSoft)"/>
+    <path d="M433 183 Q451 168, 469 183" stroke="#8A7E6A" stroke-width="1" fill="none" opacity="0.42" filter="url(#skSoft)"/>
+    <line x1="451" y1="183" x2="451" y2="227" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <line x1="435" y1="205" x2="467" y2="205" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <!-- Small balcony under center window -->
+    <path d="M432 227 H470" stroke="#8A7E6A" stroke-width="0.7" opacity="0.3"/>
+    <path d="M434 230 H468" stroke="#8A7E6A" stroke-width="0.4" opacity="0.2"/>
+
+    <!-- ─── Lower Floor Windows ─── -->
+    <rect x="338" y="252" width="24" height="30" fill="#C8D8C2" opacity="0.08"/>
+    <rect x="338" y="252" width="24" height="30" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.35"/>
+    <line x1="350" y1="252" x2="350" y2="282" stroke="#8A7E6A" stroke-width="0.3" opacity="0.15"/>
+
+    <rect x="540" y="252" width="24" height="30" fill="#C8D8C2" opacity="0.08"/>
+    <rect x="540" y="252" width="24" height="30" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.35"/>
+    <line x1="552" y1="252" x2="552" y2="282" stroke="#8A7E6A" stroke-width="0.3" opacity="0.15"/>
+
+    <!-- ════ BELL TOWER / CAMPANILE (right side) ════ -->
+    <rect x="570" y="120" width="28" height="50" fill="#F2EADC" opacity="0.3" filter="url(#sk)"/>
+    <rect x="570" y="120" width="28" height="50" fill="none" stroke="#8A7E6A" stroke-width="1.1" opacity="0.5" filter="url(#sk)"/>
+    <!-- Dome top -->
+    <path d="M568 120 Q584 105, 600 120" stroke="#8A7E6A" stroke-width="1.1" fill="#F2EADC" opacity="0.4" filter="url(#sk)"/>
+    <!-- Lantern on dome -->
+    <rect x="579" y="105" width="10" height="12" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.35"/>
+    <path d="M578 105 Q584 98, 590 105" stroke="#8A7E6A" stroke-width="0.7" fill="none" opacity="0.35"/>
+    <!-- Small finial on top (no cross) -->
+    <circle cx="584" cy="95" r="2.5" fill="none" stroke="#8A7E6A" stroke-width="0.7" opacity="0.3"/>
+    <!-- Bell opening -->
+    <path d="M576 130 Q584 124, 592 130 V142 H576 Z" fill="#8A7E6A" opacity="0.08"/>
+    <path d="M576 130 Q584 124, 592 130" stroke="#8A7E6A" stroke-width="0.7" fill="none" opacity="0.35"/>
+    <line x1="576" y1="130" x2="576" y2="142" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
+    <line x1="592" y1="130" x2="592" y2="142" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
+    <!-- Bell -->
+    <path d="M582 132 Q584 130, 586 132 V137 H582 Z" fill="#C5A55A" opacity="0.15"/>
+
+    <!-- ════ RIGHT STAIRCASE ════ -->
+    <path d="M590 315 L625 280 H660 V315 Z" fill="#EDE4D4" opacity="0.15" filter="url(#sk)"/>
+    <path d="M590 315 L625 280 H660 V315" stroke="#8A7E6A" stroke-width="0.9" fill="none" opacity="0.4" filter="url(#sk)"/>
+    <path d="M597 308 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <path d="M604 301 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <path d="M611 294 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <path d="M618 287 H655" stroke="#8A7E6A" stroke-width="0.35" opacity="0.2"/>
+    <!-- Railing -->
+    <path d="M625 280 L625 270" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
+    <path d="M660 280 L660 270" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
+    <path d="M625 272 H660" stroke="#8A7E6A" stroke-width="0.5" opacity="0.25"/>
+
+    <!-- ════ BOUGAINVILLEA CASCADE ════ -->
+    <g filter="url(#wash)">
+      <circle cx="595" cy="195" r="6" fill="#D4A090" opacity="0.2"/>
+      <circle cx="605" cy="188" r="7" fill="#C2856E" opacity="0.18"/>
+      <circle cx="598" cy="205" r="5" fill="#E8C4B8" opacity="0.2"/>
+      <circle cx="610" cy="198" r="6" fill="#D4A090" opacity="0.22"/>
+      <circle cx="590" cy="185" r="4" fill="#E8C4B8" opacity="0.15"/>
+      <circle cx="615" cy="192" r="5" fill="#C2856E" opacity="0.16"/>
+      <circle cx="602" cy="212" r="4.5" fill="#D4A090" opacity="0.18"/>
+      <circle cx="608" cy="220" r="3.5" fill="#E8C4B8" opacity="0.15"/>
+      <circle cx="594" cy="215" r="3" fill="#D4A090" opacity="0.13"/>
+      <circle cx="612" cy="208" r="4" fill="#C2856E" opacity="0.15"/>
+      <circle cx="600" cy="178" r="4" fill="#D4A090" opacity="0.12"/>
+      <circle cx="618" cy="202" r="3" fill="#E8C4B8" opacity="0.12"/>
+    </g>
+    <!-- Vine lines -->
+    <path d="M592 180 Q600 195, 596 215" stroke="#6B7D5E" stroke-width="0.4" fill="none" opacity="0.2"/>
+    <path d="M608 185 Q612 200, 605 220" stroke="#6B7D5E" stroke-width="0.4" fill="none" opacity="0.18"/>
+
+    <!-- ════ PINE TREES ════ -->
+
+    <!-- PINE 1 — far left, tall umbrella pine -->
+    <path d="M120 440 Q118 380, 120 320 Q122 260, 118 180" stroke="#6B5D4A" stroke-width="2.2" fill="none" opacity="0.3" filter="url(#sk)"/>
+    <!-- branch strokes -->
+    <path d="M118 220 Q90 200, 70 190" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <path d="M119 210 Q145 195, 168 185" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <path d="M118 195 Q95 175, 80 160" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12" filter="url(#sk)"/>
+    <!-- canopy - layered -->
+    <ellipse cx="118" cy="155" rx="50" ry="35" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
+    <ellipse cx="100" cy="170" rx="42" ry="28" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
+    <ellipse cx="140" cy="148" rx="38" ry="30" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
+    <ellipse cx="115" cy="140" rx="30" ry="22" fill="#7C8C5D" opacity="0.06" filter="url(#wash)"/>
+    <!-- canopy outlines - multiple sketchy strokes -->
+    <path d="M65 170 Q80 135, 100 130 Q120 120, 140 128 Q160 122, 175 155" stroke="#5A6D4E" stroke-width="0.9" fill="none" opacity="0.22" filter="url(#sk)"/>
+    <path d="M70 178 Q88 148, 108 140 Q125 130, 148 138 Q165 132, 172 160" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <path d="M80 160 Q100 140, 118 135 Q135 128, 155 145" stroke="#5A6D4E" stroke-width="0.5" fill="none" opacity="0.12"/>
+
+    <!-- PINE 2 — left of building, tallest -->
+    <path d="M270 440 Q268 370, 270 300 Q272 230, 268 135" stroke="#6B5D4A" stroke-width="2.5" fill="none" opacity="0.32" filter="url(#sk)"/>
+    <path d="M269 200 Q240 180, 215 170" stroke="#6B5D4A" stroke-width="0.9" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <path d="M270 190 Q300 170, 325 162" stroke="#6B5D4A" stroke-width="0.9" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <path d="M269 175 Q242 155, 225 140" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
+    <path d="M270 168 Q295 148, 315 135" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
+    <!-- canopy -->
+    <ellipse cx="268" cy="110" rx="58" ry="40" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
+    <ellipse cx="248" cy="128" rx="50" ry="32" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
+    <ellipse cx="292" cy="102" rx="42" ry="32" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
+    <ellipse cx="265" cy="95" rx="35" ry="25" fill="#7C8C5D" opacity="0.06" filter="url(#wash)"/>
+    <path d="M205 130 Q230 85, 260 80 Q280 72, 310 85 Q335 78, 340 120" stroke="#5A6D4E" stroke-width="1" fill="none" opacity="0.22" filter="url(#sk)"/>
+    <path d="M212 142 Q238 100, 265 95 Q285 85, 318 98 Q338 92, 335 130" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
+
+    <!-- PINE 3 — right of building -->
+    <path d="M640 440 Q638 375, 640 310 Q642 245, 638 155" stroke="#6B5D4A" stroke-width="2.3" fill="none" opacity="0.3" filter="url(#sk)"/>
+    <path d="M639 220 Q610 200, 595 190" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.13" filter="url(#sk)"/>
+    <path d="M640 210 Q668 192, 685 182" stroke="#6B5D4A" stroke-width="0.8" fill="none" opacity="0.13" filter="url(#sk)"/>
+    <path d="M639 192 Q615 170, 600 158" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.1" filter="url(#sk)"/>
+    <ellipse cx="638" cy="128" rx="52" ry="38" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
+    <ellipse cx="618" cy="145" rx="45" ry="30" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
+    <ellipse cx="658" cy="118" rx="38" ry="28" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
+    <path d="M582 148 Q608 105, 635 98 Q658 90, 685 102 Q705 96, 700 138" stroke="#5A6D4E" stroke-width="0.9" fill="none" opacity="0.22" filter="url(#sk)"/>
+    <path d="M590 158 Q615 118, 638 112 Q660 102, 690 115 Q702 108, 698 145" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
+
+    <!-- PINE 4 — far right -->
+    <path d="M770 440 Q768 385, 770 335 Q772 280, 768 200" stroke="#6B5D4A" stroke-width="2" fill="none" opacity="0.28" filter="url(#sk)"/>
+    <path d="M769 240 Q745 225, 732 218" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
+    <path d="M770 232 Q792 218, 805 210" stroke="#6B5D4A" stroke-width="0.7" fill="none" opacity="0.12" filter="url(#sk)"/>
+    <ellipse cx="768" cy="172" rx="45" ry="35" fill="#6B7D5E" opacity="0.07" filter="url(#wash)"/>
+    <ellipse cx="752" cy="188" rx="38" ry="26" fill="#8A9A7B" opacity="0.06" filter="url(#wash)"/>
+    <ellipse cx="785" cy="165" rx="32" ry="26" fill="#6B7D5E" opacity="0.06" filter="url(#wash)"/>
+    <path d="M720 190 Q742 152, 765 145 Q785 138, 810 150 Q825 145, 822 182" stroke="#5A6D4E" stroke-width="0.8" fill="none" opacity="0.2" filter="url(#sk)"/>
+
+    <!-- ════ OLIVE TREES ════ -->
+
+    <!-- Olive grove left -->
+    <path d="M60 445 Q55 420, 60 400 Q52 388, 56 370 Q50 365, 58 348 Q54 340, 62 325" stroke="#6B5D4A" stroke-width="1.8" fill="none" opacity="0.22" filter="url(#sk)"/>
+    <path d="M58 355 Q45 345, 38 335" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
+    <path d="M60 350 Q72 340, 82 332" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
+    <ellipse cx="60" cy="315" rx="28" ry="18" fill="#8A9A7B" opacity="0.1" filter="url(#wash)"/>
+    <ellipse cx="48" cy="325" rx="22" ry="14" fill="#B5C4A8" opacity="0.08" filter="url(#wash)"/>
+    <ellipse cx="75" cy="320" rx="20" ry="12" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
+    <path d="M30 325 Q45 305, 62 308 Q78 302, 92 318" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <!-- olives -->
+    <circle cx="42" cy="322" r="2.5" fill="#7C8C5D" opacity="0.18"/>
+    <circle cx="78" cy="315" r="2" fill="#7C8C5D" opacity="0.15"/>
+    <circle cx="55" cy="310" r="1.8" fill="#7C8C5D" opacity="0.13"/>
+
+    <!-- Olive grove right -->
+    <path d="M840 445 Q845 422, 840 402 Q848 390, 844 372 Q850 362, 842 345" stroke="#6B5D4A" stroke-width="1.8" fill="none" opacity="0.22" filter="url(#sk)"/>
+    <path d="M843 365 Q830 355, 822 348" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
+    <path d="M842 358 Q855 348, 865 340" stroke="#6B5D4A" stroke-width="0.6" fill="none" opacity="0.12"/>
+    <ellipse cx="842" cy="335" rx="28" ry="18" fill="#8A9A7B" opacity="0.1" filter="url(#wash)"/>
+    <ellipse cx="828" cy="342" rx="20" ry="13" fill="#B5C4A8" opacity="0.08" filter="url(#wash)"/>
+    <ellipse cx="858" cy="338" rx="18" ry="12" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
+    <path d="M812 342 Q830 322, 845 326 Q860 320, 875 335" stroke="#5A6D4E" stroke-width="0.6" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <circle cx="825" cy="340" r="2.5" fill="#7C8C5D" opacity="0.18"/>
+    <circle cx="860" cy="332" r="2" fill="#7C8C5D" opacity="0.15"/>
+
+    <!-- Small olive trees in foreground -->
+    <path d="M340 450 Q338 432, 342 418" stroke="#6B5D4A" stroke-width="1.2" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <ellipse cx="342" cy="410" rx="16" ry="10" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
+    <path d="M326 414 Q335 404, 345 406 Q354 400, 360 410" stroke="#5A6D4E" stroke-width="0.5" fill="none" opacity="0.12"/>
+
+    <path d="M560" stroke-width="0" fill="none"/>
+    <path d="M555 450 Q558 435, 554 420" stroke="#6B5D4A" stroke-width="1.2" fill="none" opacity="0.15" filter="url(#sk)"/>
+    <ellipse cx="555" cy="412" rx="16" ry="10" fill="#8A9A7B" opacity="0.08" filter="url(#wash)"/>
+    <path d="M540 416 Q548 406, 558 408 Q566 402, 572 412" stroke="#5A6D4E" stroke-width="0.5" fill="none" opacity="0.12"/>
+
+    <!-- ════ GRASS DETAILS ════ -->
+    <path d="M80 442 Q83 434, 86 442" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.18"/>
+    <path d="M82 443 Q84 436, 88 443" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
+    <path d="M180 438 Q183 430, 186 438" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.18"/>
+    <path d="M380 448 Q383 441, 386 448" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.15"/>
+    <path d="M480 446 Q483 439, 486 446" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.15"/>
+    <path d="M700 440 Q703 433, 706 440" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.18"/>
+    <path d="M750 444 Q753 437, 756 444" stroke="#8A9A7B" stroke-width="0.5" fill="none" opacity="0.15"/>
+    <path d="M150 444 Q152 438, 155 444" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
+    <path d="M500 448 Q502 442, 505 448" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
+    <path d="M620 442 Q622 436, 625 442" stroke="#8A9A7B" stroke-width="0.4" fill="none" opacity="0.12"/>
+
+    <!-- Distant olive grove suggestion - far background -->
+    <ellipse cx="100" cy="435" rx="10" ry="6" fill="#8A9A7B" opacity="0.04"/>
+    <ellipse cx="800" cy="432" rx="10" ry="6" fill="#8A9A7B" opacity="0.04"/>
+    <path d="M40 435 Q50 430, 60 435" stroke="#8A9A7B" stroke-width="0.3" fill="none" opacity="0.08"/>
+    <path d="M850 433 Q860 428, 870 433" stroke="#8A9A7B" stroke-width="0.3" fill="none" opacity="0.08"/>
+
+    <!-- Shadow under building -->
+    <ellipse cx="450" cy="355" rx="160" ry="6" fill="#8A7E6A" opacity="0.04" filter="url(#wash)"/>
+  </svg>
+  <!-- no caption -->
 </section>
 
 <!-- ═══════ LISTA NOZZE / IBAN ═══════ -->
@@ -607,8 +922,8 @@
 
   <div class="iban-box">
     <p class="iban-label">Coordinate Bancarie</p>
-    <p class="iban-code" id="ibanCode">IT00 X000 0000 0000 0000 0000 000</p>
-    <p class="iban-name">Mine &amp; Carmine</p>
+    <p class="iban-code" id="ibanCode">IT22 T010 0504 1990 0000 0004 295</p>
+    <p class="iban-name">Carmine Caponio</p>
     <button class="copy-btn" onclick="copyIban()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
       Copia IBAN
