@@ -202,7 +202,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <section class="sec rv">
     <p class="sec-lbl" data-it="Con gioia vi annunciamo" data-en="We joyfully announce" data-tr="Büyük bir mutlulukla">Con gioia vi annunciamo</p>
     <h2 class="sec-ttl" data-it="Il Nostro Matrimonio" data-en="Our Wedding" data-tr="Düğünümüz">Il Nostro Matrimonio</h2>
-    <p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere con noi<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share with us<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love." data-tr="Büyük bir mutlulukla, hayatımızın en güzel gününü<br>sizinle paylaşmaya davet ediyoruz.<br><br>Aşkımızı kutlarken yanımızda olmanız<br>bizi çok mutlu edecek.">Con immensa gioia, vi invitiamo a condividere con noi<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p>
+    <p class="sec-txt" data-it="Con immensa gioia, vi invitiamo a condividere con noi<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore." data-en="With immense joy, we invite you to share with us<br>the most beautiful day of our lives.<br><br>We will be happy to have you by our side<br>as we celebrate our love." data-tr="Büyük bir mutlulukla, hayatımızın en güzel gününü<br>sizinle paylaşmaya davet ediyoruz.<br><br>Aşkımızı kutlarken yanımızda olmanız<br>bizi çok mutlu edecek.">Con immensa gioia, vi invitiamo a condividere<br>il giorno più bello della nostra vita.<br><br>Saremo felici di avervi al nostro fianco<br>mentre celebriamo il nostro amore.</p>
   </section>
 
   <div class="divdr rv"><div class="divdr-line"></div><svg class="divdr-leaf" viewBox="0 0 20 20"><path d="M10 3C10 3,3 8,10 15C17 8,10 3,10 3Z" fill="var(--rose)" opacity=".3"/></svg><div class="divdr-line"></div></div>
@@ -287,7 +287,13 @@ function rs(t){const n=document.getElementById('rN').value.trim(),c=document.get
 const SHEET_URL='https://script.google.com/macros/s/AKfycbxr_SpNvNJcTXPyJs8HRjNbQJ2d_TtIRH5PKeDmdu2euf6EkirRcsEWp-m0GzVndQlrig/exec';
 const p={nome:n,cognome:c,ospiti:document.getElementById('rG').value,allergie:document.getElementById('rD').value,risposta:t==='y'?'Accetta':'Rifiuta'};
 const qs=Object.entries(p).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
-var f=document.createElement('iframe');f.style.display='none';f.src=SHEET_URL+'?'+qs;document.body.appendChild(f);setTimeout(()=>f.remove(),5000);
+const url=SHEET_URL+'?'+qs;
+/* Primary: fetch no-cors (works on most mobile browsers) */
+try{fetch(url,{method:'GET',mode:'no-cors',credentials:'omit',redirect:'follow'}).catch(function(){})}catch(e){}
+/* Fallback 1: Image beacon (very reliable on mobile) */
+try{var img=new Image();img.src=url}catch(e){}
+/* Fallback 2: window.open hidden (catches remaining edge cases) */
+try{var w=window.open(url,'_blank','width=1,height=1,left=-100,top=-100');if(w)setTimeout(function(){try{w.close()}catch(e){}},4000)}catch(e){}
 document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":lang==='tr'?"Sizinle kutlamak için sabırsızlanıyoruz!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":lang==='tr'?"Üzgünüz! Teşekkürler.":"Sorry! Thanks.")}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
 function toggleGift(btn){btn.classList.toggle('open');document.getElementById('giftBody').classList.toggle('open')}
