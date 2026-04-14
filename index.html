@@ -19,14 +19,14 @@ html,body{overflow-x:hidden;height:100%}
 body{font-family:'Cormorant Garamond',serif;background:var(--ivory);color:var(--txt)}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");opacity:.6}
 
-.env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--ivory)}
-.env.gone{pointer-events:none;z-index:-1;display:none}
-.env::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 120% 80% at 50% 40%,transparent 30%,rgba(92,84,74,.03) 60%,rgba(92,84,74,.08) 100%);pointer-events:none;transition:opacity 1.5s ease}
-.env::after{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(to bottom,rgba(92,84,74,.04),transparent);pointer-events:none;transition:opacity 1.5s ease}
+.env{position:fixed;inset:0;z-index:9000;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--ivory);transition:opacity 2.5s ease 1.8s,filter 2.5s ease 1.8s}
+.env.gone{pointer-events:none;z-index:-1;opacity:0;filter:blur(8px)}
+.env::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 120% 80% at 50% 40%,transparent 30%,rgba(92,84,74,.03) 60%,rgba(92,84,74,.08) 100%);pointer-events:none;transition:opacity 2s ease}
+.env::after{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(to bottom,rgba(92,84,74,.04),transparent);pointer-events:none;transition:opacity 2s ease}
 .env.open::before,.env.open::after{opacity:0}
-.env-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;transition:all 2s cubic-bezier(.23,1,.32,1)}
-.env.open .env-inner{transform:scale(1.05);opacity:0}
-.env-bg-fade{position:absolute;inset:0;background:var(--ivory);z-index:1;opacity:0;transition:opacity 1.5s ease .5s}
+.env-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;transition:all 2.8s cubic-bezier(.23,1,.32,1)}
+.env.open .env-inner{transform:scale(1.08);opacity:0;filter:blur(6px)}
+.env-bg-fade{position:absolute;inset:0;background:var(--ivory);z-index:1;opacity:0;transition:opacity 2s ease .8s}
 .env.open .env-bg-fade{opacity:1}
 .env-seal{width:clamp(140px,38vw,220px);margin-bottom:1.2rem;filter:drop-shadow(0 8px 30px rgba(92,84,74,.2));animation:sealBreathe 4s ease-in-out infinite}
 .env-seal img{width:100%;display:block}
@@ -156,9 +156,20 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .rv{opacity:0;transform:translateY(16px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}.rv.visible{opacity:1;transform:none}
 
 @media(max-width:600px){.sec{padding:1.6rem 1rem}.rb{flex-direction:column}.venue-actions{flex-direction:column}.video-section video{height:60vh}}
+
+.inapp-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:var(--sage);color:var(--ivory);text-align:center;padding:10px 16px;font-family:'Josefin Sans',sans-serif;font-size:.52rem;letter-spacing:.15em;line-height:1.5;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.inapp-banner a{color:var(--gold-lt);text-decoration:underline;font-weight:400}
+.inapp-banner .inapp-close{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--ivory);font-size:1rem;cursor:pointer;opacity:.7;padding:4px}
+.inapp-banner .inapp-close:hover{opacity:1}
+.inapp-banner.show{display:block}
 </style>
 </head>
 <body>
+
+<div class="inapp-banner" id="inappBanner">
+  <span data-it="Per la migliore esperienza, apri nel browser ⟶ tocca ⋮ poi «Apri nel browser»" data-en="For the best experience, open in browser ⟶ tap ⋮ then 'Open in browser'" data-tr="En iyi deneyim için tarayıcıda açın ⟶ ⋮ sonra 'Tarayıcıda aç'">Per la migliore esperienza, apri nel browser ⟶ tocca ⋮ poi «Apri nel browser»</span>
+  <button class="inapp-close" onclick="document.getElementById('inappBanner').style.display='none'">✕</button>
+</div>
 
 <div class="env" id="env" onclick="openEnv()">
   <div class="env-bg-fade"></div>
@@ -281,17 +292,21 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <script>
 let lang='it',eo=false;
 function tl(){const cycle={it:'en',en:'tr',tr:'it'};const labels={it:'EN',en:'TR',tr:'IT'};lang=cycle[lang];document.getElementById('ll').textContent=labels[lang];document.querySelectorAll('[data-it]').forEach(el=>{const t=el.getAttribute('data-'+lang)||el.getAttribute('data-it');if(t)el.innerHTML=t})}
-function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},1800);setTimeout(()=>e.classList.add('gone'),2800)}
+function openEnv(){if(eo)return;eo=true;document.getElementById('mh').classList.add('hidden');const e=document.getElementById('env');e.classList.add('open');setTimeout(()=>{document.getElementById('inv').classList.add('show');scd();initLeaves()},1200);setTimeout(()=>e.classList.add('gone'),1600);setTimeout(()=>{e.style.display='none'},5000)}
 function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d=Math.max(0,w-new Date());document.getElementById('cD').textContent=Math.floor(d/864e5);document.getElementById('cH').textContent=Math.floor(d%864e5/36e5);document.getElementById('cM').textContent=Math.floor(d%36e5/6e4);document.getElementById('cS').textContent=Math.floor(d%6e4/1e3);setTimeout(u,1000)})()}
 function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':lang==='tr'?'Adınızı girin':'Enter name');return}
 const SHEET_URL='https://script.google.com/macros/s/AKfycbxr_SpNvNJcTXPyJs8HRjNbQJ2d_TtIRH5PKeDmdu2euf6EkirRcsEWp-m0GzVndQlrig/exec';
 const p={nome:n,cognome:c,ospiti:document.getElementById('rG').value,allergie:document.getElementById('rD').value,risposta:t==='y'?'Accetta':'Rifiuta'};
-var ifr=document.createElement('iframe');ifr.name='rsvp_frame';ifr.style.cssText='display:none;width:0;height:0;border:0';document.body.appendChild(ifr);
-var form=document.createElement('form');form.method='GET';form.action=SHEET_URL;form.target='rsvp_frame';form.style.display='none';
-Object.entries(p).forEach(function(kv){var inp=document.createElement('input');inp.type='hidden';inp.name=kv[0];inp.value=kv[1];form.appendChild(inp)});
-document.body.appendChild(form);form.submit();
-setTimeout(function(){try{form.remove();ifr.remove()}catch(e){}},10000);
+const qs=Object.entries(p).map(function(kv){return kv[0]+'='+encodeURIComponent(kv[1])}).join('&');
+const url=SHEET_URL+'?'+qs;
+var sent=false;
+/* Method 1: JSONP-style script tag — works everywhere including in-app browsers */
+try{var sc=document.createElement('script');sc.src=url+'&callback=_rsvpDone';sc.onerror=function(){if(!sent){sent=true;rsvpFallback(url)}};document.head.appendChild(sc);setTimeout(function(){try{sc.remove()}catch(e){}},12000);sent=true}catch(e){}
+/* If script tag didn't fire, fallback */
+if(!sent)rsvpFallback(url);
 document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":lang==='tr'?"Sizinle kutlamak için sabırsızlanıyoruz!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":lang==='tr'?"Üzgünüz! Teşekkürler.":"Sorry! Thanks.")}
+function _rsvpDone(){}
+function rsvpFallback(url){try{navigator.sendBeacon(url)}catch(e){try{var img=new Image();img.src=url}catch(e2){}}}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
 function toggleGift(btn){btn.classList.toggle('open');document.getElementById('giftBody').classList.toggle('open')}
 function addToCalendar(){const ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:20260905T140000Z\nDTEND:20260906T000000Z\nSUMMARY:Matrimonio Mine & Carmine\nLOCATION:Corte di Torrelonga, Bari\nDESCRIPTION:Cerimonia alle 16:00 - Chiesa di Santa Maria di San Luca, Valenzano\\nRicevimento alle 18:00 - Corte di Torrelonga, Bari\nEND:VEVENT\nEND:VCALENDAR`;const blob=new Blob([ics],{type:'text/calendar'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='matrimonio-mine-carmine.ics';a.click()}
@@ -301,6 +316,8 @@ function initLeaves(){const c=document.getElementById('sp');const greens=['#8A9A
 (function(){const c=document.getElementById('lv');for(let i=0;i<7;i++){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 30 14');s.setAttribute('width',8+Math.random()*12);s.classList.add('leaf');s.style.left=Math.random()*100+'%';s.style.animationDuration=22+Math.random()*30+'s';s.style.animationDelay=Math.random()*20+'s';const e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');e.setAttribute('cx','15');e.setAttribute('cy','7');e.setAttribute('rx','14');e.setAttribute('ry','5');e.setAttribute('fill','#8A9A7B');s.appendChild(e);c.appendChild(s)}})();
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.08});
 document.querySelectorAll('.rv,.story-item,.sch-item').forEach(el=>obs.observe(el));
+/* Detect in-app browsers */
+(function(){var ua=navigator.userAgent||navigator.vendor||'';var inapp=/FBAN|FBAV|Instagram|WhatsApp|Telegram|Snapchat|Line|Twitter|Viber|Pinterest|LinkedIn/i.test(ua);if(inapp){document.getElementById('inappBanner').classList.add('show')}})();
 </script>
 </body>
 </html>
