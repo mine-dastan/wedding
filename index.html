@@ -286,10 +286,11 @@ function scd(){const w=new Date('2026-09-05T16:00:00+02:00');(function u(){let d
 function rs(t){const n=document.getElementById('rN').value.trim(),c=document.getElementById('rC').value.trim();if(!n||!c){alert(lang==='it'?'Inserisci nome e cognome':lang==='tr'?'Adınızı girin':'Enter name');return}
 const SHEET_URL='https://script.google.com/macros/s/AKfycbxr_SpNvNJcTXPyJs8HRjNbQJ2d_TtIRH5PKeDmdu2euf6EkirRcsEWp-m0GzVndQlrig/exec';
 const p={nome:n,cognome:c,ospiti:document.getElementById('rG').value,allergie:document.getElementById('rD').value,risposta:t==='y'?'Accetta':'Rifiuta'};
-const qs=Object.entries(p).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
-const url=SHEET_URL+'?'+qs;
-var img=new Image();img.src=url;
-var f=document.createElement('iframe');f.style.display='none';f.src=url;document.body.appendChild(f);setTimeout(function(){try{f.remove()}catch(e){}},8000);
+var ifr=document.createElement('iframe');ifr.name='rsvp_frame';ifr.style.cssText='display:none;width:0;height:0;border:0';document.body.appendChild(ifr);
+var form=document.createElement('form');form.method='GET';form.action=SHEET_URL;form.target='rsvp_frame';form.style.display='none';
+Object.entries(p).forEach(function(kv){var inp=document.createElement('input');inp.type='hidden';inp.name=kv[0];inp.value=kv[1];form.appendChild(inp)});
+document.body.appendChild(form);form.submit();
+setTimeout(function(){try{form.remove();ifr.remove()}catch(e){}},10000);
 document.getElementById('rf').style.display='none';document.getElementById('rO').classList.add('show');document.getElementById('rP').textContent=t==='y'?(lang==='it'?"Non vediamo l'ora di festeggiare con voi!":lang==='tr'?"Sizinle kutlamak için sabırsızlanıyoruz!":"Can't wait to celebrate!"):(lang==='it'?"Ci dispiace! Grazie.":lang==='tr'?"Üzgünüz! Teşekkürler.":"Sorry! Thanks.")}
 function cp(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(()=>{const s=btn.querySelector('span'),o=s.textContent;s.textContent='✓';setTimeout(()=>s.textContent=o,1500)})}
 function toggleGift(btn){btn.classList.toggle('open');document.getElementById('giftBody').classList.toggle('open')}
